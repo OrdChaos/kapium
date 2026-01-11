@@ -1,6 +1,6 @@
 include ../../common.mk
 
-BIN_DIR := $(BUILD_DIR)/tools/summary/
+BIN_DIR := $(BUILD_DIR)/tools/abbrlink/
 
 CXX := g++
 C := gcc
@@ -14,7 +14,7 @@ SRCS_NO_DOT := $(patsubst ./%,%,$(SRCS))
 OBJS_NO_DOT := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(patsubst %.cc,%.o,$(SRCS_NO_DOT))))
 OBJS := $(addprefix $(BIN_DIR)/,$(OBJS_NO_DOT))
 
-TARGET := $(BIN_DIR)/summary
+TARGET := $(BIN_DIR)/abbrlink
 
 .PHONY: all clean
 
