@@ -4,7 +4,7 @@ BIN_DIR := $(BUILD_DIR)/ssg
 
 CXX := g++
 C := gcc
-CFLAGS := -lssl -Wall -Wextra -O2 -g -I.
+CFLAGS := -Wall -Wextra -O2 -g -I.
 LDFLAGS :=
 LDLIBS :=
 

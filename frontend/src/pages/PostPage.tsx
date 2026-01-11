@@ -265,6 +265,18 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   </div>
                 </div>
 
+                {post.summary && (
+                  <div className="rounded-lg border border-border shadow-md overflow-hidden bg-card/50 backdrop-blur-sm duration-300 hover:shadow-lg hover:border-primary/50 p-4">
+                    <h3 className="text-base font-semibold mb-2 text-foreground flex items-center gap-2">
+                      <span className="w-1 h-3 bg-primary rounded-full" /> {/* 可选：加个小装饰显得更精致 */}
+                      文章摘要
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {post.summary}
+                    </p>
+                  </div>
+                )}
+
                 <article className="prose prose-neutral dark:prose-invert max-w-none">
                   {/* 内容注入点 */}
                   <div 

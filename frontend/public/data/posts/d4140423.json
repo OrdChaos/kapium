@@ -1,0 +1,69 @@
+{
+  "abbrlink": "d4140423",
+  "category": "编程",
+  "content": "<h2 id=\"03081b22\">树tree</h2>\n<h3 id=\"5a855f2a\">介绍</h3>\n<ul>\n<li>由n(n&gt;0)个元素组成的有限结合，是一种非线性的有序结构。</li>\n<li>每一个其中的元素都被称为结点，除根节点外，其余节点组成的子集称为子树。</li>\n<li>一棵树由根节点与结点组成，除根节点外每个节点都有前驱结点。一棵树至少有一个节点，此时，该节点即为根节点。换而言之，每棵树有且仅有一个根节点。在一个m层k叉数中最多有 <x-equation class=\"rendered-equation\" data-type=\"inline\"><span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.4213em;vertical-align:-0.4033em;\"></span><span class=\"mord\"><span class=\"mopen nulldelimiter\"></span><span class=\"mfrac\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:1.0179em;\"><span style=\"top:-2.655em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">1</span><span class=\"mbin mtight\">−</span><span class=\"mord mathnormal mtight\" style=\"margin-right:0.03148em;\">k</span></span></span></span><span style=\"top:-3.23em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"frac-line\" style=\"border-bottom-width:0.04em;\"></span></span><span style=\"top:-3.394em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"sizing reset-size6 size3 mtight\"><span class=\"mord mtight\"><span class=\"mord mtight\">1</span><span class=\"mbin mtight\">−</span><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\" style=\"margin-right:0.03148em;\">k</span><span class=\"msupsub\"><span class=\"vlist-t\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.8913em;\"><span style=\"top:-2.931em;margin-right:0.0714em;\"><span class=\"pstrut\" style=\"height:2.5em;\"></span><span class=\"sizing reset-size3 size1 mtight\"><span class=\"mord mtight\"><span class=\"mord mathnormal mtight\">m</span><span class=\"mbin mtight\">+</span><span class=\"mord mtight\">1</span></span></span></span></span></span></span></span></span></span></span></span></span><span class=\"vlist-s\">​</span></span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.4033em;\"><span></span></span></span></span></span><span class=\"mclose nulldelimiter\"></span></span></span></span></span></x-equation> 个节点(k&gt;=1, m&gt;=0)。</li>\n<li>树是递归定义的，即在一棵子树中，其根节点同样在树中作为结点。</li>\n<li>一个节点的子树个数称为这个节点的度(degree)。度为零的节点称为叶节点(leaf)，不为零的节点称为分支节点（包括根节点），根以外的分支节点被称为内部节点。一棵树中度最大的节点的度被称为这棵树的度。</li>\n<li>树状结构的图形中，连接两个相关联的结点的线段称位树枝。上端节点为下端节点的父节点，相对应的下端节点为上端节点的子节点，同一个父节点的所有子节点互为兄弟结点。从根节点出发到某个子节点所经过的所有节点均为该子节点的祖先，同理，此此节点为其所有祖先的子孙。</li>\n<li>一棵树中根节点的层次(level)为0，其余的节点的层次为其父节点的层次加1。与度一样，树中层次最大的节点的层级被称为树的深度(depth)。</li>\n<li>在树中，从一个节点出发，自上而下的沿着节点与树枝可以到达另一节点，则称它们间存在一条路径（所以显而易见不同子树上的节点间不存在路径）。用路径上的节点个数减一（即树枝个数，或是用层级较大的节点的层数减去较小的节点的层数）表示路径长度。</li>\n<li>互不相交的数的集合称为森林，即森林是m棵互不相交的树的集合。</li>\n</ul>\n<p>如下图即为一颗经典的树：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/f692686c7dfbe8272a3cc794862a4b2b.jpg\" alt=\"\"></p>\n<h3 id=\"f587de5b\">存储结构</h3>\n<h4 id=\"d062e88e\">父亲表示法</h4>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">CPP</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">#define</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> MAX_LENGTH</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 10</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //最大节点数</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> node</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //定义节点</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">    int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> data, father;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //作用域与指针域</span></span>\n<span class=\"line\" data-line=\"4\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">}tree[MAX_LENGTH];</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //定义树</span></span>\n<span class=\"line\" data-line=\"5\" class=\"line\"></span></code></pre>\n        </div>\n<p>这种方法容易找到树根，但是找孩子就需要遍历整个线性表，即时间换空间</p>\n<h4 id=\"8d1330d2\">孩子表示法</h4>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">CPP</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">#define</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> MAX_DEGREE</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 10</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //最大度数</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> node</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">    int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> data;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //数据域</span></span>\n<span class=\"line\" data-line=\"4\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> children[MAX_DEGREE];</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //指向若干个子节点的指针域</span></span>\n<span class=\"line\" data-line=\"5\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">};</span></span>\n<span class=\"line\" data-line=\"6\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> tree</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"7\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> root;</span></span>\n<span class=\"line\" data-line=\"8\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">}t;</span></span>\n<span class=\"line\" data-line=\"9\" class=\"line\"></span></code></pre>\n        </div>\n<p>这种方法不可以从子节点返回父节点</p>\n<h4 id=\"17ca7595\">父亲孩子表示法</h4>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">CPP</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">#define</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> MAX_DEGREE</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> 10</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //最大度数</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> node</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">    int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> data;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //数据域</span></span>\n<span class=\"line\" data-line=\"4\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> children[MAX_DEGREE], father;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //指向若干个子节点的指针域</span></span>\n<span class=\"line\" data-line=\"5\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">};</span></span>\n<span class=\"line\" data-line=\"6\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> tree</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"7\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> root;</span></span>\n<span class=\"line\" data-line=\"8\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">}t;</span></span>\n<span class=\"line\" data-line=\"9\" class=\"line\"></span></code></pre>\n        </div>\n<p>是孩子表示法的优化版，可以直接访问任意子节点的父节点，是一种空间换时间的方法</p>\n<h4 id=\"dabdeaba\">孩子兄弟表示法</h4>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">CPP</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> node</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">    int</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> data;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //数据域</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> firstChild, next;</span><span style=\"color:#6A737D;--shiki-dark:#6A737D\"> //分别指向第一个子节点与下一个兄弟节点</span></span>\n<span class=\"line\" data-line=\"4\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">};</span></span>\n<span class=\"line\" data-line=\"5\" class=\"line\"><span style=\"color:#D73A49;--shiki-dark:#F97583\">struct</span><span style=\"color:#6F42C1;--shiki-dark:#B392F0\"> tree</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> {</span></span>\n<span class=\"line\" data-line=\"6\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">    node</span><span style=\"color:#D73A49;--shiki-dark:#F97583\">*</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\"> root;</span></span>\n<span class=\"line\" data-line=\"7\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">}t;</span></span>\n<span class=\"line\" data-line=\"8\" class=\"line\"></span></code></pre>\n        </div>\n<h4 id=\"1fd4c48b\">总结</h4>\n<p><strong>这些方法没有好坏之分，应当视情况选用</strong></p>\n<h3 id=\"860992d9\">遍历</h3>\n<ul>\n<li>先序遍历（深度优先搜索dfs，从左至右先输出再搜索）</li>\n<li>后序遍历（深度优先搜索dfs，从左至右先搜索到叶节点再依次输出并回溯）</li>\n<li>层次遍历（广度优先搜索bfs，按层次从左至右搜索，搜索完一层后搜索下一层）</li>\n<li>叶节点遍历（按先序遍历的方法遍历，但只访问叶节点）</li>\n</ul>\n<h2 id=\"f23d890d\">题外话</h2>\n<p>这玩意是放暑假前在学校无聊看《信息学奥赛一本通》写的，大概还是有参考价值的吧。</p>\n<p>另外还有一篇二叉树的，大概也会发上来。</p>\n",
+  "date": "2022-07-01 20:51:29",
+  "excerpt": "在学校无聊写的一些学习笔记，发到博客上来",
+  "math": true,
+  "readTime": "8",
+  "summary": "这篇博文介绍了树的基本概念及其存储结构，包括节点、根节点、子树、度、层次与深度等定义，并详细阐述了父亲表示法、孩子表示法、父亲孩子表示法和孩子兄弟表示法四种树的存储方式及其优缺点。",
+  "tags": [
+    "计算机",
+    "编程",
+    "cpp"
+  ],
+  "title": "学习笔记——树",
+  "toc": [
+    {
+      "id": "03081b22",
+      "level": 2,
+      "text": "树tree"
+    },
+    {
+      "id": "5a855f2a",
+      "level": 3,
+      "text": "介绍"
+    },
+    {
+      "id": "f587de5b",
+      "level": 3,
+      "text": "存储结构"
+    },
+    {
+      "id": "d062e88e",
+      "level": 4,
+      "text": "父亲表示法"
+    },
+    {
+      "id": "8d1330d2",
+      "level": 4,
+      "text": "孩子表示法"
+    },
+    {
+      "id": "17ca7595",
+      "level": 4,
+      "text": "父亲孩子表示法"
+    },
+    {
+      "id": "dabdeaba",
+      "level": 4,
+      "text": "孩子兄弟表示法"
+    },
+    {
+      "id": "1fd4c48b",
+      "level": 4,
+      "text": "总结"
+    },
+    {
+      "id": "860992d9",
+      "level": 3,
+      "text": "遍历"
+    },
+    {
+      "id": "f23d890d",
+      "level": 2,
+      "text": "题外话"
+    }
+  ],
+  "updated": "2022-07-01 20:51:29"
+}

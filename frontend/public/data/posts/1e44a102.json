@@ -1,0 +1,39 @@
+{
+  "abbrlink": "1e44a102",
+  "category": "教程",
+  "content": "<p>购买了<a href=\"https://www.foreverblog.cn/\">十年之约</a>的优惠价<a href=\"https://www.vpsor.cn/\">硅云</a>虚拟主机用于加速访问，记录一下部署过程。</p>\n<!--more-->\n<h2 id=\"cd2c3762\">前提条件</h2>\n<p>你需要已经配置好了GitHub Action的Hexo自动部署，若是没有，推荐观看以下文章：</p>\n<ul>\n<li><a href=\"https://zhuanlan.zhihu.com/p/170563000\">GitHub Actions 来自动部署 Hexo</a></li>\n<li><a href=\"https://razeen.me/posts/use-github-action-to-deploy-your-hexo-blog/\">Github Actions 初体验之自动化部署 Hexo 博客</a></li>\n<li><a href=\"https://segmentfault.com/a/1190000040767893\">hexo配合github action 自动构建（多种形式）</a></li>\n</ul>\n<p>这里就不讲了。</p>\n<h2 id=\"3918a9e3\">编辑Action</h2>\n<p>打开<code>(本地博客仓库目录)/.github/workflows/(Action配置文件).yml</code>，在最后添加：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">YAML</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">- </span><span style=\"color:#22863A;--shiki-dark:#85E89D\">name</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">Deploy Files on Ftp Server</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">  uses</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">SamKirkland/FTP-Deploy-Action@4.3.0</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">  with</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">:</span></span>\n<span class=\"line\" data-line=\"4\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    server</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">(FTP服务器地址)</span></span>\n<span class=\"line\" data-line=\"5\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    username</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">(FTP用户名)</span></span>\n<span class=\"line\" data-line=\"6\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    password</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">(FTP密码)</span></span>\n<span class=\"line\" data-line=\"7\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    local-dir</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">./public/</span></span>\n<span class=\"line\" data-line=\"8\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    server-dir</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">(FTP服务器文件目录)</span></span>\n<span class=\"line\" data-line=\"9\" class=\"line\"><span style=\"color:#22863A;--shiki-dark:#85E89D\">    port</span><span style=\"color:#24292E;--shiki-dark:#E1E4E8\">: </span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\">(FTP服务器端口，一般是21)</span></span>\n<span class=\"line\" data-line=\"10\" class=\"line\"></span></code></pre>\n        </div>\n<p>将括号及内部内容换成自己的信息即可。</p>\n<p>这里的方法是使用ftp来上传文件到虚拟主机，是对于所有虚拟主机而言最通用的一种方式了。<code>./public</code>是Hexo默认的静态文件生成本地地址，无需更改。</p>\n<p>最后推流到GitHub即可使用。</p>\n<h2 id=\"f23d890d\">题外话</h2>\n<p>本来以为挺复杂，结果就这么点。</p>\n<p>最开始使用的是<code>hexo-deployer-ftpsync</code>插件，结果却根本无法正常使用，于是便转为使用docker镜像。</p>\n<p>对了，如果有兴趣购买硅云的主机，那请帮个小忙，用我的邀请链接注册吧：<a href=\"https://www.vpsor.cn?userCode=jh1e1af\">邀请链接</a></p>\n<p>那就这样，886</p>\n",
+  "date": "2022-08-16 18:04:50",
+  "excerpt": "购买了十年之约的优惠价硅云虚拟主机用于加速访问，记录一下部署过程。",
+  "readTime": "3",
+  "summary": "这篇博文记录了博主使用硅云虚拟主机并通过GitHub Action结合FTP部署Hexo博客的过程，推荐了通用的FTP上传方案并分享了配置示例，同时提及曾尝试插件失败后转用Docker方案的经历。",
+  "tags": [
+    "计算机",
+    "编程",
+    "教程",
+    "Hexo",
+    "虚拟主机",
+    "网站",
+    "GitHub",
+    "自动化",
+    "GitHub Action"
+  ],
+  "title": "Hexo 通过 GitHub Action 自动部署到云虚拟主机",
+  "toc": [
+    {
+      "id": "cd2c3762",
+      "level": 2,
+      "text": "前提条件"
+    },
+    {
+      "id": "3918a9e3",
+      "level": 2,
+      "text": "编辑Action"
+    },
+    {
+      "id": "f23d890d",
+      "level": 2,
+      "text": "题外话"
+    }
+  ],
+  "updated": "2022-08-16 18:04:50"
+}

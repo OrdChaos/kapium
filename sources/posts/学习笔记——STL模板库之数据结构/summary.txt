@@ -1,0 +1,1 @@
+这篇博文系统梳理了STL中vector、queue、deque、priority_queue及map的常用操作与典型应用，并结合具体题目给出了实现代码，旨在帮助CSP-S备赛者快速掌握STL容器的基本用法以提升编程效率。

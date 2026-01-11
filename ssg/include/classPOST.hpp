@@ -9,19 +9,21 @@ class POST {
     std::string markdown;
     std::string plain_text;
     std::string abbrlink;
+    std::string summary;
     nlohmann::json post_json;
 
     public:
-    POST(std::string md, std::string abbr, std::string plain, nlohmann::json meta)
+    POST(std::string md, std::string abbr, std::string summary, std::string plain, nlohmann::json meta)
         : markdown(std::move(md)),
         plain_text(std::move(plain)),
         abbrlink(std::move(abbr)),
+        summary(std::move(summary)),
         post_json(std::move(meta)) {}
     
     auto format_post() -> void;
     auto generate_excerpt() -> void;
     auto generate_read_time() -> void;
-    auto generate_abbrlink() -> void;
+    auto generate_abbrlink_and_summary() -> void;
     auto serialize_post() -> nlohmann::json;
 };
 

@@ -1,0 +1,41 @@
+{
+  "abbrlink": "e8587b82",
+  "category": "教程",
+  "content": "<h2 id=\"ec798f51\">起因</h2>\n<p>Google Play的版本更新总是慢一些，不知道你行不行，但是我是忍不了别人都玩上了新曲而我却还不能玩的感觉，遂决定迁移存档。</p>\n<h2 id=\"16992d8b\">过程</h2>\n<p>大体参考这一篇文章<a href=\"https://www.bilibili.com/read/cv13597100\">Phigros存档跨版本转移教程（免root）</a>即可，在这里稍微提一下我遇到的问题</p>\n<h3 id=\"e11d7b24\">解决问题</h3>\n<p>在使用abe.jar时，Java报错：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">Error:</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> A</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> JNI</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> error</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> has</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> occurred,</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> please</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> check</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> your</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> installation</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> and</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> try</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> again</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"></span></code></pre>\n        </div>\n<p>首先在网上查询，找到的第一个方法是删除电脑里共存的JDK，只留下一个，使<code>java -version</code>与<code>javac -version</code>有相同的版本。</p>\n<p>我照做，删除了java8，只留下了openjdk17，但是毫无卵用。</p>\n<p>于是我继续查询，发现在<a href=\"https://www.bilibili.com/video/av344511919\">跨！系！统！转！移！支持安卓和IOS的跨系统存档转移工具！Phigros 存档 IOS 跨系统 备份 还原 转移 同步</a>这一视频中所提供的工具里的abe.jar可用。</p>\n<h2 id=\"1fd4c48b\">总结</h2>\n<p>如果你也遇到了一样的问题，可以参考我的方法看看是否有效。</p>\n<p>若不想下载整个备份工具而只想要abe.jar的话，可以从这里下载：<a href=\"https://www.lanzoui.com/i4D2S09yzwab\">链接</a>（如有侵权，请联系我删除）</p>\n",
+  "date": "2022-08-21 18:20:50",
+  "excerpt": "Google Play的版本更新总是慢一些，不知道你行不行，但是我是忍不了别人都玩上了新曲而我却还不能玩的感觉，遂决定迁移存档",
+  "readTime": "3",
+  "summary": "这篇博文讲述了博主为解决Google Play版Phigros更新滞后问题，尝试跨版本迁移游戏存档时遇到JNI错误，最终通过更换可用的abe.jar文件成功解决问题的过程。",
+  "tags": [
+    "计算机",
+    "编程",
+    "教程",
+    "adb",
+    "手机",
+    "phigros"
+  ],
+  "title": "Phigros 版本迁移——从 Google Play 到 Tap Tap",
+  "toc": [
+    {
+      "id": "ec798f51",
+      "level": 2,
+      "text": "起因"
+    },
+    {
+      "id": "16992d8b",
+      "level": 2,
+      "text": "过程"
+    },
+    {
+      "id": "e11d7b24",
+      "level": 3,
+      "text": "解决问题"
+    },
+    {
+      "id": "1fd4c48b",
+      "level": 2,
+      "text": "总结"
+    }
+  ],
+  "updated": "2022-08-21 18:20:50"
+}

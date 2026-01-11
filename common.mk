@@ -1,5 +1,8 @@
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
+-include $(ROOT_DIR)/.env
+export $(shell [ -f .env ] && sed 's/=.*//' .env)
+
 BUILD_DIR := $(ROOT_DIR)/build
 
 SOURCES_DIR := sources

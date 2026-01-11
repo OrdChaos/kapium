@@ -1,0 +1,1 @@
+这篇博文介绍了博主如何设计一个C++命令行工具来自动化博客推流的Git操作，通过解析main函数的argc和argv参数获取用户输入的commit信息，并将其与git pull、add、commit、push指令结合，实现一键推流功能。

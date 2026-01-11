@@ -1,0 +1,38 @@
+{
+  "abbrlink": "8ad10849",
+  "category": "教程",
+  "content": "<h2 id=\"ec798f51\">起因</h2>\n<p>偶然间看到了这个视频——<a href=\"https://www.bilibili.com/video/av343708277\">[Phigros/技术革新] 快速获取自己的B19成绩图</a>，眼馋，也想要，遂跟着做，结果却......</p>\n<p>大☆失☆败</p>\n<p>手机自始至终没有弹出“完全备份”界面，我百思不得其解，于是在stackoverflow上发了一个问题：</p>\n<p><a href=\"https://stackoverflow.com/questions/73164193/adb-backup-does-not-work-on-my-harmonyos-2-0-phone\">Adb backup does not work on my HarmonyOS 2.0 phone</a></p>\n<p>直到今天之前，没有任何人给出有效回答。</p>\n<h2 id=\"8d78880f\">解决</h2>\n<p>把之前在手机里安装的软件“冰箱”卸载之后就正常了，我也不知道为什么。</p>\n<p>从这件事就可以看出我是个......欸，我不说，就是玩</p>\n<p>自己去把问题给解答了，这件事就此完结。</p>\n<h2 id=\"f23d890d\">题外话</h2>\n<p>生成都生成了，那就晒一下吧：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/3b4b9e7a33c20d8d73cc86f1d46494a4.png\" alt=\"\"></p>\n<p>小菜一枚，大佬轻喷。</p>\n<p>那就这样，886</p>\n",
+  "date": "2022-08-19 09:40:50",
+  "excerpt": "偶然间看到了这个视频——[Phigros/技术革新]快速获取自己的B19成绩图，眼馋，也想要，遂跟着做，结果却......",
+  "readTime": "2",
+  "summary": "这篇博文讲述了博主在尝试通过ADB备份获取Phigros游戏成绩图时失败，最终发现卸载手机中的“冰箱”应用后问题得以解决的经历，并附带晒出了生成的成绩图。",
+  "tags": [
+    "计算机",
+    "编程",
+    "教程",
+    "adb",
+    "手机",
+    "phigros",
+    "安卓",
+    "鸿蒙"
+  ],
+  "title": "解决一件困扰我很久的小事",
+  "toc": [
+    {
+      "id": "ec798f51",
+      "level": 2,
+      "text": "起因"
+    },
+    {
+      "id": "8d78880f",
+      "level": 2,
+      "text": "解决"
+    },
+    {
+      "id": "f23d890d",
+      "level": 2,
+      "text": "题外话"
+    }
+  ],
+  "updated": "2022-08-19 09:40:50"
+}

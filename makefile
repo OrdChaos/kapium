@@ -15,6 +15,10 @@ toolchain:
 
 data:
 	$(BUILD_DIR)/tools/abbrlink/abbrlink $(POSTS_DIR)
+	@if [ -z "$$DASHSCOPE_API_KEY" ]; then \
+		echo "Warning: DASHSCOPE_API_KEY is not set. API calls will fail."; \
+	fi
+	$(BUILD_DIR)/tools/summary/summary $(POSTS_DIR)
 	$(BUILD_DIR)/ssg/ssg $(POSTS_DIR) $(SSG_OUTPUT_DIR)
 
 pre-rendered:

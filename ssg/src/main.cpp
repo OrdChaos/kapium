@@ -53,10 +53,12 @@ auto main(int argc, char* argv[]) -> int {
         std::filesystem::path md_path   = entry.path() / "post.md";
         std::filesystem::path meta_path = entry.path() / "meta.json";
         std::filesystem::path abbr_path = entry.path() / "abbrlink.txt";
+        std::filesystem::path summary_path = entry.path() / "summary.txt";
 
         if (!std::filesystem::exists(md_path) ||
             !std::filesystem::exists(meta_path) ||
-            !std::filesystem::exists(abbr_path)) {
+            !std::filesystem::exists(abbr_path) ||
+            !std::filesystem::exists(summary_path)) {
             std::cerr << "[SSG] Skip invalid post: "
                       << entry.path() << "\n";
             continue;
@@ -65,6 +67,7 @@ auto main(int argc, char* argv[]) -> int {
         std::ifstream md_ifs(md_path);
         std::ifstream meta_ifs(meta_path);
         std::ifstream abbr_ifs(abbr_path);
+        std::ifstream summary_ifs(summary_path);
 
         std::stringstream ss;
         ss << md_ifs.rdbuf();
@@ -74,9 +77,16 @@ auto main(int argc, char* argv[]) -> int {
 
         std::string abbr;
         std::getline(abbr_ifs, abbr);
+
+        std::string summary;
+        std::getline(summary_ifs, summary);
         abbr.erase(std::remove_if(abbr.begin(), abbr.end(), [](unsigned char c) {
             return std::iscntrl(c); 
         }), abbr.end());
+
+        summary.erase(std::remove_if(summary.begin(), summary.end(), [](unsigned char c) {
+            return std::iscntrl(c); 
+        }), summary.end());
 
         std::filesystem::path json_out =
             META_OUTPUT / "posts" / (abbr + ".json");
@@ -86,11 +96,11 @@ auto main(int argc, char* argv[]) -> int {
         nlohmann::json composed_post_json;
         {
             
-            POST p(markdown, abbr, plain, meta);
+            POST p(markdown, abbr, summary, plain, meta);
             p.format_post();
             p.generate_excerpt();
             p.generate_read_time();
-            p.generate_abbrlink();
+            p.generate_abbrlink_and_summary();
 
             composed_post_json = p.serialize_post();
         }

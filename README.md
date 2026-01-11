@@ -19,6 +19,7 @@
 - **编程语言**: C & C++
 - **Markdown 解析库**: [MD4C](https://github.com/mity/md4c)
 - **JSON 处理**: [nlohmann/json](https://github.com/nlohmann/json)
+- **XML 处理**: [tinyxml2](https://github.com/leethomason/tinyxml2)
 
 ### 前端（用户界面）
 

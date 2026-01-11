@@ -31,8 +31,9 @@ auto POST::generate_read_time() -> void {
         std::to_string(calc_read_time(plain_text));
 }
 
-auto POST::generate_abbrlink() -> void {
+auto POST::generate_abbrlink_and_summary() -> void {
     post_json["abbrlink"] = abbrlink;
+    post_json["summary"] = summary;
 }
 
 auto POST::serialize_post() -> nlohmann::json {
