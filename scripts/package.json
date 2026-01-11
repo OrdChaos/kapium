@@ -1,0 +1,10 @@
+{
+	"dependencies": {
+		"he": "^1.2.0",
+		"jsdom": "^27.4.0",
+		"katex": "^0.16.27"
+	},
+	"devDependencies": {
+		"shiki": "^3.21.0"
+	}
+}

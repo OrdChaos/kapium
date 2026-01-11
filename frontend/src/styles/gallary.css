@@ -1,0 +1,68 @@
+.gi-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 4px;
+    width: 100%; 
+}
+
+.gi-row { 
+    display: flex; 
+    gap: 4px;
+    width: 100%; 
+}
+
+.gi-row img { 
+    flex: 1; 
+    width: 0;
+    object-fit: cover; 
+    height: 250px; 
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    .gi-row { 
+        flex-wrap: wrap; 
+    }
+    .gi-row img { 
+        width: 100%; 
+        flex: none; 
+    }
+}
+
+/* 只针对 post-content 内部的图片生效 */
+#post-content img {
+  cursor: zoom-in !important;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* 悬停时的微互动（可选，提升质感） */
+#post-content img:hover {
+  opacity: 0.9;
+}
+
+/* 排除掉已经是链接的图片（如果有的话） */
+#post-content a img {
+  cursor: pointer;
+}
+
+.yarl__container {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px);
+}
+
+.yarl__button {
+  color: #333 !important;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.dark .yarl__container {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(10px);
+}
+
+.dark .yarl__button {
+  color: #eee !important;
+  box-shadow: none;
+  text-shadow: none;
+}

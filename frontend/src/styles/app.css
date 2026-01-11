@@ -1,0 +1,244 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50; 
+  }
+  body {
+    @apply bg-background text-foreground; 
+  }
+  
+  /* 优化文章内容排版 */
+  .prose {
+    @apply max-w-none;
+  }
+  
+  .prose h2 {
+    @apply mt-8 mb-4 text-2xl font-bold;
+  }
+  
+  .prose h3 {
+    @apply mt-6 mb-3 text-xl font-semibold;
+  }
+  
+  .prose p {
+    @apply my-4 leading-relaxed;
+  }
+  
+  .prose ul, .prose ol {
+    @apply my-4 ml-6;
+  }
+  
+  .prose li {
+    @apply my-2;
+  }
+  
+  .prose blockquote {
+    @apply my-4 border-l-4 border-primary pl-4 italic text-muted-foreground;
+  }
+  
+  .prose hr {
+    @apply my-8 border-border;
+  }
+  
+  .prose a {
+    @apply text-primary underline-offset-4 hover:underline;
+  }
+}
+
+:root {
+  --radius: 0.625rem;
+  
+  /* 浅色主题 - 现代简约风格 */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.15 0 0);
+  
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  
+  --primary: oklch(0.45 0.15 250);
+  --primary-foreground: oklch(0.99 0 0);
+  
+  --secondary: oklch(0.96 0.01 250);
+  --secondary-foreground: oklch(0.15 0 0);
+  
+  --muted: oklch(0.96 0.01 250);
+  --muted-foreground: oklch(0.50 0.02 250);
+  
+  --accent: oklch(0.96 0.01 250);
+  --accent-foreground: oklch(0.15 0 0);
+  
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  
+  --border: oklch(0.90 0.01 250);
+  --input: oklch(0.90 0.01 250);
+  --ring: oklch(0.45 0.15 250);
+  
+  --chart-1: oklch(0.60 0.18 250);
+  --chart-2: oklch(0.65 0.15 180);
+  --chart-3: oklch(0.55 0.12 320);
+  --chart-4: oklch(0.70 0.16 85);
+  --chart-5: oklch(0.65 0.14 40);
+
+  --codeblock-bg: #ffffff; /* HLJS Github Light */
+  --code-bg: oklch(0.95 0.01 250);
+}
+
+.dark {
+  /* 深色主题 - 优雅深邃 */
+  --background: oklch(0.12 0.01 250);
+  --foreground: oklch(0.95 0.01 250);
+  
+  --card: oklch(0.15 0.01 250);
+  --card-foreground: oklch(0.95 0.01 250);
+  
+  --popover: oklch(0.15 0.01 250);
+  --popover-foreground: oklch(0.95 0.01 250);
+  
+  --primary: oklch(0.80 0.22 250);
+  --primary-foreground: oklch(0.12 0.01 250);
+
+  --secondary: oklch(0.30 0.03 250);
+  --secondary-foreground: oklch(0.95 0.01 250);
+
+  --muted: oklch(0.30 0.03 250);
+  --muted-foreground: oklch(0.60 0.03 250);
+
+  --accent: oklch(0.30 0.03 250);
+  --accent-foreground: oklch(0.95 0.01 250);
+  
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.95 0.01 250);
+  
+  /* 提高深色模式下的边框和输入框颜色亮度，保证浅色边框在深色背景上可见 */
+  --border: oklch(0.30 0.03 250);
+  --input: oklch(0.30 0.03 250);
+  --ring: oklch(0.80 0.22 250);
+  
+  --chart-1: oklch(0.65 0.20 250);
+  --chart-2: oklch(0.70 0.18 180);
+  --chart-3: oklch(0.60 0.15 320);
+  --chart-4: oklch(0.75 0.18 85);
+  --chart-5: oklch(0.70 0.16 40);
+
+  --codeblock-bg: #0d1117; /* HLJS Github Dark */
+  --code-bg: oklch(0.4 0.05 250);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --code_block-bg: var(--codeblock-bg);
+}
+
+img:not(.gi-row img) {
+    max-height: 70vh; 
+    min-height: 200px; 
+    
+    width: auto;
+    max-width: 100%;
+
+    object-fit: contain; 
+
+    display: block;
+    margin: 20px auto;
+    border-radius: 4px;
+}
+
+.lazy {
+  opacity: 0;
+}
+
+.lazy.loaded {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* 1. 表格容器及基础 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  /* 注意：由于 border-collapse 的限制，圆角通常需要加在包裹 table 的 div 上 */
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* 2. 单元格通用边框 */
+table th, table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+/* 3. 仅首行（表头）背景 */
+/* 使用 :not(tbody tr) 或者更精准的 thead tr */
+table thead tr,
+table > tr:first-child:not(tbody tr) {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 600;
+}
+
+/* 4. 重点修复：所有数据行的 Hover 效果 */
+/* 我们明确指定 tbody 里的行，或者排除掉第一行 */
+table tbody tr:hover,
+table tr:not(:first-child):hover {
+  background-color: color-mix(in oklch, var(--muted), transparent 40%) !important;
+  transition: background-color 200ms ease;
+}
+
+/* 如果你的表格有 thead，确保 thead 里的行不触发这个 hover 变色（保持首行颜色） */
+table thead tr:hover {
+  background-color: var(--secondary);
+}
+
+html {
+  scroll-behavior: smooth; 
+}
+
+[id] {
+  scroll-margin-top: 80px;
+}
+
+#post-content h2, #post-content h3 {
+  scroll-margin-top: 90px;
+}
+
+article ul {
+  list-style-type: disc;
+}
+
+@import './code.css';
+@import './gallary.css';
+@import 'katex/dist/katex.min.css';
