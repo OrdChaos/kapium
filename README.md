@@ -123,21 +123,23 @@ kapium/
 
 ## 许可证
 
-本项目采用混合授权模式：
+本项目采用分层授权模式：
 
-代码部分： 位于所有 `.cpp`, `.h` 及构建脚本中的源代码遵循 MIT License。(受所使用的 tinyxml2, nlohmann/json 等第三方库协议兼容)。
+### 1. 软件代码
+本项目的源代码（包括但不限于 `C++` 源文件、头文件及构建脚本）遵循 **[MIT License](LICENSE)**。
 
-博客内容： 位于 `sources/posts` 文件夹下的所有 markdown 文章、图片及创作内容遵循 [CC BY-NC-SA 4.0(署名-非商业性使用-相同方式共享)](https://creativecommons.org/licenses/by-nc-sa/4.0/) 
+### 2. 博客文章与内容
+本仓库中所有博客文章、文档及相关多媒体素材均遵循 **[CC BY-NC-SA 4.0](LICENSE-CONTENT)** (署名-非商业性使用-相同方式共享) 协议。
 
-第三方组件： > 本项目集成了以下组件，其版权归原作者所有：
+### 3. 第三方组件声明
+本项目集成了以下优秀的开源库，其版权及许可归原作者所有：
 
- - tinyxml2 (zlib License)
-
- - nlohmann/json (MIT License)
-
- - md4c (MIT License)
-
- - cpp-httplib (MIT License)
+| 组件名称 | 许可证 | 用途 |
+| :--- | :--- | :--- |
+| [tinyxml2](https://github.com/leethomason/tinyxml2) | zlib License | XML 解析 |
+| [nlohmann/json](https://github.com/nlohmann/json) | MIT License | JSON 处理 |
+| [md4c](https://github.com/mity/md4c) | MIT License | Markdown 解析 |
+| [cpp-httplib](https://github.com/yhirose/cpp-httplib) | MIT License | HTTP 服务/客户端 |
 
 ## 贡献
 
