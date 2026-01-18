@@ -1,0 +1,34 @@
+{
+  "name": "序炁",
+  "avatar": "/img/avatar.jpg",
+  "title": "前端开发者 / 技术爱好者",
+  "location": "中国 · 武汉",
+  "bio": "A dragon that born in the Order and Chaos.",
+  "socialLinks": [
+    {
+      "platform": "GitHub",
+      "icon": "ri:github-line",
+      "url": "https://github.com/ordchaos"
+    },
+    {
+      "platform": "Email",
+      "icon": "ri:mail-line",
+      "url": "mailto:orderchaos@ordchaos.com"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Vite",
+    "Markdown",
+    "C / C++"
+  ],
+  "education": [
+    {
+      "degree": "苦逼高中生",
+      "school": "武汉市武钢三中",
+      "period": "2023 - 2026"
+    }
+  ]
+}

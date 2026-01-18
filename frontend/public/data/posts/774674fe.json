@@ -1,0 +1,58 @@
+{
+  "abbrlink": "774674fe",
+  "category": "编程",
+  "content": "<p>本人对AwtrixPro垂涎已久，但却懒得复现。暑假的物理作业包含一个对电学有关的实验，遂趁此机会复现一个出来。</p>\n<!-- more -->\n<h2 id=\"bb61465f\">材料采购</h2>\n<p>并不难，跟着<a href=\"https://awtrixdocs.blueforcer.de/\">官网</a>的<a href=\"https://awtrixdocs.blueforcer.de/#/en-en/awtrix_family\">这个网页</a>一步步在淘宝上找就可以了。就是记得买焊接工具以及足够量的耗材（指Gpio线材、热熔胶、电工胶带等等）以及外壳（可以用官网上的文件3D打印，淘宝上也有直接卖的）。</p>\n<p>这里贴出我购买材料的链接，有兴趣的话可以试一试（<strong>加粗</strong>的为非必需品，没有注明数量默认1个，没有注明平台默认<a href=\"https://www.taobao.com/\">淘宝</a>或<a href=\"https://www.tmall.com/\">天猫</a>）：</p>\n<table>\n<thead>\n<tr>\n<th align=\"center\">材料</th>\n<th align=\"center\">链接</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"center\">Wemos D1 mini主板</td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=656570136800\">ESP8266 ESP-12 Wemos D1 Mini 微型WiFi开发板Micro USB 3.3V</a></td>\n</tr>\n<tr>\n<td align=\"center\">32x8 点阵屏幕</td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?id=587315326469\">led柔性全彩像素屏 ws2812b SK6812B点阵rgb屏软屏8x8 8x32 16*16</a></td>\n</tr>\n<tr>\n<td align=\"center\">5V电源供应器（大于3A）</td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?&amp;id=661593159618\">5V4A20W插墙式广告机LED灯条平板蓝牙音响直流稳压开关电源适配器</a></td>\n</tr>\n<tr>\n<td align=\"center\"><strong>3×1k电阻</strong></td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?id=628088109354\">10支价 进口 10K MRS25000C1002FRP00 0207 0.6W 低噪金属膜电阻</a></td>\n</tr>\n<tr>\n<td align=\"center\">线材若干</td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?id=560216489848\">树莓派gpio拓展40P彩色杜邦线20CM 母对母 公对母 公对公 1排40根</a>，买到了请自己根据需要进行剪裁</td>\n</tr>\n<tr>\n<td align=\"center\"><strong>2×肖特基二极管（1N1004）</strong>（官网上说必须，但我没看出来哪里需要）</td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=41297393192\">1N4007 10A10 1N5408 1N5819 1N4001 5822直插整流二极管级IN4007</a>（颜色分类：1N4004 1A/400V整流二极管直插(50个））</td>\n</tr>\n<tr>\n<td align=\"center\">1000uF 10V电容</td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=542518338207\">直插铝电解电容器元件10/16/25V/35/50v/10uF/47/220/1000/2200uF</a>（颜色分类：10V 1000UF 体积8x12mm（20个））</td>\n</tr>\n<tr>\n<td align=\"center\"><strong>GL5528光敏电阻</strong></td>\n<td align=\"center\">立创商城<a href=\"https://item.szlcsc.com/136905.html\">GL5528</a></td>\n</tr>\n<tr>\n<td align=\"center\"><strong>DF Mini Player模块</strong></td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=631919047768\">开源 Mini MP3 Player 播放器 模块 SD卡 音乐 arduino DFPlayer</a></td>\n</tr>\n<tr>\n<td align=\"center\"><strong>Htui21d温湿度传感器</strong></td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=655685254708\">GY-213v-HTU21D HDC1080温湿度传感器检测模块/替SHT20 SHT21</a></td>\n</tr>\n<tr>\n<td align=\"center\">外壳+电源插口</td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?id=617821156737\">智能像素时钟Awtrix Pro创客创意彩色B站粉丝数全套外壳WS2812</a>，跟客服商量好了只要外壳与DC电源插口</td>\n</tr>\n<tr>\n<td align=\"center\"><strong>扬声器（52.5mm×52.5mm）</strong></td>\n<td align=\"center\"><a href=\"https://item.taobao.com/item.htm?id=607020565316\">1.5寸40mm喇叭小米小钢炮低音全频3欧4欧3瓦5W音箱嗽叭扬声器配件</a></td>\n</tr>\n<tr>\n<td align=\"center\"><strong>3×TTP223触摸传感器</strong></td>\n<td align=\"center\"><a href=\"https://detail.tmall.com/item.htm?id=607554679782\">触摸按键模块 TTP223 自锁 点动 电容式 开关 单路改造 电容触摸</a></td>\n</tr>\n</tbody>\n</table>\n<h2 id=\"eedf530a\">硬件制作</h2>\n<h3 id=\"3a88da58\">PCB+针脚焊接</h3>\n<p>{% note danger %}</p>\n<p>本人未成功通过此方法复现，下列内容不一定完全正确，仅供参考</p>\n<p>{% endnote %}</p>\n<p>参考B站UP主<a href=\"https://space.bilibili.com/611430\">三三三三三文啊</a>的视频<a href=\"https://www.bilibili.com/video/av755537090\">【AWTRIX PRO】一起动手做一个高颜值的像素灯</a>，在嘉立创打好板子（注意有贴片，需要开钢网），买好GPIO接口公母头再焊接即可。打板流程可以参考<a href=\"https://www.bilibili.com/video/av427484742\">【0基础】从零开始电子DIY！第三集：PCB电路板设计和打样！</a>，这一套教程非常不错，推荐。</p>\n<p>打好的板子如下：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/5b9772eb888dbcfcdff2a6ab1c6eede6.png\" alt=\"\"></p>\n<p>焊接好之后（贴片是用的钢网+锡焊膏+风枪）：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/9cf87ef6020be601bbabad04be820af5.png\" alt=\"\"></p>\n<p>焊接针脚时若是无法直接使用锡丝与电烙铁焊接完成，也可以用锡焊膏+电烙铁。把锡焊膏涂抹在针脚背面，不用担心粘连，然后用电烙铁分别探入每两个针脚间的空隙，随后依次处理每个针脚就可以了。</p>\n<p>然后刷程序、接线、通电、启动即可（至少理论上是这样）：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/4a5b57080cd403b7b5dd66bd2d9afcf6.png\" alt=\"\"></p>\n<p>很明显，这里并未启动成功，望高手赐教。</p>\n<h3 id=\"876fba32\">手动飞线</h3>\n<p>根据官网的<a href=\"https://awtrixdocs.blueforcer.de/#/en-en/hardware\">接线图</a>进行手动飞线即可，这里因为缺少一个电容（C1, 100nF）且不知道哪里有卖的而未接上DFPlayer模块及喇叭。</p>\n<p>这里除了基础配件外，额外加装了光敏电阻、触摸以及Htui21d温湿度模块。基础部分依据<a href=\"https://www.bilibili.com/video/av668523753\">教你做一个可编程像素屏</a>制作成功，然后通过自主飞线完成了其它组件的安装。</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/ab26200d787686758a2818e42c194390.png\" alt=\"开机成功\"></p>\n<p>没有什么难点，注意需要连接多根导线时用钳子分别剪开线的外皮，露出里面的铜/铁/其他金属丝，拧在一起然后用电烙铁与锡焊在一起就可以了。</p>\n<p>裸露的金属丝记得用电工胶带或者热熔胶包裹起来，防止意外：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/f7f7f5023c7a24950e5ff5d613f21a77.png\" alt=\"\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/a58efaa7843d68378c55e5853c9fc868.png\" alt=\"\"></p>\n<p>然后装入外壳即可：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/1b676758ff6b5335e885fdb05582ca29.png\" alt=\"\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/dbe352cad746f465299903afca323065.png\" alt=\"\"></p>\n<p>再放上格栅、均光片及亚克力面板就完成了：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/6452f475eee4168878bbdf52d869e8ba.png\" alt=\"安装格栅\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/218377f02cba747a81eb3206738b6618.png\" alt=\"安装均光片\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/e856d4435368c07905d92821cfa562f9.png\" alt=\"安装亚克力面板\"></p>\n<h2 id=\"88e7f3e9\">软件配置</h2>\n<p>软件这里就不再多提，官网上就有（点击<a href=\"https://awtrixdocs.blueforcer.de/#/en-en/firststart\">这里</a>访问）。就是说一下我这里是部署在我自己的服务器上，就无需本地服务器如树莓派一类了。</p>\n<p>宝塔面板就可以轻松完成配置，也无需ssh连接。</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/ef73564d2eab625713028965efc8af76.png\" alt=\"\"></p>\n<p>然后安装自己喜欢的软件即可，我这里是这几个：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/2d80f8a316ed6a012b5394ce0b69f68c.png\" alt=\"\"></p>\n<h2 id=\"5ec6fe9c\">成品</h2>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/9475e4941ebe44b1178c7918267b6d6b.jpg\" alt=\"室温\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/7fed0f0651626ac95c870e24c08f8adb.jpg\" alt=\"湿度\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/91bf0f6b36bc47baf2614b09ac84d96f.jpg\" alt=\"日期\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/30b2b40e62891015c3ad612597a85b5b.jpg\" alt=\"B站粉丝数量（还不关注我？）\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/91bcff06179f758f36661fe972765083.jpg\" alt=\"Youtube粉丝数（香港服务器的好处之一就是能够获取到这种信息）（没错，我没有粉丝——当然是因为我没发任何视频）\"></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/08/4ab43612fe1c3cefcda0548b8052c2e3.jpg\" alt=\"GitHub Followers\"></p>\n<h2 id=\"f23d890d\">题外话</h2>\n<p>从暑假开始一直做到了倒数第二天......心累，不过总算是完成了，也让我发现了我的电工天赋(bushi</p>\n<p>那就这样，这篇报告(?)就完成了，感谢你的观看，886</p>\n",
+  "date": "2022-08-19 18:04:08",
+  "excerpt": "本人对AwtrixPro垂涎已久，但却懒得复现。暑假的物理作业包含一个对电学有关的实验，遂趁此机会复现一个出来。",
+  "index_img": "https://img.ordchaos.com/img/2022/08/46879499981f49c43b4633c19b4f584a.png",
+  "readTime": "11",
+  "summary": "这篇博文介绍了博主为完成暑假物理作业，利用电学知识复现AwtrixPro的过程，详述了从材料采购到组件准备的步骤，并列出了所需元件的购买链接及注意事项。",
+  "tags": [
+    "github",
+    "开源软件",
+    "计算机",
+    "编程",
+    "awtrix",
+    "硬件",
+    "复现"
+  ],
+  "title": "【多图预警】 AwtrixPro 开源项目的复现",
+  "toc": [
+    {
+      "id": "bb61465f",
+      "level": 2,
+      "text": "材料采购"
+    },
+    {
+      "id": "eedf530a",
+      "level": 2,
+      "text": "硬件制作"
+    },
+    {
+      "id": "3a88da58",
+      "level": 3,
+      "text": "PCB+针脚焊接"
+    },
+    {
+      "id": "876fba32",
+      "level": 3,
+      "text": "手动飞线"
+    },
+    {
+      "id": "88e7f3e9",
+      "level": 2,
+      "text": "软件配置"
+    },
+    {
+      "id": "5ec6fe9c",
+      "level": 2,
+      "text": "成品"
+    },
+    {
+      "id": "f23d890d",
+      "level": 2,
+      "text": "题外话"
+    }
+  ],
+  "updated": "2022-08-19 18:04:08"
+}

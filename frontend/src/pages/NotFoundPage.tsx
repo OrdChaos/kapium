@@ -1,24 +1,56 @@
 import Layout from '@/components/Layout';
-import Banner from '@/components/Banner';
-import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'wouter';
+import { Search, ChevronLeft } from 'lucide-react';
 
 interface NotFoundPageProps {
   onSearchClick: () => void;
 }
 
 export default function NotFoundPage({ onSearchClick }: NotFoundPageProps) {
-  useEffect(() => {
-    // 设置页面标题
-    document.title = '404 - 页面未找到 - 序炁的博客';
-  }, []);
-
   return (
     <Layout onSearchClick={onSearchClick}>
-      <Banner
-        title="404 - 页面未找到"
-        subtitle="抱歉，您访问的页面不存在或已被移除"
-        height="standard"
-      />
+      <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
+        {/* 404 Content Container */}
+        <div className="w-full max-w-md text-center">
+          {/* Large 404 Number */}
+          <div className="mb-8">
+            <h1 className="text-9xl font-bold text-primary/20">404</h1>
+            <div className="relative -mt-12 mb-6">
+              <h2 className="text-3xl font-bold text-foreground">
+                页面未找到
+              </h2>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="mb-8 text-muted-foreground">
+            抱歉，您访问的页面不存在。可能是链接已过期或输入错误。
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Link href="/">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="w-full gap-2"
+              >
+                <ChevronLeft className="h-4 w-4" />
+                返回首页
+              </Button>
+            </Link>
+            <Button 
+              size="lg"
+              className="w-full gap-2"
+              onClick={onSearchClick}
+            >
+              <Search className="h-4 w-4" />
+              搜索内容
+            </Button>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }

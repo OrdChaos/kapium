@@ -1,0 +1,76 @@
+{
+  "abbrlink": "3b90dbec",
+  "category": "教程",
+  "content": "<p>本来一直在用阿里云的企业邮箱，但感觉总是不太好，主要每次都需要进<code>https://qiye.aliyun.com</code>登录。于是趁着黑色星期五<a href=\"https://racknerd.com/\">RackNerd</a>的优惠，搞了一台vps来搭电子邮局（如果你想搭建，请确认服务器是否支持rDNS以及是否开启25端口）。</p>\n<!--more-->\n<p>配置如下（年付$10.28）</p>\n<table>\n<thead>\n<tr>\n<th align=\"center\">硬件</th>\n<th align=\"center\">配置</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"center\">CPU</td>\n<td align=\"center\">1核</td>\n</tr>\n<tr>\n<td align=\"center\">RAM</td>\n<td align=\"center\">768MB</td>\n</tr>\n<tr>\n<td align=\"center\">SSD</td>\n<td align=\"center\">10GB</td>\n</tr>\n<tr>\n<td align=\"center\">流量</td>\n<td align=\"center\">1TB</td>\n</tr>\n</tbody>\n</table>\n<p>还是比较磕碜的，不过价格在这，无所谓了。</p>\n<h2 id=\"7e944277\">经历</h2>\n<p>首先，我需要为vps开通rDNS记录到<code>mx.ordchaos.com</code>上。后台可以自主设置，很方便......</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/319d4fa4d25c91e5fd4872d6004fac01.png\" alt=\"bang!\"></p>\n<p>好，很好，我沉得住气。发个工单问一下：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/497f1f27397c268b35dcccd1fd6c274c.png\" alt=\"工单截图\"></p>\n<p>哦！原来如此！好的，继续交流后，rDNS设置成功，但然而我却发现无法访问？！一番探查之后，发现这样一个事实——被墙啦！</p>\n<p>于是只得继续发工单：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/132fdf9f0fb03dbdd0298117cc331d30.png\" alt=\"\"></p>\n<p>终于搞定。</p>\n<h2 id=\"e22918e3\">Mailu.io部署</h2>\n<h3 id=\"4cea3574\">设置主机名</h3>\n<p>在vps的bash中输入：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">nano</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> /etc/hosts</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"></span></code></pre>\n        </div>\n<p>在其中具有服务器ip地址的一行中，将后面的内容改为（假设你的域名是<code>example.com</code>，服务器ip是<code>88.88.88.88</code>）：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">TXT</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span>88.88.88.88    mx.example.com   mx</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span></span></span></code></pre>\n        </div>\n<p>编辑好后，在vps中执行：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#005CC5;--shiki-dark:#79B8FF\">echo</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> \"mx\"</span><span style=\"color:#D73A49;--shiki-dark:#F97583\"> ></span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> /etc/hostname</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">hostname</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> -F</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> /etc/hostname</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"></span></code></pre>\n        </div>\n<p>这样就设置好了主机名，可以通过<code>hostname</code>命令确认是否设置成功：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">hostname</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">hostname</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> -f</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"></span></code></pre>\n        </div>\n<p>前者只会输出<code>mx</code>，后者则会输出<code>mx.example.com</code>。如果不是，那就是设置错了。</p>\n<h3 id=\"fc101830\">设置DNS解析</h3>\n<p>去你的域名DNS解析服务商，设置以下DNS解析（假设你的域名是<code>example.com</code>，服务器ip是<code>88.88.88.88</code>）：</p>\n<table>\n<thead>\n<tr>\n<th align=\"center\">主机名</th>\n<th align=\"center\">解析类型</th>\n<th align=\"center\">内容</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td align=\"center\">@</td>\n<td align=\"center\">A</td>\n<td align=\"center\">（如果已有解析就不管，没有就解析到127.0.0.1，注意不能有CNAME记录）</td>\n</tr>\n<tr>\n<td align=\"center\">mx</td>\n<td align=\"center\">A</td>\n<td align=\"center\">88.88.88.88</td>\n</tr>\n<tr>\n<td align=\"center\">@</td>\n<td align=\"center\">MX</td>\n<td align=\"center\">mx.example.com（优先级为10）</td>\n</tr>\n<tr>\n<td align=\"center\">@</td>\n<td align=\"center\">TXT</td>\n<td align=\"center\">v=spf1 mx a:mx.example.com ~all</td>\n</tr>\n<tr>\n<td align=\"center\">_dmarc</td>\n<td align=\"center\">TXT</td>\n<td align=\"center\">v=DMARC1; p=reject; rua=mailto:admin@example.com; ruf=mailto:admin@example.com; adkim=s; aspf=s</td>\n</tr>\n<tr>\n<td align=\"center\">example.com._report._dmarc</td>\n<td align=\"center\">TXT</td>\n<td align=\"center\">v=DMARC1</td>\n</tr>\n</tbody>\n</table>\n<p>然后去vps服务商，设置rDNS（或者叫做PTR）解析，将<code>88.88.88.88</code>解析到<code>mx.example.com</code></p>\n<h3 id=\"84e14d93\">获取配置</h3>\n<p>访问Mailu.io的配置生成网页：<a href=\"https://setup.mailu.io/\">https://setup.mailu.io</a></p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/f467bf5ab91b12fdef1b84d6e2239b05.png\" alt=\"\"></p>\n<p>写文时最新版本为1.9，保持不变。下方部署方式选择Compose.</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/fb64a5b8475dd80944f74acbd558a224.png\" alt=\"\"></p>\n<ul>\n<li><p>1：在此处填写自己的域名</p>\n</li>\n<li><p>2：自己起个名字（如“序炁的电子邮局”）</p>\n</li>\n<li><p>3：若你的域名为<code>example.com</code>，则在此处填写<code>https://mx.example.com</code></p>\n</li>\n<li><p>4：点击勾选</p>\n</li>\n</ul>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/85105d9d486d31bb37aa25f69ef7376d.png\" alt=\"\"></p>\n<ul>\n<li><p>1：推荐选择rainloop，更加现代好看</p>\n</li>\n<li><p>2：填写自己vps的ip地址</p>\n</li>\n<li><p>3：若你的域名为<code>example.com</code>，则在此处填写<code>mx.example.com</code></p>\n</li>\n</ul>\n<p>最后，你会看到如下界面：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/decae2b8f721e07d24f8c7ef1b7ea38c.png\" alt=\"\"></p>\n<p>照着界面的指示，回到vps执行指令：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">mkdir</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> /mailu</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#005CC5;--shiki-dark:#79B8FF\">cd</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> /mailu</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"></span></code></pre>\n        </div>\n<p>然后回到刚刚的页面，下载配置文件：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">wget</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> http://setup.mailu.io/1.7/file/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/docker-compose.yaml</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">wget</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> http://setup.mailu.io/1.7/file/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/mailu.env</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"></span></code></pre>\n        </div>\n<p>最后执行（假设你的域名是<code>example.com</code>，密码设置为<code>PASSWORD</code>）：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">SHELL</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">docker-compose</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> -p</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> mailu</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> up</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> -d</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span style=\"color:#6F42C1;--shiki-dark:#B392F0\">docker-compose</span><span style=\"color:#005CC5;--shiki-dark:#79B8FF\"> -p</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> mailu</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> exec</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> admin</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> flask</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> mailu</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> admin</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> admin</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> example.com</span><span style=\"color:#032F62;--shiki-dark:#9ECBFF\"> PASSWORD</span></span>\n<span class=\"line\" data-line=\"3\" class=\"line\"></span></code></pre>\n        </div>\n<p>就安装完成了。</p>\n<h3 id=\"bcba28a0\">配置</h3>\n<p>在浏览器中访问<code>https://mx.example.com</code>登录您的管理员面板:</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/bb36706e2cf80fc26e6f1baa7bac5636.png\" alt=\"管理员面板\"></p>\n<p>使用账号<code>admin@example.com</code>和密码<code>PASSWORD</code>登录即可（假设你的域名是<code>example.com</code>，密码设置为<code>PASSWORD</code>）。</p>\n<p>然后点击左侧的“邮件域”：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/0dbf970ce24ab1f18381955949ff2acf.png\" alt=\"\"></p>\n<p>然后点击如下的按钮：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/ff977f14b7bc7c6775de3dcd3a0538f9.png\" alt=\"\"></p>\n<p>在新界面中点击“生成密钥”，然后复制dkim配置：</p>\n<div class=\"code-block-wrapper\">\n          <div class=\"code-block-header\">\n            <span class=\"code-lang\">TXT</span>\n            <div class=\"copy-card\" onclick=\"window.copyToClipboard(this)\">Copy</div>\n          </div>\n          <pre class=\"shiki shiki-themes github-light github-dark\" style=\"background-color:#fff;--shiki-dark-bg:#24292e;color:#24292e;--shiki-dark:#e1e4e8\" tabindex=\"0\"><code><span class=\"line\" data-line=\"1\" class=\"line\"><span>dkim._domainkey.example.com. 600 IN TXT \"v=DKIM1; k=rsa; p=xxxxxxxxxxxxxxxxxxxxxxxxxxxx\" \"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"</span></span>\n<span class=\"line\" data-line=\"2\" class=\"line\"><span></span></span></code></pre>\n        </div>\n<p>进行域名解析即可。</p>\n<h3 id=\"1aecaa46\">创建账号</h3>\n<p>邮件域&gt;用户&gt;添加用户，按需配置即可。</p>\n<h2 id=\"eee1f904\">使用</h2>\n<p>退出管理员账号，访问<code>https://mx.example.com/webmail</code>，登录即可（选择“登录Webmail”）。</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/bbd43555ba6226a01d53b697174f8742.png\" alt=\"主页面\"></p>\n<h2 id=\"54662b2f\">测试</h2>\n<p>在<a href=\"https://www.mail-tester.com/\">MailTester</a>上可以进行测试，如下是我测试结果：</p>\n<p><img loading=\"lazy\" src=\"https://img.ordchaos.com/img/2022/11/84baf936fcbe9b4663cabce5a51252e0.png\" alt=\"\"></p>\n<p>很完美了，对吧（</p>\n<p><span class=\"heimu\" title=\"你知道的太多了\">以前没有超过8过</span></p>\n<h2 id=\"f23d890d\">题外话</h2>\n<p>完成了很久以前的夙愿。</p>\n<p>欢迎跟着做一遍哦！也欢迎提问！</p>\n<h2 id=\"575432b1\">2024.2.12 更新</h2>\n<p>用一段时间后服务器会出现403，此时重启docker即可。</p>\n<p>有关于自动重启，参考这篇文章：<a href=\"https://www.ordchaos.com/posts/e9c784c5/\">使用Github Action定时重启邮件服务</a></p>\n",
+  "date": "2022-11-28 13:40:50",
+  "excerpt": "本来一直在用阿里云的企业邮箱，但感觉总是不太好，主要每次都需要进https://qiye.aliyun.com登录。于是趁着黑色星期五RackNerd的优惠，搞了一台vps来搭电子邮局（如果你想搭建，请确认服务器是否支持rDNS以及是否开启25端口）。",
+  "index_img": "https://img.ordchaos.com/img/2023/07/ead6e578f34550b2d7a9cae0f5ecb0fe.png",
+  "readTime": "9",
+  "summary": "这篇博文记录了博主因不满阿里云企业邮箱的使用体验，遂在RackNerd以年付10.28美元购入VPS并部署Mailu.io电子邮局的全过程，包括解决rDNS设置、服务器被墙、主机名配置及DNS解析等关键步骤。",
+  "tags": [
+    "计算机",
+    "编程",
+    "教程",
+    "电子邮件",
+    "vps"
+  ],
+  "title": "自托管 E-mail ，宝宝喜欢妈妈爱",
+  "toc": [
+    {
+      "id": "7e944277",
+      "level": 2,
+      "text": "经历"
+    },
+    {
+      "id": "e22918e3",
+      "level": 2,
+      "text": "Mailu.io部署"
+    },
+    {
+      "id": "4cea3574",
+      "level": 3,
+      "text": "设置主机名"
+    },
+    {
+      "id": "fc101830",
+      "level": 3,
+      "text": "设置DNS解析"
+    },
+    {
+      "id": "84e14d93",
+      "level": 3,
+      "text": "获取配置"
+    },
+    {
+      "id": "bcba28a0",
+      "level": 3,
+      "text": "配置"
+    },
+    {
+      "id": "1aecaa46",
+      "level": 3,
+      "text": "创建账号"
+    },
+    {
+      "id": "eee1f904",
+      "level": 2,
+      "text": "使用"
+    },
+    {
+      "id": "54662b2f",
+      "level": 2,
+      "text": "测试"
+    },
+    {
+      "id": "f23d890d",
+      "level": 2,
+      "text": "题外话"
+    },
+    {
+      "id": "575432b1",
+      "level": 2,
+      "text": "2024.2.12 更新"
+    }
+  ],
+  "updated": "2024-02-12 21:27:30"
+}
