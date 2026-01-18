@@ -146,7 +146,7 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
                                 </div>
                                 {post.readTime && (
                                   <div className="flex items-center gap-1">
-                                    <Clock className="h-4 w-4" /> {post.readTime}
+                                    <Clock className="h-4 w-4" /> {post.readTime} 分钟
                                   </div>
                                 )}
                                 <Badge

@@ -115,7 +115,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
-                      <span>{post.readTime}</span>
+                      <span>{post.readTime} 分钟</span>
                     </div>
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -142,16 +142,16 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
           <div className="mt-12 flex flex-col items-center">
             <div className="flex items-center gap-2">
               {currentPage > 1 && (
-                <div 
+                <button 
                   onClick={prevPage}
                   className="px-4 py-2 rounded-md bg-card duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer border border-border"
                 >
                   上一页
-                </div>
+                </button>
               )}
               
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <div
+                <button
                   key={page}
                   onClick={() => goToPage(page)}
                   className={`px-4 py-2 rounded-md cursor-pointer ${
@@ -161,16 +161,16 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                   }`}
                 >
                   {page}
-                </div>
+                </button>
               ))}
               
               {currentPage < totalPages && (
-                <div 
+                <button 
                   onClick={nextPage}
                   className="px-4 py-2 rounded-md bg-card duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer border border-border"
                 >
                   下一页
-                </div>
+                </button>
               )}
             </div>
             <div className="mt-4 text-sm text-muted-foreground">

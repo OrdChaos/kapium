@@ -1,0 +1,33 @@
+/* 搜索下拉专用滚动条 */
+.scrollbar-search {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--muted-foreground) transparent;
+}
+
+/* WebKit 系（Chrome / Edge / Safari） */
+.scrollbar-search::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-search::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-search::-webkit-scrollbar-thumb {
+  background-color: color-mix(
+    in oklch,
+    var(--muted-foreground),
+    transparent 40%
+  );
+  border-radius: 999px;
+  border: 2px solid transparent; /* 留白，显得更细 */
+  background-clip: content-box;
+}
+
+.scrollbar-search::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(
+    in oklch,
+    var(--primary),
+    transparent 30%
+  );
+}

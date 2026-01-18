@@ -48,7 +48,7 @@ export default function SearchDialog({ open, onOpenChange }: SearchDialogProps) 
           </div>
 
           {searchQuery && (
-            <div className="max-h-96 space-y-2 overflow-y-auto p-1">
+            <div className="max-h-96 space-y-2 overflow-y-auto p-1 scrollbar-search">
               {filteredResults.length > 0 ? (
                 filteredResults.map((result) => (
                   <Link

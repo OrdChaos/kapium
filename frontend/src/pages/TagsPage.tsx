@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Hash, Loader2 } from 'lucide-react'; // 引入加载图标
 import { Link, useParams, useLocation } from 'wouter';
@@ -89,11 +89,38 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
                     <Card className="transition-all duration-300 hover:shadow-lg hover:border-primary/50">
                       <CardHeader>
                         <div className="mb-2">
-                          <Badge variant="secondary">{post.category}</Badge>
+                          <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
                         </div>
                         <CardTitle className="hover:text-primary transition-colors">{post.title}</CardTitle>
                         <CardDescription>{post.excerpt}</CardDescription>
                       </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>{post.date}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{post.readTime} 分钟</span>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {post.tags.map((tag: string) => (
+                              <Badge
+                                key={tag}
+                                variant="outline"
+                                className="text-xs cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate(`/tags/${encodeURIComponent(tag)}`);
+                                }}
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
                     </Card>
                  </div>
                ))}

@@ -1,0 +1,9 @@
+#nprogress .bar {
+  background: var(--primary) !important;
+  height: 3px !important;
+  top: 64px !important;
+}
+
+#nprogress .peg {
+  box-shadow: none !important;
+}

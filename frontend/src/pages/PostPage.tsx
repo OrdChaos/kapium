@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag } from 'lucide-react';
+import { Calendar, Clock, Tag, Bot } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -242,7 +242,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
-                      <span>{post.readTime} 分钟阅读</span>
+                      <span>{post.readTime} 分钟</span>
                     </div>
                     <Link href={`/categories/${encodeURIComponent(post.category)}`}>
                       <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
@@ -268,7 +268,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                 {post.summary && (
                   <div className="rounded-lg border border-border shadow-md overflow-hidden bg-card/50 backdrop-blur-sm duration-300 hover:shadow-lg hover:border-primary/50 p-4">
                     <h3 className="text-base font-semibold mb-2 text-foreground flex items-center gap-2">
-                      <span className="w-1 h-3 bg-primary rounded-full" /> {/* 可选：加个小装饰显得更精致 */}
+                      <Bot />
                       文章摘要
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">

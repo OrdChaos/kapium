@@ -121,7 +121,7 @@
   --chart-2: oklch(0.70 0.18 180);
   --chart-3: oklch(0.60 0.15 320);
   --chart-4: oklch(0.75 0.18 85);
-  --chart-5: oklch(0.70 0.16 40);
+  --chart-4: oklch(0.70 0.16 40);
 
   --codeblock-bg: #0d1117; /* HLJS Github Dark */
   --code-bg: oklch(0.4 0.05 250);
@@ -160,85 +160,12 @@
   --code_block-bg: var(--codeblock-bg);
 }
 
-img:not(.gi-row img) {
-    max-height: 70vh; 
-    min-height: 200px; 
-    
-    width: auto;
-    max-width: 100%;
-
-    object-fit: contain; 
-
-    display: block;
-    margin: 20px auto;
-    border-radius: 4px;
-}
-
-.lazy {
-  opacity: 0;
-}
-
-.lazy.loaded {
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
-}
-
-/* 1. 表格容器及基础 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 0.875rem;
-  border: 1px solid var(--border);
-  /* 注意：由于 border-collapse 的限制，圆角通常需要加在包裹 table 的 div 上 */
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-/* 2. 单元格通用边框 */
-table th, table td {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-}
-
-/* 3. 仅首行（表头）背景 */
-/* 使用 :not(tbody tr) 或者更精准的 thead tr */
-table thead tr,
-table > tr:first-child:not(tbody tr) {
-  background-color: var(--secondary);
-  color: var(--secondary-foreground);
-  font-weight: 600;
-}
-
-/* 4. 重点修复：所有数据行的 Hover 效果 */
-/* 我们明确指定 tbody 里的行，或者排除掉第一行 */
-table tbody tr:hover,
-table tr:not(:first-child):hover {
-  background-color: color-mix(in oklch, var(--muted), transparent 40%) !important;
-  transition: background-color 200ms ease;
-}
-
-/* 如果你的表格有 thead，确保 thead 里的行不触发这个 hover 变色（保持首行颜色） */
-table thead tr:hover {
-  background-color: var(--secondary);
-}
-
-html {
-  scroll-behavior: smooth; 
-}
-
-[id] {
-  scroll-margin-top: 80px;
-}
-
-#post-content h2, #post-content h3 {
-  scroll-margin-top: 90px;
-}
-
-article ul {
-  list-style-type: disc;
-}
-
+@import './typography.css';
+@import './tables.css';
+@import './search-scroll.css';
+@import './loading-bar.css';
+@import './images.css';
 @import './code.css';
 @import './gallary.css';
 @import 'katex/dist/katex.min.css';
+@import 'nprogress/nprogress.css';

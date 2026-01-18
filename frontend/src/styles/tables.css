@@ -1,0 +1,39 @@
+/* 1. 表格容器及基础 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  /* 注意：由于 border-collapse 的限制，圆角通常需要加在包裹 table 的 div 上 */
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* 2. 单元格通用边框 */
+table th, table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+}
+
+/* 3. 仅首行（表头）背景 */
+/* 使用 :not(tbody tr) 或者更精准的 thead tr */
+table thead tr,
+table > tr:first-child:not(tbody tr) {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 600;
+}
+
+/* 4. 重点修复：所有数据行的 Hover 效果 */
+/* 我们明确指定 tbody 里的行，或者排除掉第一行 */
+table tbody tr:hover,
+table tr:not(:first-child):hover {
+  background-color: color-mix(in oklch, var(--muted), transparent 40%) !important;
+  transition: background-color 200ms ease;
+}
+
+/* 如果你的表格有 thead，确保 thead 里的行不触发这个 hover 变色（保持首行颜色） */
+table thead tr:hover {
+  background-color: var(--secondary);
+}

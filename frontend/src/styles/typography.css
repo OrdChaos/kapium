@@ -1,0 +1,20 @@
+/* 文字排版样式 */
+
+/* 列表样式 */
+article ul {
+  list-style-type: disc;
+}
+
+/* 滚动行为 */
+html {
+  scroll-behavior: smooth; 
+}
+
+/* 锚点偏移 */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+#post-content h2, #post-content h3 {
+  scroll-margin-top: 90px;
+}

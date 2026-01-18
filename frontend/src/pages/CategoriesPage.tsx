@@ -110,7 +110,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
-                            <span>{post.readTime}</span>
+                            <span>{post.readTime} 分钟</span>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {post.tags.map((tag: string) => (
