@@ -2,9 +2,7 @@
 
 我的新博客
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-
-![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
 
 ## 功能特性
 
