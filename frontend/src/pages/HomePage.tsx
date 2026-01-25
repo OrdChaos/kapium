@@ -98,10 +98,10 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                   </div>
                   <Link href={`/posts/${post.id}`}>
                     <div className="block">
-                      <CardTitle className="line-clamp-2 transition-colors hover:text-primary">
+                      <CardTitle className="line-clamp-2 leading-6 transition-colors hover:text-primary">
                         {post.title}
                       </CardTitle>
-                      <CardDescription className="line-clamp-2 mt-2">
+                      <CardDescription className="line-clamp-2 leading-6 mt-2">
                         {post.excerpt}
                       </CardDescription>
                     </div>
