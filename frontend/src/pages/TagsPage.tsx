@@ -39,9 +39,9 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
 
   useEffect(() => {
     if (tag) {
-      document.title = `标签：${decodeURIComponent(tag)} - 序炁的博客`;
+      document.title = `标签：${decodeURIComponent(tag)} - ${import.meta.env.VITE_SITE_TITLE}`;
     } else {
-      document.title = '标签 - 序炁的博客';
+      document.title = '标签 - ${import.meta.env.VITE_SITE_TITLE}';
     }
     
     Promise.all([
@@ -98,7 +98,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
                         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            <span>{post.date}</span>
+                            <span>{post.date.slice(0,10)}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />

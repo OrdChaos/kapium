@@ -56,40 +56,40 @@
 
 ```
 kapium/
-├── ssg/                    # 静态网站生成器源代码
-│   ├── include/            # 头文件
-│   ├── lib/                # 第三方库
-│   │   ├── md4c/           # MD4C Markdown 解析库
-│   │   ├── nlohmann/       # JSON 库 (修复了README中错误的路径)
-│   │   └── tinyxml2/       # XML 生成库
-│   └── src/                # 源代码文件
-│       ├── Main.cpp        # 主程序入口
-│       ├── MdParserCallback.cpp # Markdown 解析回调函数
-│       ├── PostData.cpp    # 文章数据处理
-│       ├── PostInfoCalculate.cpp # 文章信息计算（如阅读时间）
-│       ├── PostProcessor.cpp # 文章处理
-│       └── XmlGenerator.cpp # XML 生成（如sitemap, RSS）
-├── tools/                  # 辅助工具
-│   ├── abbrlink/           # 生成文章短链接
-│   └── summary/            # AI 摘要生成工具
-├── sources/                # 原始内容文件
-│   ├── posts/              # 博客文章
-│   └── static/             # 静态资源
-├── frontend/               # 前端 React 代码
-│   ├── public/             # 静态资源
+├── ssg/                                        # 静态网站生成器源代码
+│   ├── include/                                # 头文件
+│   ├── lib/                                    # 第三方库
+│   │   ├── md4c/                               # MD4C Markdown 解析库
+│   │   ├── nlohmann/                           # JSON 库 (修复了README中错误的路径)
+│   │   └── tinyxml2/                           # XML 生成库
+│   └── src/                                    # 源代码文件
+│       ├── Main.cpp                            # 主程序入口
+│       ├── MdParserCallback.cpp                # Markdown 解析回调函数
+│       ├── PostData.cpp                        # 文章数据处理
+│       ├── PostInfoCalculate.cpp               # 文章信息计算（如阅读时间）
+│       ├── PostProcessor.cpp                   # 文章处理
+│       └── XmlGenerator.cpp                    # XML 生成（如sitemap, RSS）
+├── tools/                                      # 辅助工具
+│   ├── abbrlink/                               # 生成文章短链接
+│   └── summary/                                # AI 摘要生成工具
+├── sources/                                    # 原始内容文件
+│   ├── posts/                                  # 博客文章
+│   └── static/                                 # 静态资源
+├── frontend/                                   # 前端 React 代码
+│   ├── public/                                 # 静态资源
 │   ├── src/
-│   │   ├── components/     # 可复用组件
-│   │   ├── pages/          # 页面组件
-│   │   ├── hooks/          # 自定义 Hook
-│   │   ├── lib/            # 工具函数和工具库
-│   │   └── styles/         # 样式文件
-│   ├── package.json        # 项目依赖配置
-│   └── vite.config.ts      # Vite 配置文件
-├── scripts/                # 处理脚本
+│   │   ├── components/                         # 可复用组件
+│   │   ├── pages/                              # 页面组件
+│   │   ├── hooks/                              # 自定义 Hook
+│   │   ├── lib/                                # 工具函数和工具库
+│   │   └── styles/                             # 样式文件
+│   ├── package.json                            # 项目依赖配置
+│   └── vite.config.ts                          # Vite 配置文件
+├── scripts/                                    # 处理脚本
 │   └── src/
-│       ├── code.js         # 代码高亮处理
-│       └── math.js         # 数学公式处理
-└── makefile                # 项目构建文件
+│       ├── code.js                             # 代码高亮处理
+│       └── math.js                             # 数学公式处理
+└── makefile                                    # 项目构建文件
 ```
 
 ## 依赖项

@@ -1,6 +1,8 @@
 import { Route, Switch } from 'wouter';
 import { useState, useCallback } from 'react';
 import { Toaster } from '@/components/ui/sonner';
+import UmamiAnalytics from '@danielgtmn/umami-react';
+
 import SearchDialog from '@/components/SearchDialog';
 import ScrollToTop from '@/components/ScrollToTop';
 import HomePage from '@/pages/HomePage';
@@ -32,6 +34,11 @@ export default function App() {
 
   return (
     <>
+      <UmamiAnalytics
+        url={import.meta.env.VITE_UMAMI_API_URL}
+        websiteId={import.meta.env.VITE_UMAMI_WEBSITE_ID}
+        lazyLoad={true}
+      />
       <ScrollToTop />
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <Switch>

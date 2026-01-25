@@ -56,7 +56,7 @@ async function processCodeBlocks() {
         return `<div class="code-block-wrapper">
           <div class="code-block-header">
             <span class="code-lang">${lang.toUpperCase()}</span>
-            <div class="copy-card" onclick="window.copyToClipboard(this)">Copy</div>
+            <div class="copy-card" onclick="window.copyToClipboard(this)">复制</div>
           </div>
           ${highlightedHtml}
         </div>`.trim();

@@ -5,9 +5,13 @@ SSG_DIR := ssg
 SCRIPTS_DIR := scripts
 FRONTEND_DIR := frontend
 
-.PHONY: all toolchain data pre-rendered clean
+.PHONY: all init toolchain data pre-rendered preview clean
 
 all: toolchain data pre-rendered render
+
+init:
+	$(MAKE) -C $(SCRIPTS_DIR) init
+	$(MAKE) -C $(FRONTEND_DIR) init
 
 toolchain:
 	$(MAKE) -C $(TOOLS_DIR)
@@ -32,6 +36,9 @@ render:
 	@cp -r $(SSG_OUTPUT_DIR)/posts/* $(FRONTEND_DIR)/public/data/posts
 
 	$(MAKE) -C $(FRONTEND_DIR)
+
+preview: all
+	$(MAKE) -C $(FRONTEND_DIR) preview
 
 clean:
 	@rm -rf $(BUILD_DIR)

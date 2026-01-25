@@ -21,7 +21,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   const pageFromUrl = parseInt(location.split('/')[2]) || 1;
 
   useEffect(() => {
-    document.title = '序炁的博客';
+    document.title = import.meta.env.VITE_SITE_TITLE;
 
     fetch('/data/posts.json')
       .then(res => res.json())
@@ -72,8 +72,8 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   return (
     <Layout onSearchClick={onSearchClick}>
       <Banner
-        title="序炁的博客"
-        subtitle="等我想好放什么再改"
+        title={import.meta.env.VITE_SITE_TITLE}
+        subtitle={import.meta.env.VITE_SITE_DESCRIPTION}
         height="tall"
       />
       <div className="container mx-auto px-4 py-12">
@@ -101,7 +101,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                       <CardTitle className="line-clamp-2 transition-colors hover:text-primary">
                         {post.title}
                       </CardTitle>
-                      <CardDescription className="line-clamp-3 mt-2">
+                      <CardDescription className="line-clamp-2 mt-2">
                         {post.excerpt}
                       </CardDescription>
                     </div>
@@ -111,7 +111,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      <span>{post.date}</span>
+                      <span>{post.date.slice(0,10)}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />

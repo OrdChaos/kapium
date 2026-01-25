@@ -64,7 +64,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-            序炁的博客
+            {import.meta.env.VITE_SITE_TITLE}
           </Link>
 
           {/* ================= Desktop ================= */}

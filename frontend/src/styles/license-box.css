@@ -1,0 +1,100 @@
+.license-box {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  color: var(--color-foreground);
+  font-size: 14px;
+}
+
+/* ===== title ===== */
+
+.license-title {
+  margin-bottom: 1rem;
+}
+
+.license-title-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-foreground);
+}
+
+.license-title-link {
+  font-size: 13px;
+  color: var(--color-muted-foreground);
+  word-break: break-all;
+}
+
+.license-title-link a {
+  transition: color 0.3s ease;
+}
+
+.license-title-link a:hover {
+  color: var(--color-primary);
+}
+
+/* ===== meta grid ===== */
+
+.license-meta {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: 0.75rem 1rem;
+}
+
+/* ===== item ===== */
+
+.license-meta-item {
+  display: flex;
+  flex-direction: column;   /* 双行结构 */
+  gap: 1px;
+}
+
+.license-label {
+  font-size: 12px;
+  color: var(--color-muted-foreground);
+}
+
+.license-value {
+  font-size: 14px;
+  color: var(--color-foreground);
+}
+
+/* ===== icons ===== */
+
+.license-icons {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.license-icons a {
+  color: var(--color-foreground);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.license-icons a:hover {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+.license-icons svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== watermark ===== */
+
+.license-bg-icon {
+  position: absolute;
+  right: -18px;
+  bottom: -22px;
+  opacity: 0.2;
+  pointer-events: none;
+  color: var(--color-muted-foreground);
+}
+
+.license-bg-icon svg {
+  width: 120px;
+  height: 120px;
+}

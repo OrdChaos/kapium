@@ -10,7 +10,7 @@ import { Icon } from '@iconify/react';
 interface SocialLink {
   platform: string;
   url: string;
-  icon?: string; // 可选的自定义图标类型
+  icon?: string;
 }
 
 interface EducationItem {
@@ -29,13 +29,13 @@ interface ExperienceItem {
 interface ProfileData {
   name: string;
   avatar: string;
-  title?: string; // 可选字段
-  location?: string; // 可选字段
-  bio?: string; // 可选字段
-  skills?: string[]; // 可选字段
-  education?: EducationItem[]; // 可选字段
-  experience?: ExperienceItem[]; // 可选字段
-  socialLinks?: SocialLink[]; // 新增：可选的社交媒体链接数组
+  title?: string;
+  location?: string;
+  bio?: string;
+  skills?: string[];
+  education?: EducationItem[];
+  experience?: ExperienceItem[];
+  socialLinks?: SocialLink[];
 }
 
 interface AboutPageProps {
@@ -47,8 +47,7 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // 设置页面标题
-    document.title = '关于 - 序炁的博客';
+    document.title = '关于 - ${import.meta.env.VITE_SITE_TITLE}';
     
     fetch('/data/profile.json')
       .then(res => res.json())
@@ -78,7 +77,6 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
         {profile && (
           <div className="container mx-auto px-4 py-12">
             <div className="mx-auto max-w-4xl">
-              {/* 个人信息卡片 */}
               <Card className="mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
                 <CardHeader>
                   <div className="flex flex-col items-center gap-6 md:flex-row">
@@ -115,11 +113,9 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                       <div className="flex flex-wrap justify-center gap-2 md:justify-start">
                         {profile.socialLinks && profile.socialLinks.length > 0 && (
                           profile.socialLinks.map((social, index) => (
-                            <Button 
-                              key={index} 
-                              variant="outline" 
-                              size="icon" 
-                              asChild
+                            <div 
+                              key={index}
+                              className="flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background text-foreground transition-all shadow hover:shadow-lg hover:border-primary/50 active:scale-95"
                             >
                               <a
                                 href={social.url}
@@ -127,10 +123,9 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                                 rel="noopener noreferrer"
                                 title={social.platform}
                               >
-                                {/* 调用新的渲染函数 */}
                                 {getSocialIcon(social.icon)}
                               </a>
-                            </Button>
+                            </div>
                           ))
                         )}
                       </div>
@@ -146,7 +141,6 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                 )}
               </Card>
 
-              {/* 技能 - 仅在存在时显示 */}
               {profile.skills && profile.skills.length > 0 && (
                 <Card className="mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
                   <CardHeader>
@@ -167,7 +161,6 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                 </Card>
               )}
 
-              {/* 教育背景 - 仅在存在时显示 */}
               {profile.education && profile.education.length > 0 && (
                 <Card className="duration-300 hover:shadow-lg hover:border-primary/50">
                   <CardHeader>
@@ -191,7 +184,6 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                 </Card>
               )}
 
-              {/* 工作经历 - 仅在存在时显示 */}
               {profile.experience && profile.experience.length > 0 && (
                 <Card className="mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
                   <CardHeader>

@@ -9,9 +9,10 @@
         "build:ts": "tsc -b --noCheck && vite build",
         "lint": "eslint .",
         "optimize": "vite optimize",
-        "preview": "vite preview"
+        "preview": "vite preview --host"
     },
     "dependencies": {
+        "@danielgtmn/umami-react": "^1.1.4",
         "@hookform/resolvers": "^5.2.1",
         "@iconify/react": "^6.0.2",
         "@libsql/client": "^0.15.15",

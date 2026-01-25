@@ -27,9 +27,9 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
 
   useEffect(() => {
     if (category) {
-      document.title = `分类：${decodeURIComponent(category)} - 序炁的博客`;
+      document.title = `分类：${decodeURIComponent(category)} - ${import.meta.env.VITE_SITE_TITLE}`;
     } else {
-      document.title = '文章分类 - 序炁的博客';
+      document.title = '文章分类 - ${import.meta.env.VITE_SITE_TITLE}';
     }
     
     // 切换分类时重置加载数量
@@ -106,7 +106,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
                         <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
-                            <span>{post.date}</span>
+                            <span>{post.date.slice(0,10)}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />

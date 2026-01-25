@@ -17,7 +17,7 @@ interface TimelinePageProps {
 }
 
 interface PostItem {
-  id: string;
+  abbrlink: string;
   title: string;
   excerpt: string;
   date: string;
@@ -46,7 +46,7 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
   const BATCH_SIZE = 30;
 
   useEffect(() => {
-    document.title = '时间线 - 序炁的博客';
+    document.title = '时间线 - ${import.meta.env.VITE_SITE_TITLE}';
     
     fetch('/data/posts.json')
       .then((r) => r.json())
@@ -126,13 +126,13 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
                 <div className="absolute top-0 bottom-0 left-3 w-px bg-border" />
 
                 {m.posts.map((post) => (
-                  <div key={post.id} className="flex items-start gap-6 relative">
+                  <div key={post.abbrlink} className="flex items-start gap-6 relative">
                     <div className="relative w-6 flex justify-center">
                       <span className="relative z-10 h-4 w-4 rounded-full bg-primary ring-2 ring-card" />
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <Link href={`/posts/${post.id}`}>
+                      <Link href={`/posts/${post.abbrlink}`}>
                         <div>
                           <Card className="w-full max-w-full transition-all duration-300 hover:shadow-lg hover:border-primary/50">
                             <CardHeader>
@@ -142,7 +142,7 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
                             <CardContent>
                               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                                 <div className="flex items-center gap-1">
-                                  <Calendar className="h-4 w-4" /> {post.date}
+                                  <Calendar className="h-4 w-4" /> {post.date.slice(0,10)}
                                 </div>
                                 {post.readTime && (
                                   <div className="flex items-center gap-1">

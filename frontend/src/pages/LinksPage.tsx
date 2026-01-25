@@ -14,7 +14,7 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
 
   useEffect(() => {
     // 设置页面标题
-    document.title = '友链 - 序炁的博客';
+    document.title = '友链 - ${import.meta.env.VITE_SITE_TITLE}';
     
     fetch('/data/links.json')
       .then(res => res.json())

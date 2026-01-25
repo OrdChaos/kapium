@@ -1,9 +1,5 @@
 #include "../include/MdParserCallback.h"
 
-/// ============================================================
-/// Markdown -> HTML
-/// ============================================================
-
 namespace md_parser_callback {
     auto md_append_to_string(
         const MD_CHAR* text,
@@ -61,9 +57,6 @@ namespace md_parser_callback {
         return rc == 0 ? post : FORMATTED_POST("", nlohmann::json::array());
     }
 
-    /// ============================================================
-    /// Markdown -> Plain Text
-    /// ============================================================
 
     struct PlainTextCtx {
         std::string out;

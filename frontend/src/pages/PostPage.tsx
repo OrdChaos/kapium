@@ -1,11 +1,14 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag, Bot } from 'lucide-react';
+import { Calendar, Clock, Tag, Bot, Eye } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { useGlobalCopy } from '@/hooks/codeblock-copy';
+import { UmamiPageViews } from '@/components/ui/umami-page-views';
+import LicenseBox from '@/components/ui/license-box';
+import SocialShare from '@/components/SocialShare';
 
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -52,7 +55,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   /* 2. 入场动画与标题设置 */
   useEffect(() => {
     if (post) {
-      document.title = `${post.title} - 序炁的博客`;
+      document.title = `${post.title} - ${import.meta.env.VITE_SITE_TITLE}`;
       if (!visible) {
         requestAnimationFrame(() => setVisible(true));
       }
@@ -238,12 +241,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
-                      <span>{post.date}</span>
+                      <span>{post.date.slice(0,10)}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="h-4 w-4" />
                       <span>{post.readTime} 分钟</span>
                     </div>
+                    <UmamiPageViews abbrlink={post?.abbrlink} />
                     <Link href={`/categories/${encodeURIComponent(post.category)}`}>
                       <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">
                         {post.category}
@@ -266,7 +270,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                 </div>
 
                 {post.summary && (
-                  <div className="rounded-lg border border-border shadow-md overflow-hidden bg-card/50 backdrop-blur-sm duration-300 hover:shadow-lg hover:border-primary/50 p-4">
+                  <div className="rounded-lg border border-border shadow-md overflow-hidden bg-card duration-300 hover:shadow-lg hover:border-primary/50 p-4">
                     <h3 className="text-base font-semibold mb-2 text-foreground flex items-center gap-2">
                       <Bot />
                       文章摘要
@@ -285,6 +289,17 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                     onClick={handleContentClick} // 绑定点击事件
                   />
                 </article>
+
+                <LicenseBox
+                  title={post.title}
+                  permalink={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`}
+                  author={import.meta.env.VITE_SITE_AUTHOR}
+                  postedAt={post.date.slice(0,10)}
+                  updatedAt={post.update}
+                  license={import.meta.env.VITE_SITE_POSTS_LICENSE}
+                />
+
+                <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
               </main>
 
               {/* TOC 侧边栏 */}
@@ -297,7 +312,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   }}
                 >
                   <div className="sticky top-24">
-                    <Card className="rounded-lg border-border shadow-md overflow-hidden bg-card/50 backdrop-blur-sm duration-300 hover:shadow-lg hover:border-primary/50 overflow-hidden">
+                    <Card className="rounded-lg border-border shadow-md overflow-hidden bg-card duration-300 hover:shadow-lg hover:border-primary/50">
                       <CardContent className="p-5">
                         <CardTitle className="text-sm font-bold m-0 leading-none mb-4 text-foreground/80">
                           目录

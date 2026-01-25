@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 declare global {
   interface Window {
@@ -13,21 +14,13 @@ export const useGlobalCopy = () => {
       const codeElement = wrapper?.querySelector('pre code') as HTMLElement;
 
       if (!codeElement) {
-        console.error('未找到代码元素');
         return;
       }
 
       const codeToCopy = codeElement.innerText;
-      const originalText = el.innerText;
 
       const showSuccess = () => {
-        el.innerText = 'Copied!';
-        el.classList.add('copy-success');
-
-        setTimeout(() => {
-          el.innerText = originalText;
-          el.classList.remove('copy-success');
-        }, 500);
+        toast.success('代码已复制', { duration: 2000 });
       };
 
       // 优先 Clipboard API
@@ -57,7 +50,7 @@ export const useGlobalCopy = () => {
             console.error('execCommand copy 失败');
           }
         } catch (err) {
-          console.error('无法复制代码', err);
+          toast.error('复制失败', { duration: 2000 });
         }
       }
     };

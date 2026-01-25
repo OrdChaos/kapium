@@ -23,8 +23,6 @@ namespace post_processor {
                     md_parser_callback::md_to_plaintext(post_data.markdown.substr(0, more_pos));
             } else {
                 std::string cut = post_info_calculate::truncate_by_units(post_data.plain_text, 25.0);
-                if (cut.size() < post_data.plain_text.size())
-                    cut += "...";
                 post_data.post_json["excerpt"] = cut;
             }
         }

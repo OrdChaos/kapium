@@ -2,7 +2,7 @@ include ../common.mk
 
 NPM := npm
 
-.PHONY: init dev build clean
+.PHONY: init dev build preview clean
 
 default: build
 
@@ -10,10 +10,13 @@ init:
 	@$(NPM) install
 
 dev:
-	@bun dev --host
+	@bun --no-env-file dev --host
 
 build:
-	@bun run build
+	@bun --no-env-file run build
+
+preview:
+	$(NPM) run preview
 
 clean:
 	@rm -rf public
