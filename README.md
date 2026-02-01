@@ -48,7 +48,6 @@
 
 - **连接**：使用 OpenSSL 与 [cpp-httplib](https://github.com/yhirose/cpp-httplib) 连接
 - **API 接口**: 阿里云通义千问（qwen-long）
-- **数据库**: MySQL（用于存储摘要信息）
 
 ## 目录结构
 
