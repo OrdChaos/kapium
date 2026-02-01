@@ -14,7 +14,7 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
 
   useEffect(() => {
     // 设置页面标题
-    document.title = '友链 - ${import.meta.env.VITE_SITE_TITLE}';
+    document.title = '友链 - ' + import.meta.env.VITE_SITE_TITLE;
     
     fetch('/data/links.json')
       .then(res => res.json())
@@ -59,7 +59,14 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
                         <img
                           src={link.avatar}
                           alt={link.name}
-                          className="h-12 w-12 rounded-full border-2 border-border"
+                          className="
+                            h-24 w-24 md:h-16 md:w-16
+                            rounded-full
+                            object-cover
+                            shrink-0
+                            border-2 border-border
+                            avatar
+                          "
                         />
                         <div className="flex-1">
                           <CardTitle className="flex items-center gap-2 group-hover:text-primary transition-colors">

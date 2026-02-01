@@ -1,14 +1,15 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag, Bot, Eye } from 'lucide-react';
+import { Calendar, Clock, Tag, Bot } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { useGlobalCopy } from '@/hooks/codeblock-copy';
+import { useGlobalCopy } from '@/hooks/use-global-copy';
 import { UmamiPageViews } from '@/components/ui/umami-page-views';
-import LicenseBox from '@/components/ui/license-box';
+import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
+import Twikoo from '@/components/Twikoo';
 
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -300,6 +301,9 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                 />
 
                 <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
+
+                <br />
+                <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
               </main>
 
               {/* TOC 侧边栏 */}

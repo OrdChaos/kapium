@@ -23,7 +23,14 @@ const navItems: NavItem[] = [
       { href: '/timeline', label: '时间线' },
     ],
   },
-  { href: '/links', label: '友链' },
+  {
+    label: '朋友们',
+    children: [
+      { href: '/links', label: '友链' },
+      { href: 'https://out.ordchaos.com/travellings', label: '开往' },
+      { href: 'https://out.ordchaos.com/wormhole', label: '虫洞' },
+    ],
+  },
   { href: '/about', label: '关于' },
 ];
 
@@ -68,7 +75,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
           </Link>
 
           {/* ================= Desktop ================= */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4"> {/* 还原 gap-4 */}
             {navItems.map((item, idx) => {
               const isActive =
                 item.href === location ||
@@ -77,7 +84,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
               if (item.children) {
                 return (
                   <div key={item.label} className="relative group">
-                    {/* 母项 */}
+                    {/* 母项 - 还原 pl-1 pr-[2px] py-1 */}
                     <div
                       className={`
                         flex items-center gap-1 pl-1 pr-[2px] py-1
@@ -92,16 +99,18 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                     </div>
 
                     {/* 子菜单 */}
-                    <div className="absolute left-0 top-full w-24 pt-[2px] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity">
+                    <div className="absolute left-0 top-full w-24 pt-[2px] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                       <div className="rounded-md border border-border bg-card shadow-md py-2">
                         {item.children.map((c) => (
-                          <Link
+                          <a
                             key={c.href}
                             href={c.href}
+                            target={c.href.startsWith('http') ? '_blank' : undefined}
+                            rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                             className="block px-4 py-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
                           >
                             {c.label}
-                          </Link>
+                          </a>
                         ))}
                       </div>
                     </div>
@@ -152,7 +161,14 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
 
         {/* ================= Mobile Menu ================= */}
         {isOpen && (
-          <div className="border-t border-border/40 py-3 md:hidden">
+          <div 
+            className={`
+              border-t border-border/40 py-3 md:hidden
+              transition-all duration-300 ease-in-out
+              ${isOpen ? 'opacity-100 max-h-[60vh] translate-y-0' : 'opacity-0 max-h-0 -translate-y-2 pointer-events-none'}
+              overflow-hidden
+            `}
+          >
             <div className="flex flex-col">
               {navItems.map((item, idx) => {
                 const isActive =
@@ -186,14 +202,16 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                       {openMenus[idx] && (
                         <div className="flex flex-col pl-2 mb-3">
                           {item.children.map((c) => (
-                            <Link
+                            <a
                               key={c.href}
                               href={c.href}
+                              target={c.href.startsWith('http') ? '_blank' : undefined}
+                              rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                               onClick={() => setIsOpen(false)}
                               className="block pl-2 pr-[6px] py-2 text-sm text-muted-foreground transition-colors hover:text-primary"
                             >
                               {c.label}
-                            </Link>
+                            </a>
                           ))}
                         </div>
                       )}

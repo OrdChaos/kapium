@@ -21,7 +21,7 @@ interface TemplatePageProps {
 export default function TemplatePage({ onSearchClick }: TemplatePageProps) {
   useEffect(() => {
     // 设置页面标题
-    document.title = '模板 - ${import.meta.env.VITE_SITE_TITLE}';
+    document.title = '模板 - ' + import.meta.env.VITE_SITE_TITLE;
   }, []);
 
   return (

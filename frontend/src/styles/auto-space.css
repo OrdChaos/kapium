@@ -1,0 +1,5 @@
+.auto-space {
+  display: inline-block;
+  width: 0.25em;
+  flex-shrink: 0;
+}

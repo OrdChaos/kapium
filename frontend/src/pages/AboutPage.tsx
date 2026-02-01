@@ -2,7 +2,6 @@ import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Wrench, MapPin, Briefcase, GraduationCap, Link as LinkIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
@@ -47,7 +46,7 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    document.title = '关于 - ${import.meta.env.VITE_SITE_TITLE}';
+    document.title = '关于 - ' + import.meta.env.VITE_SITE_TITLE;
     
     fetch('/data/profile.json')
       .then(res => res.json())

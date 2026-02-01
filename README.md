@@ -23,9 +23,8 @@
 - **编程语言**: C & C++
 - **Markdown 解析库**: [MD4C](https://github.com/mity/md4c) - 快速、轻量级的 Markdown 解析器
 - **JSON 处理**: [nlohmann/json](https://github.com/nlohmann/json) - C++ JSON 库
-- **XML 生成**: tinyxml2 - 用于生成 sitemap.xml 和 RSS feed
+- **XML 生成**: [tinyxml2](https://github.com/leethomason/tinyxml2) - 用于生成 sitemap.xml 和 RSS feed
 - **文本处理**: 实现了 Markdown 到纯文本的转换，以及文章信息计算（如阅读时间）
-- **链接生成**: OpenSSL 用于生成 abbrlink（短链接）
 
 ### 前端
 
@@ -47,8 +46,7 @@
 
 ### AI 摘要
 
-- **后端框架**: Actix-web (Rust) 或 JavaScript 云函数
-- **部署方式**: Docker 容器化部署，或 Serverless 架构
+- **连接**：使用 OpenSSL 与 [cpp-httplib](https://github.com/yhirose/cpp-httplib) 连接
 - **API 接口**: 阿里云通义千问（qwen-long）
 - **数据库**: MySQL（用于存储摘要信息）
 
@@ -95,15 +93,23 @@ kapium/
 ## 依赖项
 
 - C++17 或更高版本的编译器
-- CMake 3.10 或更高版本
-- Node.js v18+ (前端)
-- Git（用于克隆子模块）
-- OpenSSL（用于 abbrlink 生成）
+- make
+- Node.js v18+
+- Git
+- OpenSSL
 - DASHSCOPE_API_KEY 环境变量（可选，用于 AI 摘要功能）
 
 ## 构建与安装
 
 ### 构建步骤
+
+初始化：
+
+  ```bash
+  git clone https://github.com/Kapium/kapium.git
+  cd kapium
+  make init
+  ```
 
 直接构建整个项目：
    ```bash
@@ -113,9 +119,8 @@ kapium/
 ### 特殊功能说明
 
 - **AI 摘要**: 如果设置了 DASHSCOPE_API_KEY 环境变量，系统将自动为文章生成 AI 摘要
-- **代码高亮**: 使用 highlight.js 实现多种语言的代码高亮
+- **代码高亮**: 使用 [Shiki](https://shiki.style/) 实现多种语言的代码高亮
 - **数学公式**: 支持 LaTeX 数学公式渲染
-- **图片处理**: 支持文章内图片的自动处理和优化
 
 ## 部署
 
@@ -140,6 +145,8 @@ kapium/
 | [nlohmann/json](https://github.com/nlohmann/json) | MIT License | JSON 处理 |
 | [md4c](https://github.com/mity/md4c) | MIT License | Markdown 解析 |
 | [cpp-httplib](https://github.com/yhirose/cpp-httplib) | MIT License | HTTP 服务/客户端 |
+
+另外，在预处理脚本`scripts/src`中，使用了[Shiki](https://shiki.style/)与[pangu.js](https://github.com/vinta/pangu.js)
 
 ## 贡献
 

@@ -29,7 +29,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
     if (category) {
       document.title = `分类：${decodeURIComponent(category)} - ${import.meta.env.VITE_SITE_TITLE}`;
     } else {
-      document.title = '文章分类 - ${import.meta.env.VITE_SITE_TITLE}';
+      document.title = '文章分类 - ' + import.meta.env.VITE_SITE_TITLE;
     }
     
     // 切换分类时重置加载数量

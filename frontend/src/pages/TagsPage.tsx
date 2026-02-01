@@ -41,7 +41,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
     if (tag) {
       document.title = `标签：${decodeURIComponent(tag)} - ${import.meta.env.VITE_SITE_TITLE}`;
     } else {
-      document.title = '标签 - ${import.meta.env.VITE_SITE_TITLE}';
+      document.title = '标签 - ' + import.meta.env.VITE_SITE_TITLE;
     }
     
     Promise.all([
