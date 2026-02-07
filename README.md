@@ -4,17 +4,13 @@
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
 
-## 功能特性
+## 功能说明
 
-- **Markdown 转 HTML**: 使用 MD4C 库将 Markdown 文档转换为 HTML
-- **文章元数据处理**: 自动提取并处理文章元数据（如标题、分类、标签等）
-- **自动摘要生成**: 支持 `<!-- more -->` 标记或自动生成文章摘要
-- **阅读时间计算**: 根据文章长度计算预估阅读时间
-- **目录生成**: 自动生成基于标题的文章目录
-- **链接缩略**: 提供文章链接的缩略功能
-- **SEO 友好**: 生成适合搜索引擎优化的 HTML 结构
-- **代码高亮**: 集成 highlight.js 实现多种语言代码高亮
-- **AI 摘要**: 支持通过 API 调用生成文章 AI 摘要
+- ✨ **智能摘要**: 自动或手动 AI 摘要生成
+- 🎨 **主题切换**: 内置深色/浅色主题
+- 📊 **浏览统计**: 集成 Umami 分析
+- 🔍 **SEO 优化**: 自动生成 Sitemap 和 RSS Feed
+- ⚡ **高性能**: 静态生成 + 客户端优化
 
 ## 技术栈
 
@@ -49,56 +45,40 @@
 - **连接**：使用 OpenSSL 与 [cpp-httplib](https://github.com/yhirose/cpp-httplib) 连接
 - **API 接口**: 阿里云通义千问（qwen-long）
 
-## 目录结构
+### 依赖项
 
-```
-kapium/
-├── ssg/                                        # 静态网站生成器源代码
-│   ├── include/                                # 头文件
-│   ├── lib/                                    # 第三方库
-│   │   ├── md4c/                               # MD4C Markdown 解析库
-│   │   ├── nlohmann/                           # JSON 库 (修复了README中错误的路径)
-│   │   └── tinyxml2/                           # XML 生成库
-│   └── src/                                    # 源代码文件
-│       ├── Main.cpp                            # 主程序入口
-│       ├── MdParserCallback.cpp                # Markdown 解析回调函数
-│       ├── PostData.cpp                        # 文章数据处理
-│       ├── PostInfoCalculate.cpp               # 文章信息计算（如阅读时间）
-│       ├── PostProcessor.cpp                   # 文章处理
-│       └── XmlGenerator.cpp                    # XML 生成（如sitemap, RSS）
-├── tools/                                      # 辅助工具
-│   ├── abbrlink/                               # 生成文章短链接
-│   └── summary/                                # AI 摘要生成工具
-├── sources/                                    # 原始内容文件
-│   ├── posts/                                  # 博客文章
-│   └── static/                                 # 静态资源
-├── frontend/                                   # 前端 React 代码
-│   ├── public/                                 # 静态资源
-│   ├── src/
-│   │   ├── components/                         # 可复用组件
-│   │   ├── pages/                              # 页面组件
-│   │   ├── hooks/                              # 自定义 Hook
-│   │   ├── lib/                                # 工具函数和工具库
-│   │   └── styles/                             # 样式文件
-│   ├── package.json                            # 项目依赖配置
-│   └── vite.config.ts                          # Vite 配置文件
-├── scripts/                                    # 处理脚本
-│   └── src/
-│       ├── code.js                             # 代码高亮处理
-│       └── math.js                             # 数学公式处理
-└── makefile                                    # 项目构建文件
-```
-
-## 依赖项
-
-- C++17 或更高版本的编译器
+- C++ 17+
 - make
 - Node.js v18+
 - Git
 - OpenSSL
-- DASHSCOPE_API_KEY 环境变量（可选，用于 AI 摘要功能）
+
+### 项目结构
+
+```
+kapium/
+├── frontend/          # React 前端应用
+├── ssg/               # 静态生成器核心（C++）
+├── tools/             # 工具集
+│   ├── abbrlink/      # 链接缩略工具
+│   └── summary/       # AI 摘要生成
+├── scripts/           # 预处理脚本（Node.js）
+└── sources/           # 博客内容源文件
+    └── posts/         # Markdown 文章
+```
 
 ## 构建与安装
+
+### 环境配置
+
+修改`frontend/.env`中的信息。
+
+创建 `.env.local` 文件（可选）：
+
+```env
+# AI 摘要功能
+DASHSCOPE_API_KEY=your_key_here
+```
 
 ### 构建步骤
 
@@ -111,17 +91,18 @@ kapium/
   ```
 
 直接构建整个项目：
+
    ```bash
    make
    ```
 
-### 特殊功能说明
+预览：
 
-- **AI 摘要**: 如果设置了 DASHSCOPE_API_KEY 环境变量，系统将自动为文章生成 AI 摘要
-- **代码高亮**: 使用 [Shiki](https://shiki.style/) 实现多种语言的代码高亮
-- **数学公式**: 支持 LaTeX 数学公式渲染
+  ```bash
+  make preview
+  ```
 
-## 部署
+### 部署
 
 构建完成后，前端文件位于 `frontend/dist/` 目录。
 

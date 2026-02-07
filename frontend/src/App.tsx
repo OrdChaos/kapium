@@ -13,6 +13,7 @@ import AboutPage from '@/pages/AboutPage';
 import PostPage from '@/pages/PostPage';
 import TemplatePage from '@/pages/TemplatePage';
 import TimelinePage from '@/pages/TimelinePage';
+import FeedPage from '@/pages/FeedPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
   const PostRoute = useCallback(() => <PostPage onSearchClick={openSearch} />, [openSearch]);
   const TemplateRoute = useCallback(() => <TemplatePage onSearchClick={openSearch} />, [openSearch]);
   const TimelineRoute = useCallback(() => <TimelinePage onSearchClick={openSearch} />, [openSearch]);
+  const FeedRoute = useCallback(() => <FeedPage onSearchClick={openSearch} />, [openSearch]);
   const NotFoundRoute = useCallback(() => <NotFoundPage onSearchClick={openSearch} />, [openSearch]);
 
   return (
@@ -53,6 +55,7 @@ export default function App() {
         <Route path="/posts/:id" component={PostRoute} />
         <Route path="/template" component={TemplateRoute} />
         <Route path="/timeline" component={TimelineRoute} />
+        <Route path="/feed" component={FeedRoute} />
         <Route component={NotFoundRoute} />
       </Switch>
       <Toaster />

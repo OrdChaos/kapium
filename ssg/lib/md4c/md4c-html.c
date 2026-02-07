@@ -84,6 +84,8 @@ struct MD_HTML_tag {
     int gi_current_row;
     int gi_row_remains;
     int skip_next_p;
+
+    int skip_p_in_gallery;
 };
 
 #define NEED_HTML_ESC_FLAG   0x1
@@ -474,6 +476,9 @@ enter_block_callback(MD_BLOCKTYPE type, void* detail, void* userdata)
         case MD_BLOCK_CODE:     render_open_code_block(r, (const MD_BLOCK_CODE_DETAIL*) detail); break;
         case MD_BLOCK_HTML:     /* noop */ break;
         case MD_BLOCK_P:{
+            if (r->in_gallery && r->skip_p_in_gallery) {
+                break;
+            }
             if(!r->skip_next_p) {
                 RENDER_VERBATIM(r, "<p>");
             }
@@ -544,6 +549,9 @@ leave_block_callback(MD_BLOCKTYPE type, void* detail, void* userdata)
         case MD_BLOCK_CODE:     RENDER_VERBATIM(r, "</code></pre>\n"); break;
         case MD_BLOCK_HTML:     /* noop */ break;
         case MD_BLOCK_P:{
+            if (r->in_gallery && r->skip_p_in_gallery) {
+                break;
+            }
             if (r->skip_next_p) {
                 r->skip_next_p = 0;
             } else {
@@ -567,23 +575,30 @@ enter_span_callback(MD_SPANTYPE type, void* detail, void* userdata)
 {
     MD_HTML* r = (MD_HTML*) userdata;
 
-    if(r->in_gallery && type == MD_SPAN_IMG) {
-        if(r->gi_row_remains <= 0) {
-            if(r->gi_current_row >= 0) RENDER_VERBATIM(r, "</div>\n"); 
+    if (r->in_gallery && type == MD_SPAN_IMG) {
+        if (r->gi_row_remains <= 0) {
+            if (r->gi_current_row >= 0) RENDER_VERBATIM(r, "</div>\n");
             
             r->gi_current_row++;
-            int row_count = (r->gi_current_row < r->gi_layout_size) ? r->gi_layout[r->gi_current_row] : 3;
+            int row_count = (r->gi_current_row < r->gi_layout_size) ? 
+                            r->gi_layout[r->gi_current_row] : 3;
             r->gi_row_remains = row_count;
 
             char buf[64];
             snprintf(buf, sizeof(buf), "<div class=\"gi-row gi-row-col-%d\">\n", row_count);
             RENDER_VERBATIM(r, buf);
         }
-        
+
         MD_SPAN_IMG_DETAIL* img = (MD_SPAN_IMG_DETAIL*) detail;
-        render_open_img_span(r, img);
-        RENDER_VERBATIM(r, "\">"); 
-        
+        RENDER_VERBATIM(r, "<img loading=\"lazy\" src=\"");
+        render_attribute(r, &img->src, render_url_escaped);
+
+        if (img->title.text != NULL) {
+            RENDER_VERBATIM(r, "\" title=\"");
+            render_attribute(r, &img->title, render_html_escaped);
+        }
+        RENDER_VERBATIM(r, "\">\n");
+
         r->gi_row_remains--;
         return 1;
     }
@@ -700,20 +715,22 @@ text_callback(MD_TEXTTYPE type, const MD_CHAR* text, MD_SIZE size, void* userdat
 {
     MD_HTML* r = (MD_HTML*) userdata;
 
-    if(type == MD_TEXT_NORMAL) {
-        if(size >= 5 && memcmp(text, "{% gi", 5) == 0) {
+    if (type == MD_TEXT_NORMAL) {
+        if (size >= 5 && memcmp(text, "{% gi", 5) == 0) {
             r->in_gallery = 1;
+            r->skip_p_in_gallery = 1;
             parse_gi_params(r, text, size);
             RENDER_VERBATIM(r, "</p><div class=\"gi-container\">\n");
-            r->skip_next_p = 1; 
+            r->skip_next_p = 1;
             return 0;
         }
 
-        if(r->in_gallery && size >= 8 && memcmp(text, "{% endgi", 8) == 0) {
-            if(r->gi_current_row >= 0) RENDER_VERBATIM(r, "</div>\n");
-            RENDER_VERBATIM(r, "</div>"); 
+        if (r->in_gallery && size >= 8 && memcmp(text, "{% endgi", 8) == 0) {
+            if (r->gi_current_row >= 0) RENDER_VERBATIM(r, "</div>\n");
+            RENDER_VERBATIM(r, "</div>\n"); 
             r->in_gallery = 0;
-            r->skip_next_p = 1; 
+            r->skip_p_in_gallery = 0;
+            r->skip_next_p = 1;
             return 0;
         }
     }
@@ -773,6 +790,7 @@ md_html(const MD_CHAR* input, MD_SIZE input_size,
     render.slug_used = 0;
     render.in_gallery = 0;
     render.gi_current_row = -1;
+    render.skip_p_in_gallery = 0;
     render.toc_list = NULL;
     render.toc_count = 0;
     render.toc_capacity = 0;

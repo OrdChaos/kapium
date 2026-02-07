@@ -150,10 +150,12 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
                                   </div>
                                 )}
                                 <Badge
+                                  role="button"
                                   key={post.category}
                                   variant="secondary" 
                                   className="cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground"
                                   onClick={(e) => {
+                                    e.preventDefault();
                                     e.stopPropagation();
                                     navigate(`/categories/${encodeURIComponent(post.category)}`);
                                   }}
@@ -163,10 +165,12 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
                                 <div className="flex flex-wrap gap-2">
                                   {post.tags.map((tag) => (
                                     <Badge
+                                      role="button"
                                       key={tag}
                                       variant="outline"
                                       className="text-xs cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground"
                                       onClick={(e) => {
+                                        e.preventDefault();
                                         e.stopPropagation();
                                         navigate(`/tags/${encodeURIComponent(tag)}`);
                                       }}

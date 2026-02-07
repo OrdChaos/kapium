@@ -6,7 +6,7 @@ function processLatexPrerender() {
   const postsDir = process.argv[2];
   
   if (!fs.existsSync(postsDir)) {
-    console.error(`[SCRIPT.MATH] Posts directory does not exist: ${postsDir}`);
+    console.error(`[SCRIPT.MATH] 目录不存在: ${postsDir}`);
     return;
   }
 
@@ -43,7 +43,7 @@ function processLatexPrerender() {
           
           return `<x-equation class="rendered-equation" data-type="${type || 'inline'}">${rendered}</x-equation>`;
         } catch (error) {
-          console.warn(`[SCRIPT.MATH] Failed to render formula: ${decodedFormula.substring(0, 20)}...`);
+          console.warn(`[SCRIPT.MATH] 无法解析语法： ${decodedFormula.substring(0, 20)}...`);
           return match;
         }
       }
@@ -53,7 +53,7 @@ function processLatexPrerender() {
     processedCount++;
   });
 
-  console.log(`[SCRIPT.MATH] Successfully pre-rendered LaTeX for ${processedCount} post files.`);
+  console.log(`[SCRIPT.MATH] 成功进行了 ${processedCount} 篇文章的LaTeX预渲染`);
 }
 
 processLatexPrerender();

@@ -12,6 +12,7 @@ import SocialShare from '@/components/SocialShare';
 import Twikoo from '@/components/Twikoo';
 
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 
 interface TocItem {
@@ -231,6 +232,9 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
         close={() => setOpen(false)}
         index={index}
         slides={images}
+        plugins={[Zoom]}
+        zoom={{ maxZoomPixelRatio: 2.5 }}
+        styles={{ button: { filter: "none" } }}
       />
 
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>

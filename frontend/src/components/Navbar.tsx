@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'wouter';
-import { Menu, X, Moon, Sun, Search, ChevronDown } from 'lucide-react';
+import { Menu, X, Moon, Sun, Search, ChevronDown, Rss } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 
@@ -75,7 +75,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
           </Link>
 
           {/* ================= Desktop ================= */}
-          <div className="hidden md:flex items-center gap-4"> {/* 还原 gap-4 */}
+          <div className="hidden md:flex items-center gap-4">
             {navItems.map((item, idx) => {
               const isActive =
                 item.href === location ||
@@ -84,7 +84,6 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
               if (item.children) {
                 return (
                   <div key={item.label} className="relative group">
-                    {/* 母项 - 还原 pl-1 pr-[2px] py-1 */}
                     <div
                       className={`
                         flex items-center gap-1 pl-1 pr-[2px] py-1
@@ -98,7 +97,6 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                       <ChevronDown className="h-3 w-3 transition-transform group-hover:rotate-180" />
                     </div>
 
-                    {/* 子菜单 */}
                     <div className="absolute left-0 top-full w-24 pt-[2px] opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50">
                       <div className="rounded-md border border-border bg-card shadow-md py-2">
                         {item.children.map((c) => (
@@ -139,6 +137,11 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
               <Button variant="ghost" size="icon" onClick={onSearchClick}>
                 <Search className="h-5 w-5" />
               </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <a href="/feed" target="_blank" rel="noopener noreferrer" aria-label="RSS Feed">
+                  <Rss className="h-5 w-5" />
+                </a>
+              </Button>
               <Button variant="ghost" size="icon" onClick={toggleTheme}>
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
@@ -147,14 +150,19 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
 
           {/* ================= Mobile Buttons ================= */}
           <div className="flex items-center gap-2 md:hidden">
+            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
             <Button variant="ghost" size="icon" onClick={onSearchClick}>
               <Search className="h-5 w-5" />
             </Button>
+            <Button variant="ghost" size="icon" asChild>
+              <a href="/feed" target="_blank" rel="noopener noreferrer" aria-label="RSS Feed">
+                <Rss className="h-5 w-5" />
+              </a>
+            </Button>
             <Button variant="ghost" size="icon" onClick={toggleTheme}>
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
@@ -177,14 +185,14 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
 
                 if (item.children) {
                   return (
-                    <div key={item.label}>
+                    <div key={item.label} className="mb-1">
                       <button
                         onClick={() =>
                           setOpenMenus((s) => ({ ...s, [idx]: !s[idx] }))
                         }
                         className={`
                           w-full flex items-center justify-between
-                          pl-2 pr-[6px] py-2 mb-1
+                          pl-2 pr-[6px] py-2
                           text-sm font-medium text-left
                           transition-colors
                           hover:text-primary
@@ -200,7 +208,7 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                       </button>
 
                       {openMenus[idx] && (
-                        <div className="flex flex-col pl-2 mb-3">
+                        <div className="flex flex-col pl-2">
                           {item.children.map((c) => (
                             <a
                               key={c.href}

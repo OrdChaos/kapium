@@ -32,13 +32,13 @@ async function processPosts() {
   const postsDir = process.argv[2];
 
   if (!postsDir || !fs.existsSync(postsDir)) {
-    console.error(`[ERROR] 请提供 posts 目录： node auto-spacing-dom.js ./posts`);
+    console.error(`[SCRIPT.SPACE] 请提供 posts 目录： node auto-spacing-dom.js ./posts`);
     process.exit(1);
   }
 
   const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.json'));
   if (files.length === 0) {
-    console.log('[INFO] 无 .json 文件');
+    console.log('[SCRIPT.SPACE] 无 .json 文件');
     return;
   }
 
@@ -49,7 +49,7 @@ async function processPosts() {
     try {
       post = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } catch {
-      console.warn(`[WARN] ${file} 无效 JSON`);
+      console.warn(`[SCRIPT.SPACE] ${file} 无效 JSON`);
       continue;
     }
 
@@ -60,17 +60,17 @@ async function processPosts() {
 
     if (post.content !== before) {
       fs.writeFileSync(filePath, JSON.stringify(post, null, 2), 'utf8');
-      console.log(`[OK] ${file} 已更新`);
+      console.log(`[SCRIPT.SPACE] ${file} 已更新`);
       count++;
     } else {
-      console.log(`[SKIP] ${file} 无需变更`);
+      console.log(`[SCRIPT.SPACE] ${file} 无需变更`);
     }
   }
 
-  console.log(`\n[SUCCESS] 更新了 ${count} 个文件`);
+  console.log(`\n[SCRIPT.SPACE] 更新了 ${count} 个文件`);
 }
 
 processPosts().catch(err => {
-  console.error('[ERROR]', err);
+  console.error('[SCRIPT.SPACE]', err);
   process.exit(1);
 });

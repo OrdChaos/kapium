@@ -1,5 +1,4 @@
-/* 普通图片样式 */
-img:not(.gi-row img):not(.avatar) {
+#post-content img:not(.gi-row img) {
     max-height: 70vh; 
     min-height: 200px; 
     
@@ -10,14 +9,30 @@ img:not(.gi-row img):not(.avatar) {
 
     display: block;
     margin: 20px auto;
-    border-radius: 4px;
+    border-radius: var(--radius);
 }
 
-.lazy {
-  opacity: 0;
+#post-content img {
+  cursor: zoom-in !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, scale 0.2s ease;
 }
 
-.lazy.loaded {
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+#post-content img:hover {
+  scale: 1.005;
+}
+
+#post-content a img {
+  cursor: pointer;
+}
+
+.yarl__root,
+.yarl__container {
+  background: color-mix(in srgb, #000000 20%, transparent) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  border-radius: var(--radius-lg);
+}
+
+.dark .yarl__root,
+.dark .yarl__container {
+  background: color-mix(in srgb, #000000 40%, transparent) !important;
 }

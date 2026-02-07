@@ -8,6 +8,7 @@ interface NotFoundPageProps {
 }
 
 export default function NotFoundPage({ onSearchClick }: NotFoundPageProps) {
+  document.title = '404 - ' + import.meta.env.VITE_SITE_TITLE;
   return (
     <Layout onSearchClick={onSearchClick}>
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">

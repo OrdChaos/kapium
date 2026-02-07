@@ -121,7 +121,6 @@ pre code {
 
 pre.shiki .line:last-child:empty { display: none; }
 
-/* 6. 滚动条美化 (Webkit) */
 pre::-webkit-scrollbar { height: 6px; width: 6px; }
 pre::-webkit-scrollbar-track { background: transparent; }
 pre::-webkit-scrollbar-thumb {

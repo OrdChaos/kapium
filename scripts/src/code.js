@@ -6,7 +6,7 @@ async function processCodeBlocks() {
   const postsDir = process.argv[2];
   
   if (!fs.existsSync(postsDir)) {
-    console.error(`[ERROR] 目录不存在: ${postsDir}`);
+    console.error(`[SCRIPT.CODE] 目录不存在: ${postsDir}`);
     return;
   }
 
@@ -61,7 +61,7 @@ async function processCodeBlocks() {
           ${highlightedHtml}
         </div>`.trim();
       } catch (error) {
-        console.warn(`[WARN] 文件 ${file} 中的代码块处理失败:`, error.message);
+        console.warn(`[SCRIPT.CODE] 文件 ${file} 中的代码块处理失败:`, error.message);
         return fullMatch; // 失败则保留原样
       }
     });
@@ -69,7 +69,7 @@ async function processCodeBlocks() {
     fs.writeFileSync(filePath, JSON.stringify(post, null, 2));
   }
 
-  console.log(`[SUCCESS] 已处理 ${postFiles.length} 个文件。`);
+  console.log(`[SCRIPT.CODE] 已处理 ${postFiles.length} 个文件。`);
   highlighter.dispose();
 }
 

@@ -89,7 +89,17 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
                     <Card className="transition-all duration-300 hover:shadow-lg hover:border-primary/50">
                       <CardHeader>
                         <div className="mb-2">
-                          <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
+                          <Badge
+                            key={post.category}
+                            variant="secondary"
+                            className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/categories/${encodeURIComponent(post.category)}`);
+                            }}
+                          >
+                            {post.category}
+                          </Badge>
                         </div>
                         <CardTitle className="hover:text-primary transition-colors">{post.title}</CardTitle>
                         <CardDescription>{post.excerpt}</CardDescription>
