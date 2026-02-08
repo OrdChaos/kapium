@@ -80,7 +80,7 @@ return (
                 className="font-mono text-sm"
                 onClick={(e) => (e.target as HTMLInputElement).select()}
               />
-              <Button onClick={handleCopy} className="gap-2 whitespace-nowrap duration-300">
+              <Button onClick={handleCopy} className="gap-2 whitespace-nowrap duration-300 active:scale-95">
                 <Copy className="h-4 w-4" />
                 复制链接
               </Button>
