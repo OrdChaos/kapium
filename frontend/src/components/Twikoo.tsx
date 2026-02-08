@@ -1,4 +1,4 @@
-import { useEffect, lazy} from 'react'
+import { useEffect, lazy, Suspense} from 'react'
 //import twikoo from 'twikoo/dist/twikoo.nocss'
 import 'twikoo/dist/twikoo.css'
 
@@ -28,6 +28,8 @@ const LazyTwikoo = lazy(async () => {
 
 export default function Twikoo(props: TwikooProps) {
   return (
-    <LazyTwikoo {...props} />
+    <Suspense fallback={<div>评论加载中...</div>}>
+      <LazyTwikoo {...props} />
+    </Suspense>
   )
 }
