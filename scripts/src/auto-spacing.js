@@ -5,7 +5,6 @@ const pangu = require('pangu');
 function autoSpacingContent(html) {
   if (typeof html !== 'string' || !html.trim()) return html;
 
-  // 保护代码块
   const protectedBlocks = [];
   let blockIndex = 0;
 
@@ -21,13 +20,11 @@ function autoSpacingContent(html) {
 
   content = pangu.spacingText(content);
 
-  // 恢复代码块
   content = content.replace(/__PROTECT_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
 
   return content;
 }
 
-// 主逻辑（同你原来的代码块处理脚本风格）
 async function processPosts() {
   const postsDir = process.argv[2];
 

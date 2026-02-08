@@ -14,7 +14,6 @@ export default function Layout({ children, onSearchClick }: LayoutProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      // 当页面滚动超过一定距离时显示返回顶部按钮
       if (window.scrollY > 300) {
         setShowTopButton(true);
       } else {

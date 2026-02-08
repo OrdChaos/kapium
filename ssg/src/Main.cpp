@@ -36,7 +36,7 @@ auto main(int argc, char* argv[]) -> int {
         if (!std::filesystem::exists(meta_output)) {
             if (
                 std::filesystem::create_directories(meta_output / "posts") &&
-                std::filesystem::create_directories(meta_output / "pages") &&
+                std::filesystem::create_directories(meta_output / "data") &&
                 std::filesystem::create_directories(meta_output / "info")
             ) {
                 std::cout << "[SSG] Created output directory: " << meta_output << std::endl;
@@ -105,7 +105,6 @@ auto main(int argc, char* argv[]) -> int {
         }
         std::ofstream(json_out) << composed_post_json.dump(4);
 
-        // Build indices
         nlohmann::json idx {
             {"id", abbr},
             {"title", composed_post_json["title"]},
@@ -149,8 +148,38 @@ auto main(int argc, char* argv[]) -> int {
             return a["date"] > b["date"];
         });
 
-    std::ofstream(meta_output / "pages" / "posts.json")
+    std::ofstream(meta_output / "data" / "posts.json")
         << nlohmann::json(all_posts).dump(4);
+
+    nlohmann::json post_navigation = nlohmann::json::object();
+    for (size_t i = 0; i < all_posts.size(); ++i) {
+        const auto& curr = all_posts[i];
+        const std::string curr_id = curr["id"].get<std::string>();
+
+        nlohmann::json entry;
+
+        if (i + 1 < all_posts.size()) {
+            const auto& prev_post = all_posts[i + 1];
+            entry["prev"] = {
+                {"id",    prev_post["id"]},
+                {"title", prev_post["title"]}
+            };
+        } else {
+            entry["prev"] = nullptr;
+        }
+
+        if (i > 0) {
+            const auto& next_post = all_posts[i - 1];
+            entry["next"] = {
+                {"id",    next_post["id"]},
+                {"title", next_post["title"]}
+            };
+        } else {
+            entry["next"] = nullptr;
+        }
+
+        post_navigation[curr_id] = entry;
+    }
 
     nlohmann::json categories = nlohmann::json::array();
     for (auto& [k, v] : categories_count.items()) {
@@ -166,11 +195,13 @@ auto main(int argc, char* argv[]) -> int {
     for (auto& [k, v] : tags_count.items())
         tags.push_back({{"name", k}, {"count", v}});
 
-    std::ofstream(meta_output / "pages" / "categories.json") << categories.dump(4);
-    std::ofstream(meta_output / "pages" / "tags.json") << tags.dump(4);
-    std::ofstream(meta_output / "pages" / "categoryPosts.json") << category_posts.dump(4);
-    std::ofstream(meta_output / "pages" / "tagPosts.json") << tag_posts.dump(4);
-    std::ofstream(meta_output / "pages" / "searchResults.json") << search_results.dump(4);
+
+    std::ofstream(meta_output / "data" / "postNavigation.json") << post_navigation.dump(4);
+    std::ofstream(meta_output / "data" / "categories.json") << categories.dump(4);
+    std::ofstream(meta_output / "data" / "tags.json") << tags.dump(4);
+    std::ofstream(meta_output / "data" / "categoryPosts.json") << category_posts.dump(4);
+    std::ofstream(meta_output / "data" / "tagPosts.json") << tag_posts.dump(4);
+    std::ofstream(meta_output / "data" / "searchResults.json") << search_results.dump(4);
 
     std::string rss_content = xml_generator::generate_rss(all_posts);
     std::string sitemap_content = xml_generator::generate_sitemap(all_posts, categories, tags);

@@ -12,9 +12,7 @@ export default function NotFoundPage({ onSearchClick }: NotFoundPageProps) {
   return (
     <Layout onSearchClick={onSearchClick}>
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
-        {/* 404 Content Container */}
         <div className="w-full max-w-md text-center">
-          {/* Large 404 Number */}
           <div className="mb-8">
             <h1 className="text-9xl font-bold text-primary/20">404</h1>
             <div className="relative -mt-12 mb-6">
@@ -24,12 +22,10 @@ export default function NotFoundPage({ onSearchClick }: NotFoundPageProps) {
             </div>
           </div>
 
-          {/* Description */}
           <p className="mb-8 text-muted-foreground">
             抱歉，您访问的页面不存在。可能是链接已过期或输入错误。
           </p>
 
-          {/* Action Buttons */}
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link href="/">
               <Button 

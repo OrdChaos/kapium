@@ -89,7 +89,7 @@ export default function SocialShare({ title, url }: SocialShareProps) {
   ];
 
   const buttonClass =
-    'flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background text-foreground transition-all shadow hover:shadow-lg hover:border-primary/50 active:scale-95';
+    'flex h-9 w-9 items-center justify-center rounded-md border border-border/70 bg-background text-foreground transition-all hover:border-primary/50 hover:bg-muted/50 transition-colors';
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -113,7 +113,6 @@ export default function SocialShare({ title, url }: SocialShareProps) {
         </Tooltip>
       ))}
 
-      {/* copy link */}
       <Tooltip>
         <TooltipTrigger asChild>
           <button

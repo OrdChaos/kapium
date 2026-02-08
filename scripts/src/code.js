@@ -10,7 +10,6 @@ async function processCodeBlocks() {
     return;
   }
 
-  // 1. 初始化 Shiki
   const highlighter = await createHighlighter({
     themes: ['github-light', 'github-dark'],
     langs: ['javascript', 'python', 'html', 'css', 'bash', 'json', 'cpp', 'c', 'rust', 'yaml', 'typescript', 'shell']
@@ -22,11 +21,9 @@ async function processCodeBlocks() {
     const filePath = path.join(postsDir, file);
     const post = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     
-    // 2. 使用 replace 的回调函数模式，避免重复内容被错误替换
     const codeBlockRegex = /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g;
 
     post.content = post.content.replace(codeBlockRegex, (fullMatch, lang, code) => {
-      // 3. 反转义 HTML 实体，还原原始代码供 Shiki 处理
       const rawCode = code
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
@@ -45,14 +42,12 @@ async function processCodeBlocks() {
           transformers: [{
             line(node, line) {
               node.properties['data-line'] = line;
-              // 确保每一行都有 .line 类名，方便 CSS 和 JS 识别
               if (!node.properties.className) node.properties.className = [];
               node.properties.className.push('line');
             }
           }]
         });
 
-        // 4. 包装自定义外壳
         return `<div class="code-block-wrapper">
           <div class="code-block-header">
             <span class="code-lang">${lang.toUpperCase()}</span>
@@ -62,7 +57,7 @@ async function processCodeBlocks() {
         </div>`.trim();
       } catch (error) {
         console.warn(`[SCRIPT.CODE] 文件 ${file} 中的代码块处理失败:`, error.message);
-        return fullMatch; // 失败则保留原样
+        return fullMatch;
       }
     });
 

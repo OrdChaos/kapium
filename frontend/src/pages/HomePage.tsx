@@ -14,9 +14,8 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   const [posts, setPosts] = useState<any[] | null>(null);
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 21; // 每页最多7排，每排最多3篇（lg:grid-cols-3）
+  const postsPerPage = 21;
   
-  // 使用路由参数获取当前页码
   const [location] = useLocation();
   const pageFromUrl = parseInt(location.split('/')[2]) || 1;
 
@@ -34,22 +33,18 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
     }
   }, [posts, visible]);
 
-  // 如果URL中的页码与状态不同，则更新状态
   useEffect(() => {
     if (pageFromUrl !== currentPage) {
       setCurrentPage(pageFromUrl);
     }
   }, [pageFromUrl]);
 
-  // 计算分页
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts ? posts.slice(indexOfFirstPost, indexOfLastPost) : [];
   const totalPages = posts ? Math.ceil(posts.length / postsPerPage) : 0;
 
-  // 分页导航函数
   const goToPage = (pageNumber: number) => {
-    // 使用 wouter 的路由跳转而不是 hash
     if (pageNumber === 1) {
       window.location.pathname = '/';
     } else {
@@ -137,7 +132,6 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
             ))}
         </div>
 
-        {/* 分页导航 */}
         {totalPages > 1 && (
           <div className="mt-12 flex flex-col items-center">
             <div className="flex items-center gap-2">

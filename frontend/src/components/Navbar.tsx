@@ -69,12 +69,10 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
             {import.meta.env.VITE_SITE_TITLE}
           </Link>
 
-          {/* ================= Desktop ================= */}
           <div className="hidden md:flex items-center gap-4">
             {navItems.map((item, idx) => {
               const isActive =
@@ -138,9 +136,9 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
                 <Search className="h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="/feed" target="_blank" rel="noopener noreferrer" aria-label="RSS Feed">
+                <Link href="/feed" aria-label="RSS Feed">
                   <Rss className="h-5 w-5" />
-                </a>
+                </Link>
               </Button>
               <Button variant="ghost" size="icon" onClick={toggleTheme}>
                 {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -148,7 +146,6 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
             </div>
           </div>
 
-          {/* ================= Mobile Buttons ================= */}
           <div className="flex items-center gap-2 md:hidden">
             <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -157,9 +154,9 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
               <Search className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="icon" asChild>
-              <a href="/feed" target="_blank" rel="noopener noreferrer" aria-label="RSS Feed">
+              <Link href="/feed" aria-label="RSS Feed">
                 <Rss className="h-5 w-5" />
-              </a>
+              </Link>
             </Button>
             <Button variant="ghost" size="icon" onClick={toggleTheme}>
               {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -167,7 +164,6 @@ export default function Navbar({ onSearchClick }: NavbarProps) {
           </div>
         </div>
 
-        {/* ================= Mobile Menu ================= */}
         {isOpen && (
           <div 
             className={`

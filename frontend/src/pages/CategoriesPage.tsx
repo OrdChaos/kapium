@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, ChevronRight, Loader2 } from 'lucide-react'; // 引入 Loader2
+import { Calendar, Clock, ChevronRight, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
 
@@ -10,7 +10,7 @@ interface CategoriesPageProps {
   onSearchClick: () => void;
 }
 
-const ITEMS_PER_PAGE = 10; // 每次加载10篇文章
+const ITEMS_PER_PAGE = 10;
 
 export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   const [, navigate] = useLocation();
@@ -21,7 +21,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   const [categoryPosts, setCategoryPosts] = useState<Record<string, any[]> | null>(null);
   const [visible, setVisible] = useState(false);
   
-  // 分页状态：当前显示的条数
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -32,7 +31,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
       document.title = '文章分类 - ' + import.meta.env.VITE_SITE_TITLE;
     }
     
-    // 切换分类时重置加载数量
     setDisplayLimit(ITEMS_PER_PAGE);
 
     Promise.all([
@@ -50,7 +48,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
     }
   }, [categories, categoryPosts, visible]);
 
-  // 无限滚动逻辑
   const lastElementRef = useCallback((node: HTMLDivElement | null) => {
     if (observer.current) observer.current.disconnect();
     
@@ -66,7 +63,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   const decodedCategory = category ? decodeURIComponent(category) : null;
   const allPostsForCategory = decodedCategory && categoryPosts ? (categoryPosts[decodedCategory] || []) : [];
   
-  // 截取当前需要显示的文章
   const visiblePosts = allPostsForCategory.slice(0, displayLimit);
 
   return (
@@ -78,7 +74,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
       />
       <div className={`transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         
-        {/* 有具体分类时：显示文章列表（带无限滚动） */}
         {category && categories && categoryPosts ? (
           <div className="container mx-auto px-4 py-12">
             <div className="mx-auto max-w-4xl space-y-2">
@@ -91,7 +86,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
                     className="block mb-6 cursor-pointer" 
                     key={post.id} 
                     onClick={() => navigate(`/posts/${post.id}`)}
-                    ref={isLast && hasMore ? lastElementRef : null} // 只在确实还有更多时挂载监听器
+                    ref={isLast && hasMore ? lastElementRef : null}
                   >
                     <Card className="transition-all duration-300 hover:shadow-lg hover:border-primary/50">
                       <CardHeader>
@@ -134,7 +129,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
                 );
               })}
 
-              {/* 加载动画 */}
               {visiblePosts.length < allPostsForCategory.length && (
                 <div className="flex justify-center py-8">
                   <Loader2 className="h-6 w-6 animate-spin text-primary/50" />
@@ -144,7 +138,6 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
           </div>
         ) : null}
 
-        {/* 无具体分类时：显示全部分类列表 */}
         {!category && categories && categoryPosts ? (
           <div className="container mx-auto px-4 py-12">
             <div className="mx-auto grid max-w-4xl gap-2 grid-cols-1">

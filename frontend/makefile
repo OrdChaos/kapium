@@ -13,9 +13,6 @@ init:
 build:
 	@bun --no-env-file run build
 
-preview:
-	@$(NPM) run preview
-
 dev:
 	@$(BUN) dev --host
 

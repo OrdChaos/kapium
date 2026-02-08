@@ -5,11 +5,11 @@
 
 .gi-row {
   display: grid;
-  grid-auto-flow: column;     /* 横向排列 */
-  grid-auto-columns: 1fr;     /* 每列等宽 */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 8px;
   margin-bottom: 8px;
-  align-items: start;         /* ← 关键：顶部对齐，矮的下面留白 */
+  align-items: start;
 }
 
 .gi-row img {

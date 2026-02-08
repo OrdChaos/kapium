@@ -13,7 +13,6 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // 设置页面标题
     document.title = '友链 - ' + import.meta.env.VITE_SITE_TITLE;
     
     fetch('/data/links.json')

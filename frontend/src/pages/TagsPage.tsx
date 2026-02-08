@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Card, CardDescription, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Hash, Loader2 } from 'lucide-react'; // 引入加载图标
+import { Calendar, Clock, Hash, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
 
@@ -10,7 +10,7 @@ interface TagsPageProps {
   onSearchClick: () => void;
 }
 
-const ITEMS_PER_PAGE = 20; // 每次加载的数量
+const ITEMS_PER_PAGE = 20;
 
 export default function TagsPage({ onSearchClick }: TagsPageProps) {
   const [, navigate] = useLocation();
@@ -23,10 +23,8 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
   const [visible, setVisible] = useState(false);
   const [page, setPage] = useState(1);
 
-  // 观察器引用
   const observer = useRef<IntersectionObserver | null>(null);
   
-  // 最后一个元素的 Ref 回调
   const lastElementRef = useCallback((node: HTMLDivElement) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
@@ -50,12 +48,10 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
     ]).then(([tagsData, tagPostsData]) => {
       setAllTags(tagsData);
       setTagPosts(tagPostsData);
-      // 初始化第一页
       setDisplayedTags(tagsData.slice(0, ITEMS_PER_PAGE));
     });
   }, [tag]);
 
-  // 当页码改变时，增加显示的内容
   useEffect(() => {
     if (allTags && page > 1) {
       const nextBatch = allTags.slice(0, page * ITEMS_PER_PAGE);
@@ -148,7 +144,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
                     <Link key={t.name} href={`/tags/${encodeURIComponent(t.name)}`}>
                       <div 
                         className="inline-block p-2" 
-                        ref={isLast ? lastElementRef : null} // 挂载监听器到最后一个元素
+                        ref={isLast ? lastElementRef : null}
                       >
                         <Badge
                           variant="outline"
@@ -165,7 +161,6 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
                 })}
               </div>
               
-              {/* 加载指示器 */}
               {allTags && displayedTags.length < allTags.length && (
                 <div className="flex justify-center mt-8">
                   <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />

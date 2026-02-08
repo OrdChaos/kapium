@@ -1,5 +1,5 @@
 import { Route, Switch } from 'wouter';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import UmamiAnalytics from '@danielgtmn/umami-react';
 
@@ -15,14 +15,27 @@ import TemplatePage from '@/pages/TemplatePage';
 import TimelinePage from '@/pages/TimelinePage';
 import FeedPage from '@/pages/FeedPage';
 import NotFoundPage from '@/pages/NotFoundPage';
+import OfflinePage from '@/pages/OfflinePage';
 
 export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // 稳定的打开搜索函数
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const openSearch = useCallback(() => setSearchOpen(true), [setSearchOpen]);
 
-  // 为每条路由创建 memoized wrapper，防止因 App 重新渲染导致路由组件引用变化从而重挂载页面
   const HomeRoute = useCallback(() => <HomePage onSearchClick={openSearch} />, [openSearch]);
   const CategoriesRoute = useCallback(() => <CategoriesPage onSearchClick={openSearch} />, [openSearch]);
   const TagsRoute = useCallback(() => <TagsPage onSearchClick={openSearch} />, [openSearch]);
@@ -33,6 +46,24 @@ export default function App() {
   const TimelineRoute = useCallback(() => <TimelinePage onSearchClick={openSearch} />, [openSearch]);
   const FeedRoute = useCallback(() => <FeedPage onSearchClick={openSearch} />, [openSearch]);
   const NotFoundRoute = useCallback(() => <NotFoundPage onSearchClick={openSearch} />, [openSearch]);
+  const OfflineRoute = useCallback(() => <OfflinePage onSearchClick={openSearch} />, [openSearch]);
+
+  // 如果离线，始终显示离线页面
+  if (!isOnline) {
+    return (
+      <>
+        <UmamiAnalytics
+          url={import.meta.env.VITE_UMAMI_API_URL}
+          websiteId={import.meta.env.VITE_UMAMI_WEBSITE_ID}
+          lazyLoad={true}
+        />
+        <ScrollToTop />
+        <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+        <OfflineRoute />
+        <Toaster />
+      </>
+    );
+  }
 
   return (
     <>

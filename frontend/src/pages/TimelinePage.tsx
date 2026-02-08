@@ -42,7 +42,6 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
   const [visible, setVisible] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // 初始阈值：累计文章数达到 BATCH_SIZE 时停止初始加载
   const BATCH_SIZE = 30;
 
   useEffect(() => {
@@ -67,7 +66,6 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
         const arr = Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
         setMonths(arr);
 
-        // 计算初始需要显示的月份数量
         let acc = 0;
         let count = 0;
         for (const m of arr) {
@@ -79,14 +77,12 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
       });
   }, []);
 
-  // 渐显控制
   useEffect(() => {
     if (!visible && months.length > 0) {
       requestAnimationFrame(() => setVisible(true));
     }
   }, [months, visible]);
 
-  // 滚动监听逻辑
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el || months.length === 0) return;
@@ -94,7 +90,6 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting && visibleMonths < months.length) {
-          // 触底时增加加载 2 个月份
           setVisibleMonths((v) => Math.min(v + 2, months.length));
         }
       },
@@ -191,7 +186,6 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
             </section>
           ))}
 
-          {/* 哨兵元素：用于触发加载更多 */}
           <div ref={sentinelRef} style={{ height: '20px' }} />
         </div>
       </div>

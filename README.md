@@ -49,7 +49,7 @@
 
 - C++ 17+
 - make
-- Node.js v18+
+- Node.js v18+ 以及一系列 npm 包
 - Git
 - OpenSSL
 

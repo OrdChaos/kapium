@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag, Bot } from 'lucide-react';
+import { Calendar, Clock, Tag, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -35,6 +35,10 @@ interface PostPageProps {
 export default function PostPage({ onSearchClick }: PostPageProps) {
   const { id } = useParams();
   const [post, setPost] = useState<any | null>(null);
+  const [navigation, setNavigation] = useState<{
+    prev: { id: string; title: string } | null;
+    next: { id: string; title: string } | null;
+  } | null>(null);
   const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -45,16 +49,37 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   const isManualScrolling = useRef(false);
   const scrollEndTimeoutRef = useRef<number | null>(null);
 
-  /* 1. 加载文章数据 */
   useEffect(() => {
     if (!id) return;
-    fetch(`/data/posts/${id}.json`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then(setPost)
-      .catch(() => setPost(null));
+
+    const fetchData = async () => {
+      try {
+        const [postRes, navRes] = await Promise.all([
+          fetch(`/data/posts/${id}.json`),
+          fetch('/data/postNavigation.json')
+        ]);
+
+        if (postRes.ok) {
+          const postData = await postRes.json();
+          setPost(postData);
+        } else {
+          setPost(null);
+        }
+
+        if (navRes.ok) {
+          const navData = await navRes.json();
+          setNavigation(navData[id] || { prev: null, next: null });
+        }
+      } catch (err) {
+        console.error('Failed to load post or navigation', err);
+        setPost(null);
+        setNavigation(null);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
-  /* 2. 入场动画与标题设置 */
   useEffect(() => {
     if (post) {
       document.title = `${post.title} - ${import.meta.env.VITE_SITE_TITLE}`;
@@ -64,7 +89,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     }
   }, [post, visible]);
 
-  /* 3. 结构化 TOC (由后端的 post.toc 提供数据源) */
   const tocAndOffsets = useMemo(() => {
     if (!post || !post.toc) return { toc: [], offsets: [] };
 
@@ -93,9 +117,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     return { toc: nodes, offsets };
   }, [post]);
 
-  /* 4. 核心更新逻辑：计算所有标题相对于文档顶部的距离 */
   const updateOffsets = useCallback(() => {
-    // 如果用户正在手动平滑滚动中，不更新位置，避免 Spy 逻辑冲突
     if (isManualScrolling.current) return;
 
     const newOffsets = tocAndOffsets.offsets.map((h) => {
@@ -109,18 +131,15 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     headingOffsets.current = newOffsets;
   }, [tocAndOffsets]);
 
-  /* 5. 纯监听机制：取代固定时间刷新 */
   useEffect(() => {
     const contentEl = document.getElementById('post-content');
     if (!post || !contentEl) return;
 
-    // A. 监听内容容器高度变化 (处理 Lazyload 图片撑开、DOM 变化)
     const resizeObserver = new ResizeObserver(() => {
       updateOffsets();
     });
     resizeObserver.observe(contentEl);
 
-    // B. 监听图片加载 (捕获阶段，确保所有子图片 load 时都能触发)
     const handleImgLoad = (e: Event) => {
       if ((e.target as HTMLElement).tagName === 'IMG') {
         updateOffsets();
@@ -128,11 +147,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     };
     contentEl.addEventListener('load', handleImgLoad, true);
 
-    // C. 监听窗口缩放
     window.addEventListener('resize', updateOffsets);
 
-    // D. 初始渲染检测
-    // 使用 requestAnimationFrame 代替 setTimeout，确保在下一帧渲染后计算
     requestAnimationFrame(updateOffsets);
 
     return () => {
@@ -142,12 +158,11 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     };
   }, [post, updateOffsets]);
 
-  /* 6. Scroll Spy 监听 */
   useEffect(() => {
     const onScroll = () => {
       if (isManualScrolling.current || headingOffsets.current.length === 0) return;
 
-      const triggerPoint = window.scrollY + 100; // 这里的 100 对应 Header 高度 + 冗余
+      const triggerPoint = window.scrollY + 100;
       let current: { id: string; parentId: string | null } | null = null;
 
       for (const h of headingOffsets.current) {
@@ -168,7 +183,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, [activeId]);
 
-  /* 7. TOC 点击跳转处理 */
   const handleTocClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     targetId: string,
@@ -182,13 +196,11 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     setActiveId(targetId);
     setExpandedId(parentId || targetId);
 
-    const offset = 80; // 需与 CSS 中的 scroll-margin-top 对应
+    const offset = 80;
     const targetTop = element.getBoundingClientRect().top + window.pageYOffset - offset;
 
     window.scrollTo({ top: targetTop, behavior: 'smooth' });
 
-    // 滚动完成后恢复监视
-    // 这里使用 checkScrollEnd 来精准判断滚动结束
     const checkScrollEnd = () => {
       if (scrollEndTimeoutRef.current) window.clearTimeout(scrollEndTimeoutRef.current);
       scrollEndTimeoutRef.current = window.setTimeout(() => {
@@ -199,10 +211,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     window.addEventListener('scroll', checkScrollEnd, { passive: true });
   };
 
-  /* 8. 代码块复制 */
   useGlobalCopy();
 
-  /* 9. 图片灯箱 */
   const images = useMemo(() => {
     if (!post?.content) return [];
     const parser = new DOMParser();
@@ -287,11 +297,10 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                 )}
 
                 <article className="prose prose-neutral dark:prose-invert max-w-none">
-                  {/* 内容注入点 */}
                   <div 
                     id="post-content" 
                     dangerouslySetInnerHTML={{ __html: post.content }} 
-                    onClick={handleContentClick} // 绑定点击事件
+                    onClick={handleContentClick}
                   />
                 </article>
 
@@ -306,11 +315,70 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
 
                 <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
 
-                <br />
+                {navigation && (
+                  <div className="mt-4 pt-4 mb-8">
+                    <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
+                      <div className="flex-1 min-w-0">
+                        {navigation.next ? (
+                          <Link
+                            to={`/posts/${navigation.next.id}`}
+                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                              <ChevronLeft className="h-4 w-4" />
+                              <span className="font-medium">下一篇</span>
+                            </div>
+                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                              {navigation.next.title}
+                            </div>
+                          </Link>
+                        ) : (
+                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                            <div className="flex items-center gap-2 mb-1">
+                              <ChevronLeft className="h-4 w-4" />
+                              <span className="font-medium">下一篇</span>
+                            </div>
+                            <div className="line-clamp-2 font-medium">
+                              已是最新文章
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0 text-right sm:text-left">
+                        {navigation.prev ? (
+                          <Link
+                            to={`/posts/${navigation.prev.id}`}
+                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
+                              <span className="font-medium">上一篇</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </div>
+                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                              {navigation.prev.title}
+                            </div>
+                          </Link>
+                        ) : (
+                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                            <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
+                              <span className="font-medium">上一篇</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </div>
+                            <div className="line-clamp-2 font-medium">
+                              已是最旧文章
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
                 <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
               </main>
 
-              {/* TOC 侧边栏 */}
               {tocAndOffsets.toc.length > 0 && (
                 <aside
                   className="hidden xl:block absolute h-full"

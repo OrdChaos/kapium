@@ -23,7 +23,6 @@ export const useGlobalCopy = () => {
         toast.success('代码已复制', { duration: 2000 });
       };
 
-      // 优先 Clipboard API
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(codeToCopy)
           .then(showSuccess)

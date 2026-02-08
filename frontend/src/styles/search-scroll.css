@@ -1,10 +1,8 @@
-/* 搜索下拉专用滚动条 */
 .scrollbar-search {
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin;
   scrollbar-color: var(--muted-foreground) transparent;
 }
 
-/* WebKit 系（Chrome / Edge / Safari） */
 .scrollbar-search::-webkit-scrollbar {
   width: 8px;
 }
@@ -20,7 +18,7 @@
     transparent 40%
   );
   border-radius: 999px;
-  border: 2px solid transparent; /* 留白，显得更细 */
+  border: 2px solid transparent;
   background-clip: content-box;
 }
 

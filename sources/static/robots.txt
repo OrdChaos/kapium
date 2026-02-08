@@ -1,0 +1,10 @@
+User-agent: *Allow: /
+Allow: /tags/
+Allow: /categories/
+Allow: /about/
+Allow: /links/
+Allow: /posts/
+Disallow: /assets/
+Disallow: /img/
+
+Sitemap: https://www.ordchaos.com/sitemap.xml

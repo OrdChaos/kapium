@@ -5,6 +5,8 @@ SSG_DIR := ssg
 SCRIPTS_DIR := scripts
 FRONTEND_DIR := frontend
 
+NPX := npx
+
 .PHONY: all init toolchain data pre-rendered preview clean
 
 all: toolchain data pre-rendered render
@@ -32,13 +34,13 @@ render:
 	@mkdir -p $(FRONTEND_DIR)/public/data/posts
 	@cp -r $(STATIC_DIR)/* $(FRONTEND_DIR)/public
 	@cp -r $(SSG_OUTPUT_DIR)/info/* $(FRONTEND_DIR)/public
-	@cp -r $(SSG_OUTPUT_DIR)/pages/* $(FRONTEND_DIR)/public/data
+	@cp -r $(SSG_OUTPUT_DIR)/data/* $(FRONTEND_DIR)/public/data
 	@cp -r $(SSG_OUTPUT_DIR)/posts/* $(FRONTEND_DIR)/public/data/posts
 
 	$(MAKE) -C $(FRONTEND_DIR)
 
 preview: all
-	$(MAKE) -C $(FRONTEND_DIR) preview
+	$(NPX) serve -s $(BUILD_DIR)/dist
 
 clean:
 	@rm -rf $(BUILD_DIR)

@@ -34,7 +34,6 @@ export default function FeedPage({ onSearchClick }: FeedPageProps) {
         .then(showSuccess)
         .catch(showError);
     } else {
-      // fallback
       try {
         const textarea = document.createElement('textarea');
         textarea.value = feedUrl;
@@ -94,22 +93,8 @@ return (
 
           <div className="mt-12 text-center text-muted-foreground">
             <div className="mb-2">
-              <p>
-                RSS 技术诞生于互联网的开放年代，尽管在当今的移动互联网时代它显得有些“小众”，
-                但它依然是获取高质量信息最可靠的手段之一。它不仅是一种协议，更是一种独立、
-                不随波逐流的阅读态度。
-              </p>
-              <p>
-                通过 RSS，你可以构建专属于自己的“信息情报站”。当你在阅读器中看到本站的图标亮起时，
-                那代表着一次深思熟虑的更新，而非算法为了留存率而制造的噪音。我相信，
-                真正有价值的信息值得被更严肃地对待。
-              </p>
               <p className="italic">
                 “阅读不是为了逃避生活，而是为了更清晰地看见世界。”
-              </p>
-              <br />
-              <p>
-                值得讽刺的是，上述介绍由Google Gemini生成，实则仍诞生于算法之中。
               </p>
             </div>
           </div>
