@@ -1,7 +1,6 @@
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
-import { Helmet } from 'react-helmet-async';
 import { Search, ChevronLeft } from 'lucide-react';
 
 interface NotFoundPageProps {
@@ -11,11 +10,6 @@ interface NotFoundPageProps {
 export default function NotFoundPage({ onSearchClick }: NotFoundPageProps) {
   return (
     <>
-      <Helmet>
-        <title>{`404 页面未找到 - ${import.meta.env.VITE_SITE_TITLE}`}</title>
-        <meta name="description" content="您访问的页面不存在" />
-        <meta name="robots" content="noindex, follow" />
-      </Helmet>
       <Layout onSearchClick={onSearchClick}>
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="w-full max-w-md text-center">

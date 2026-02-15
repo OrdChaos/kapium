@@ -1,7 +1,5 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
 
 /**
  * 空模板页面
@@ -22,11 +20,6 @@ interface TemplatePageProps {
 export default function TemplatePage({ onSearchClick }: TemplatePageProps) {
   return (
     <>
-      <Helmet>
-        <title>{`模板 - ${import.meta.env.VITE_SITE_TITLE}`}</title>
-        <meta name="description" content="这是一个模板页面" />
-        <meta property="og:type" content="website" />
-      </Helmet>
       <Layout onSearchClick={onSearchClick}>
       <Banner
         title="模板页面"
