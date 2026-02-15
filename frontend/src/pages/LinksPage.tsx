@@ -3,6 +3,7 @@ import Banner from '@/components/Banner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useSEO } from '@/hooks/use-seo';
 
 interface LinksPageProps {
   onSearchClick: () => void;
@@ -12,9 +13,13 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
   const [links, setLinks] = useState<any[] | null>(null);
   const [visible, setVisible] = useState(false);
 
+  // SEO Management
+  useSEO({
+    title: '友链',
+    description: '志同道合的技术博客和网站友链',
+  });
+
   useEffect(() => {
-    document.title = '友链 - ' + import.meta.env.VITE_SITE_TITLE;
-    
     fetch('/data/links.json')
       .then(res => res.json())
       .then(data => setLinks(data));

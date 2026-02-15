@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useEffect, useState } from 'react';
+import { useSEO } from '@/hooks/use-seo';
+import { createWebsiteSchema } from '@/lib/seo';
 
 interface HomePageProps {
   onSearchClick: () => void;
@@ -19,13 +21,30 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   const [location] = useLocation();
   const pageFromUrl = parseInt(location.split('/')[2]) || 1;
 
+  // SEO Management
+  useSEO({
+    title: pageFromUrl > 1 ? `第 ${pageFromUrl} 页` : '',
+    description: import.meta.env.VITE_SITE_DESCRIPTION,
+    ogType: 'website',
+    robots: pageFromUrl > 1 ? 'noindex, follow' : 'index, follow',
+    structuredData: createWebsiteSchema({
+      name: import.meta.env.VITE_SITE_TITLE,
+      description: import.meta.env.VITE_SITE_DESCRIPTION,
+      url: window.location.origin,
+      logo: import.meta.env.VITE_SITE_OG_IMAGE,
+    }),
+    structuredDataId: 'website-schema',
+  });
+
   useEffect(() => {
-    document.title = import.meta.env.VITE_SITE_TITLE;
+    document.title = pageFromUrl > 1 
+      ? `第 ${pageFromUrl} 页 - ${import.meta.env.VITE_SITE_TITLE}`
+      : import.meta.env.VITE_SITE_TITLE;
 
     fetch('/data/posts.json')
       .then(res => res.json())
       .then(data => setPosts(data));
-  }, []);
+  }, [pageFromUrl]);
 
   useEffect(() => {
     if (!visible && posts) {
@@ -77,7 +96,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
         >
           {currentPosts &&
             currentPosts.map((post) => (
-              <Card key={post.id} className="h-full transition-all duration-300 hover:shadow-lg hover:border-primary/50">
+              <Card key={post.id} className="flex flex-col h-[280px] transition-all duration-300 hover:shadow-lg hover:border-primary/50">
                 <CardHeader>
                   <div className="mb-2 flex items-center gap-2">
                     <Link href={`/categories/${encodeURIComponent(post.category)}`}>
@@ -93,16 +112,16 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                   </div>
                   <Link href={`/posts/${post.id}`}>
                     <div className="block">
-                      <CardTitle className="line-clamp-2 leading-6 transition-colors hover:text-primary">
+                      <CardTitle className="line-clamp-2 leading-6 transition-colors hover:text-primary h-[3rem]">
                         {post.title}
                       </CardTitle>
-                      <CardDescription className="line-clamp-2 leading-6 mt-2">
+                      <CardDescription className="line-clamp-2 leading-6 h-[3rem] mt-2">
                         {post.excerpt}
                       </CardDescription>
                     </div>
                   </Link>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-col justify-between flex-1">
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" />
@@ -113,19 +132,21 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
                       <span>{post.readTime} 分钟</span>
                     </div>
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
-                        <div onClick={(e) => e.stopPropagation()}>
-                          <Badge 
-                            variant="outline" 
-                            className="text-xs cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground"
+                  <div className="mt-3 relative">
+                    <div className="flex gap-2 overflow-hidden whitespace-nowrap">
+                      {post.tags.map((tag) => (
+                        <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
+                          <Badge
+                            variant="outline"
+                            className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground"
                           >
                             {tag}
                           </Badge>
-                        </div>
-                      </Link>
-                    ))}
+                        </Link>
+                      ))}
+                    </div>
+
+                    <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-card to-transparent flex items-center justify-end pr-1 text-xs"></div>
                   </div>
                 </CardContent>
               </Card>

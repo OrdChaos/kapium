@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Wrench, MapPin, Briefcase, GraduationCap, Link as LinkIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useSEO } from '@/hooks/use-seo';
 import { Icon } from '@iconify/react';
 
 import githubIcon from '@iconify-icons/ri/github-line';
@@ -59,9 +60,13 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    document.title = '关于 - ' + import.meta.env.VITE_SITE_TITLE;
+  // SEO Management
+  useSEO({
+    title: '关于',
+    description: '了解博客作者的信息和背景',
+  });
 
+  useEffect(() => {
     fetch('/data/profile.json')
       .then(res => res.json())
       .then(data => {

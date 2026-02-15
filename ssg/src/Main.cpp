@@ -148,8 +148,10 @@ auto main(int argc, char* argv[]) -> int {
             return a["date"] > b["date"];
         });
 
-    std::ofstream(meta_output / "data" / "posts.json")
-        << nlohmann::json(all_posts).dump(4);
+    nlohmann::json post_ids = nlohmann::json::array();
+    for (const auto& post : all_posts) {
+        post_ids.push_back(post["id"]);
+    }
 
     nlohmann::json post_navigation = nlohmann::json::object();
     for (size_t i = 0; i < all_posts.size(); ++i) {
@@ -195,7 +197,8 @@ auto main(int argc, char* argv[]) -> int {
     for (auto& [k, v] : tags_count.items())
         tags.push_back({{"name", k}, {"count", v}});
 
-
+    std::ofstream(meta_output / "data" / "posts.json") << nlohmann::json(all_posts).dump(4);
+    std::ofstream(meta_output / "data" / "postIds.json") << post_ids.dump(4);
     std::ofstream(meta_output / "data" / "postNavigation.json") << post_navigation.dump(4);
     std::ofstream(meta_output / "data" / "categories.json") << categories.dump(4);
     std::ofstream(meta_output / "data" / "tags.json") << tags.dump(4);

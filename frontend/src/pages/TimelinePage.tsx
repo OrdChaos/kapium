@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useEffect, useRef, useState } from 'react';
+import { useSEO } from '@/hooks/use-seo';
 
 interface TimelinePageProps {
   onSearchClick: () => void;
@@ -44,9 +45,13 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
 
   const BATCH_SIZE = 30;
 
+  // SEO Management
+  useSEO({
+    title: '时间线',
+    description: '按时间顺序浏览所有文章',
+  });
+
   useEffect(() => {
-    document.title = '时间线 - ' + import.meta.env.VITE_SITE_TITLE;
-    
     fetch('/data/posts.json')
       .then((r) => r.json())
       .then((posts: PostItem[]) => {

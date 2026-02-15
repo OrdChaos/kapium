@@ -3,6 +3,8 @@ include ../common.mk
 NPM := npm
 BUN := bun
 
+DIST := ../build/dist
+
 .PHONY: init dev build preview clean
 
 default: build

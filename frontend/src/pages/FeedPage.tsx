@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Copy, Rss, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useSEO } from '@/hooks/use-seo';
 import { toast } from 'sonner';
 
 interface FeedPageProps {
@@ -14,8 +15,13 @@ export default function FeedPage({ onSearchClick }: FeedPageProps) {
   const [feedUrl, setFeedUrl] = useState('');
   const siteTitle = import.meta.env.VITE_SITE_TITLE;
 
+  // SEO Management
+  useSEO({
+    title: '订阅',
+    description: 'RSS Feed 订阅，及时获取最新文章更新',
+  });
+
   useEffect(() => {
-    document.title = `订阅 - ${siteTitle}`;
     setFeedUrl(`${import.meta.env.VITE_SITE_URL}/rss.xml`);
   }, []);
 

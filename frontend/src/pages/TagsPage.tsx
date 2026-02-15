@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Hash, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useSEO } from '@/hooks/use-seo';
 
 interface TagsPageProps {
   onSearchClick: () => void;
@@ -35,13 +36,14 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
     if (node) observer.current.observe(node);
   }, [allTags, displayedTags.length]);
 
+  // SEO Management
+  const tagName = tag ? decodeURIComponent(tag) : null;
+  useSEO({
+    title: tagName ? `标签：${tagName}` : '标签',
+    description: tagName ? `浏览标签下的所有文章：${tagName}` : '浏览本站所有标签',
+  });
+
   useEffect(() => {
-    if (tag) {
-      document.title = `标签：${decodeURIComponent(tag)} - ${import.meta.env.VITE_SITE_TITLE}`;
-    } else {
-      document.title = '标签 - ' + import.meta.env.VITE_SITE_TITLE;
-    }
-    
     Promise.all([
       fetch('/data/tags.json').then(res => res.json()),
       fetch('/data/tagPosts.json').then(res => res.json()),
@@ -49,6 +51,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
       setAllTags(tagsData);
       setTagPosts(tagPostsData);
       setDisplayedTags(tagsData.slice(0, ITEMS_PER_PAGE));
+      setPage(1);
     });
   }, [tag]);
 

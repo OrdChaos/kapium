@@ -6,6 +6,8 @@ import { Link, useParams } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { useGlobalCopy } from '@/hooks/use-global-copy';
+import { useSEO } from '@/hooks/use-seo';
+import { createArticleSchema } from '@/lib/seo';
 import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
@@ -80,12 +82,30 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     fetchData();
   }, [id]);
 
+  // SEO Management
+  useSEO({
+    title: post?.title,
+    description: post?.excerpt || post?.summary,
+    ogImage: post?.cover || import.meta.env.VITE_SITE_OG_IMAGE,
+    keywords: post?.tags || [],
+    ogType: 'article',
+    structuredData: post
+      ? createArticleSchema({
+          title: post.title,
+          description: post.excerpt || post.summary || '',
+          image: post.cover,
+          datePublished: post.date,
+          author: import.meta.env.VITE_SITE_AUTHOR || '序炁',
+          url: `${window.location.origin}/posts/${id}`,
+          keywords: post.tags,
+        })
+      : undefined,
+    structuredDataId: 'article-schema',
+  });
+
   useEffect(() => {
-    if (post) {
-      document.title = `${post.title} - ${import.meta.env.VITE_SITE_TITLE}`;
-      if (!visible) {
-        requestAnimationFrame(() => setVisible(true));
-      }
+    if (post && !visible) {
+      requestAnimationFrame(() => setVisible(true));
     }
   }, [post, visible]);
 

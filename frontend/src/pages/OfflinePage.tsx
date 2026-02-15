@@ -1,20 +1,22 @@
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
+import { Helmet } from 'react-helmet-async';
 import { Wifi } from 'lucide-react';
 
 interface OfflinePageProps {
   onSearchClick: () => void;
 }
 
-export default function OfflinePage({ onSearchClick }: OfflinePageProps) {
-  document.title = '离线 - ' + import.meta.env.VITE_SITE_TITLE;
-  
-  const handleRetry = () => {
+export default function OfflinePage({ onSearchClick }: OfflinePageProps) {  const handleRetry = () => {
     window.location.reload();
   };
-
   return (
-    <Layout onSearchClick={onSearchClick}>
+    <>
+      <Helmet>
+        <title>{`离线 - ${import.meta.env.VITE_SITE_TITLE}`}</title>
+        <meta name="description" content="您当前处于离线状态" />
+      </Helmet>
+      <Layout onSearchClick={onSearchClick}>
       <div className="flex min-h-[70vh] flex-col items-center justify-center px-4">
         <div className="w-full max-w-md text-center">
           <div className="mb-8">
@@ -45,5 +47,6 @@ export default function OfflinePage({ onSearchClick }: OfflinePageProps) {
         </div>
       </div>
     </Layout>
+    </>
   );
 }

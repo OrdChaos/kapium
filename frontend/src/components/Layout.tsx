@@ -11,14 +11,18 @@ interface LayoutProps {
 
 export default function Layout({ children, onSearchClick }: LayoutProps) {
   const [showTopButton, setShowTopButton] = useState(false);
+  const [postIds, setPostIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/data/postIds.json')
+      .then(res => res.json())
+      .then(setPostIds)
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowTopButton(true);
-      } else {
-        setShowTopButton(false);
-      }
+      setShowTopButton(window.scrollY > 300);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -34,11 +38,19 @@ export default function Layout({ children, onSearchClick }: LayoutProps) {
 
   return (
     <div className="flex min-h-[calc(100vh+2px)] flex-col">
-      <Navbar onSearchClick={onSearchClick} />
+      <Navbar 
+        onSearchClick={onSearchClick}
+        postIds={postIds}
+      />
+
       <LoadingBar />
-      <main className="flex-1">{children}</main>
+
+      <main className="flex-1">
+        {children}
+      </main>
+
       <Footer />
-      
+
       {showTopButton && (
         <button
           onClick={scrollToTop}

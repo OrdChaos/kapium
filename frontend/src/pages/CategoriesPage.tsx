@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ChevronRight, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { useSEO } from '@/hooks/use-seo';
 
 interface CategoriesPageProps {
   onSearchClick: () => void;
@@ -24,13 +25,14 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
   const observer = useRef<IntersectionObserver | null>(null);
 
+  // SEO Management
+  const categoryName = category ? decodeURIComponent(category) : null;
+  useSEO({
+    title: categoryName ? `分类：${categoryName}` : '文章分类',
+    description: categoryName ? `浏览分类下的所有文章：${categoryName}` : '浏览本站所有文章分类',
+  });
+
   useEffect(() => {
-    if (category) {
-      document.title = `分类：${decodeURIComponent(category)} - ${import.meta.env.VITE_SITE_TITLE}`;
-    } else {
-      document.title = '文章分类 - ' + import.meta.env.VITE_SITE_TITLE;
-    }
-    
     setDisplayLimit(ITEMS_PER_PAGE);
 
     Promise.all([
