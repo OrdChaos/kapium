@@ -12,6 +12,7 @@ import { Calendar, Clock } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useEffect, useRef, useState } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface TimelinePageProps {
   onSearchClick: () => void;
@@ -44,6 +45,9 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const BATCH_SIZE = 30;
+
+  // Complete loading bar when months are loaded
+  usePageLoading(months.length > 0);
 
   // SEO Management
   useSEO({

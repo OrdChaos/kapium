@@ -2,11 +2,12 @@ import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Tag, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link, useParams } from 'wouter';
+import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { useGlobalCopy } from '@/hooks/use-global-copy';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 import { createArticleSchema } from '@/lib/seo';
 import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
@@ -36,11 +37,13 @@ interface PostPageProps {
 
 export default function PostPage({ onSearchClick }: PostPageProps) {
   const { id } = useParams();
+  const [, setLocation] = useLocation();
   const [post, setPost] = useState<any | null>(null);
   const [navigation, setNavigation] = useState<{
     prev: { id: string; title: string } | null;
     next: { id: string; title: string } | null;
   } | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [visible, setVisible] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -51,8 +54,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   const isManualScrolling = useRef(false);
   const scrollEndTimeoutRef = useRef<number | null>(null);
 
+  // Complete loading bar when data is loaded
+  usePageLoading(dataLoaded);
+
   useEffect(() => {
     if (!id) return;
+
+    setDataLoaded(false);
 
     const fetchData = async () => {
       try {
@@ -72,10 +80,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
           const navData = await navRes.json();
           setNavigation(navData[id] || { prev: null, next: null });
         }
+
+        setDataLoaded(true);
       } catch (err) {
         console.error('Failed to load post or navigation', err);
         setPost(null);
         setNavigation(null);
+        setDataLoaded(true);
       }
     };
 
@@ -241,14 +252,40 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     return imgs.map(img => ({ src: img.getAttribute('src') || '' }));
   }, [post?.content]);
 
+  const isExternalUrl = (url: string): boolean => {
+    try {
+      const urlObj = new URL(url);
+      const siteHostname = import.meta.env.VITE_SITE_HOSTNAME;
+      const hostname = urlObj.hostname;
+      
+      return hostname !== siteHostname && 
+             hostname !== 'localhost' && 
+             hostname !== '127.0.0.1';
+    } catch {
+      return false;
+    }
+  };
+
   const handleContentClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
+    
     if (target.tagName === 'IMG') {
       const src = target.getAttribute('src');
       const imgIndex = images.findIndex(img => img.src === src);
       if (imgIndex !== -1) {
         setIndex(imgIndex);
         setOpen(true);
+      }
+      return;
+    }
+
+    const linkElement = (target.tagName === 'A' ? target : target.closest('a')) as HTMLAnchorElement | null;
+    if (linkElement && linkElement.href) {
+      const url = linkElement.href;
+      if (isExternalUrl(url)) {
+        e.preventDefault();
+        const encodedUrl = encodeURIComponent(url);
+        setLocation(`/redirect?url=${encodedUrl}`);
       }
     }
   };

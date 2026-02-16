@@ -6,6 +6,7 @@ import { Calendar, Clock } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useEffect, useState } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 import { createWebsiteSchema } from '@/lib/seo';
 
 interface HomePageProps {
@@ -20,6 +21,9 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   
   const [location] = useLocation();
   const pageFromUrl = parseInt(location.split('/')[2]) || 1;
+
+  // Complete loading bar when posts are loaded
+  usePageLoading(posts !== null);
 
   // SEO Management
   useSEO({

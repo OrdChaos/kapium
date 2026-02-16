@@ -5,6 +5,8 @@ import UmamiAnalytics from '@danielgtmn/umami-react';
 
 import SearchDialog from '@/components/SearchDialog';
 import ScrollToTop from '@/components/ScrollToTop';
+import LoadingBar from '@/components/ui/loading-bar';
+import { LoadingProvider } from '@/contexts/LoadingContext';
 import HomePage from '@/pages/HomePage';
 import CategoriesPage from '@/pages/CategoriesPage';
 import TagsPage from '@/pages/TagsPage';
@@ -16,6 +18,7 @@ import TimelinePage from '@/pages/TimelinePage';
 import FeedPage from '@/pages/FeedPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import OfflinePage from '@/pages/OfflinePage';
+import RedirectPage from '@/pages/RedirectPage';
 
 export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -47,6 +50,7 @@ export default function App() {
   const FeedRoute = useCallback(() => <FeedPage onSearchClick={openSearch} />, [openSearch]);
   const NotFoundRoute = useCallback(() => <NotFoundPage onSearchClick={openSearch} />, [openSearch]);
   const OfflineRoute = useCallback(() => <OfflinePage onSearchClick={openSearch} />, [openSearch]);
+  const RedirectRoute = useCallback(() => <RedirectPage onSearchClick={openSearch} />, [openSearch]);
 
   // 如果离线，始终显示离线页面
   if (!isOnline) {
@@ -66,12 +70,13 @@ export default function App() {
   }
 
   return (
-    <>
+    <LoadingProvider>
       <UmamiAnalytics
         url={import.meta.env.VITE_UMAMI_API_URL}
         websiteId={import.meta.env.VITE_UMAMI_WEBSITE_ID}
         lazyLoad={true}
       />
+      <LoadingBar />
       <ScrollToTop />
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <Switch>
@@ -87,9 +92,10 @@ export default function App() {
         <Route path="/template" component={TemplateRoute} />
         <Route path="/timeline" component={TimelineRoute} />
         <Route path="/feed" component={FeedRoute} />
+        <Route path="/redirect" component={RedirectRoute} />
         <Route component={NotFoundRoute} />
       </Switch>
       <Toaster />
-    </>
+    </LoadingProvider>
   );
 }

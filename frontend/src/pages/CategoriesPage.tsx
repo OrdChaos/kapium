@@ -6,6 +6,7 @@ import { Calendar, Clock, ChevronRight, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface CategoriesPageProps {
   onSearchClick: () => void;
@@ -24,6 +25,9 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   
   const [displayLimit, setDisplayLimit] = useState(ITEMS_PER_PAGE);
   const observer = useRef<IntersectionObserver | null>(null);
+
+  // Complete loading bar when both data are loaded
+  usePageLoading(categories !== null && categoryPosts !== null);
 
   // SEO Management
   const categoryName = category ? decodeURIComponent(category) : null;

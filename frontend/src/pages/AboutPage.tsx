@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Wrench, MapPin, Briefcase, GraduationCap, Link as LinkIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 import { Icon } from '@iconify/react';
 
 import githubIcon from '@iconify-icons/ri/github-line';
@@ -59,6 +60,9 @@ const SOCIAL_ICON_MAP: Record<string, any> = {
 export default function AboutPage({ onSearchClick }: AboutPageProps) {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [visible, setVisible] = useState(false);
+
+  // Complete loading bar when profile is loaded
+  usePageLoading(profile !== null);
 
   // SEO Management
   useSEO({

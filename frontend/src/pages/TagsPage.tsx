@@ -6,6 +6,7 @@ import { Calendar, Clock, Hash, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface TagsPageProps {
   onSearchClick: () => void;
@@ -26,6 +27,9 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
 
   const observer = useRef<IntersectionObserver | null>(null);
   
+  // Complete loading bar when both data are loaded
+  usePageLoading(allTags !== null && tagPosts !== null);
+
   const lastElementRef = useCallback((node: HTMLDivElement) => {
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {

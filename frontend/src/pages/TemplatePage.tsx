@@ -1,5 +1,7 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
+import { useEffect, useState } from 'react';
+import { usePageLoading } from '@/hooks/use-page-loading';
 
 /**
  * 空模板页面
@@ -18,6 +20,10 @@ interface TemplatePageProps {
 }
 
 export default function TemplatePage({ onSearchClick }: TemplatePageProps) {
+  const [isLoaded, setIsLoaded] = useState(true);
+
+  // Complete loading bar when page is initialized
+  usePageLoading(isLoaded);
   return (
     <>
       <Layout onSearchClick={onSearchClick}>

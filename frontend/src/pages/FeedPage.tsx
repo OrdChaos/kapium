@@ -5,6 +5,7 @@ import { Copy, Rss, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 import { toast } from 'sonner';
 
 interface FeedPageProps {
@@ -13,7 +14,11 @@ interface FeedPageProps {
 
 export default function FeedPage({ onSearchClick }: FeedPageProps) {
   const [feedUrl, setFeedUrl] = useState('');
+  const [isLoaded, setIsLoaded] = useState(false);
   const siteTitle = import.meta.env.VITE_SITE_TITLE;
+
+  // Complete loading bar when page is initialized
+  usePageLoading(isLoaded);
 
   // SEO Management
   useSEO({
@@ -23,6 +28,7 @@ export default function FeedPage({ onSearchClick }: FeedPageProps) {
 
   useEffect(() => {
     setFeedUrl(`${import.meta.env.VITE_SITE_URL}/rss.xml`);
+    setIsLoaded(true);
   }, []);
 
   const handleCopy = () => {

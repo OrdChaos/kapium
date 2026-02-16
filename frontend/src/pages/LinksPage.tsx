@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSEO } from '@/hooks/use-seo';
+import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface LinksPageProps {
   onSearchClick: () => void;
@@ -12,6 +13,9 @@ interface LinksPageProps {
 export default function LinksPage({ onSearchClick }: LinksPageProps) {
   const [links, setLinks] = useState<any[] | null>(null);
   const [visible, setVisible] = useState(false);
+
+  // Complete loading bar when links are loaded
+  usePageLoading(links !== null);
 
   // SEO Management
   useSEO({
