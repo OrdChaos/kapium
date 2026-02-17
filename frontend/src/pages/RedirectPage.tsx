@@ -1,7 +1,8 @@
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
+import { useLocation } from 'wouter';
 import { AlertCircle, ExternalLink, ChevronLeft } from 'lucide-react';
 import { usePageLoading } from '@/hooks/use-page-loading';
 
@@ -26,23 +27,42 @@ const isExternalUrl = (url: string): boolean => {
 
 export default function RedirectPage({ onSearchClick }: RedirectPageProps) {
   const [targetUrl, setTargetUrl] = useState<string>('');
+  const [backUrl, setBackUrl] = useState<string>('');
   const [isInvalid, setIsInvalid] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Complete loading bar when page is initialized
+  const [, setLocation] = useLocation();
+  const [isPending, startTransition] = useTransition();
+
   usePageLoading(isLoaded);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const url = params.get('url');
+    const from = params.get('from');
     
     if (url && isExternalUrl(url)) {
       setTargetUrl(url);
     } else {
       setIsInvalid(true);
     }
+  
+    if (from) {
+      setBackUrl(decodeURIComponent(from));
+    } else if (document.referrer && document.referrer.includes(window.location.host)) {
+       try {
+          const refUrl = new URL(document.referrer);
+          setBackUrl(refUrl.pathname + refUrl.search);
+       } catch (e) {
+          console.error(e);
+       }
+    }
 
     setIsLoaded(true);
+
+    return () => {
+      setIsLoaded(false); 
+    };
   }, []);
 
   const handleConfirm = () => {
@@ -51,15 +71,15 @@ export default function RedirectPage({ onSearchClick }: RedirectPageProps) {
     }
   };
 
-    const handleCancel = () => {
-    window.history.back();
-    
-    window.onpageshow = (event) => {
-        if (event.persisted) {
-        window.location.reload();
-        }
-    };
-    };
+  const handleCancel = () => {
+    startTransition(() => {
+      if (backUrl) {
+        setLocation(backUrl, { replace: true });
+      } else {
+        setLocation('/', { replace: true });
+      }
+    });
+  };
 
   return (
     <Layout onSearchClick={onSearchClick}>
@@ -110,6 +130,7 @@ export default function RedirectPage({ onSearchClick }: RedirectPageProps) {
                 <div className="flex gap-4 justify-end">
                   <Button
                     onClick={handleCancel}
+                    disabled={isPending}
                     variant="outline"
                   >
                     取消

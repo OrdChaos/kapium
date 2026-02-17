@@ -14,5 +14,10 @@ export function usePageLoading(isLoaded: boolean) {
       NProgress.done();
       completeLoading();
     }
+
+    return () => {
+      NProgress.done();
+      NProgress.remove();
+    };
   }, [isLoaded, completeLoading]);
 }

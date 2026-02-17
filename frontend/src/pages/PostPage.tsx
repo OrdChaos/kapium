@@ -37,7 +37,7 @@ interface PostPageProps {
 
 export default function PostPage({ onSearchClick }: PostPageProps) {
   const { id } = useParams();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [post, setPost] = useState<any | null>(null);
   const [navigation, setNavigation] = useState<{
     prev: { id: string; title: string } | null;
@@ -285,7 +285,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
       if (isExternalUrl(url)) {
         e.preventDefault();
         const encodedUrl = encodeURIComponent(url);
-        setLocation(`/redirect?url=${encodedUrl}`);
+        setLocation(`/redirect?url=${encodedUrl}&from=${encodeURIComponent(location)}`);
       }
     }
   };
