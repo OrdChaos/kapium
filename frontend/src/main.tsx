@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.js";
-
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     console.warn('[PWA] Service Worker is not supported in this browser');

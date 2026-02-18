@@ -152,6 +152,76 @@
   --color-chart-5: var(--chart-5);
 }
 
+/* 路由过渡动画 */
+.route-transition {
+  opacity: 0.95;
+  transform: translateY(10px);
+  transition: all 0.15s ease-out;
+}
+
+.route-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.route-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.route-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.route-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.2s ease-in-out;
+}
+
+/* 图片懒加载占位符样式增强 */
+.lazyload-img {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+  min-height: 200px;
+  display: block;
+}
+
+.lazyload-img[data-loaded="true"] {
+  animation: none;
+  background: transparent;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 错误边界样式 */
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(var(--background));
+}
+
+.error-boundary-content {
+  text-align: center;
+  padding: 2rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  box-shadow: var(--shadow);
+}
+
 @import './typography.css';
 @import './tables.css';
 @import './search-scroll.css';

@@ -8,21 +8,30 @@ NProgress.configure({
   showSpinner: false,
   trickleSpeed: 120,
   minimum: 0.1,
+  speed: 300, // 添加完成动画速度
 })
 
 export default function LoadingBar() {
   const [location] = useLocation()
-  const { completeLoading } = useLoading()
+  const { startLoading, completeLoading, isLoading } = useLoading()
 
   useEffect(() => {
-    NProgress.start();
-    // 不在这里立即完成，等页面组件调用 completeLoading()
+    // 路由变化时开始新的加载
+    startLoading();
 
+    // 返回清理函数
     return () => {
-      // 路由变化时取消之前的加载
-      completeLoading()
+      // 路由变化时完成之前的加载
+      completeLoading();
     };
-  }, [location, completeLoading]);
+  }, [location, startLoading, completeLoading]);
+
+  // 当isLoading为false时，确保进度条完成
+  useEffect(() => {
+    if (!isLoading) {
+      completeLoading();
+    }
+  }, [isLoading, completeLoading]);
 
   return null;
 }

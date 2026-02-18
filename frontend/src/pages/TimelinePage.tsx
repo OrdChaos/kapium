@@ -50,7 +50,7 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
   usePageLoading(months.length > 0);
 
   // SEO Management
-  useSEO({
+  const seoElement = useSEO({
     title: '时间线',
     description: '按时间顺序浏览所有文章',
   });
@@ -111,6 +111,7 @@ export default function TimelinePage({ onSearchClick }: TimelinePageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner title="时间线" subtitle="按时间顺序浏览文章" />
 
       <div

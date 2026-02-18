@@ -52,7 +52,6 @@ export default function App() {
   const OfflineRoute = useCallback(() => <OfflinePage onSearchClick={openSearch} />, [openSearch]);
   const RedirectRoute = useCallback(() => <RedirectPage onSearchClick={openSearch} />, [openSearch]);
 
-  // 如果离线，始终显示离线页面
   if (!isOnline) {
     return (
       <>

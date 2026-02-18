@@ -18,7 +18,7 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
   usePageLoading(links !== null);
 
   // SEO Management
-  useSEO({
+  const seoElement = useSEO({
     title: '友链',
     description: '志同道合的技术博客和网站友链',
   });
@@ -37,6 +37,7 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner
         title="友情链接"
         subtitle="优秀博客推荐"

@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ChevronRight, Loader2 } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { useSEO } from '@/hooks/use-seo';
+import { useSEO, createBreadcrumbSchema } from '@/hooks/use-seo';
 import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface CategoriesPageProps {
@@ -31,7 +31,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
 
   // SEO Management
   const categoryName = category ? decodeURIComponent(category) : null;
-  useSEO({
+  const seoElement = useSEO({
     title: categoryName ? `分类：${categoryName}` : '文章分类',
     description: categoryName ? `浏览分类下的所有文章：${categoryName}` : '浏览本站所有文章分类',
   });
@@ -73,6 +73,7 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner
         title={decodedCategory ? `分类：${decodedCategory}` : "文章分类"}
         subtitle={decodedCategory ? `共 ${allPostsForCategory.length} 篇文章` : "按主题浏览文章"}

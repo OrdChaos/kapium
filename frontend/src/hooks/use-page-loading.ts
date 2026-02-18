@@ -1,23 +1,22 @@
 import { useEffect } from 'react';
-import NProgress from 'nprogress';
 import { useLoading } from "@/contexts/LoadingContext";
 
 /**
- * Hook to complete the loading bar when data loading is finished
+ * Hook to control loading state via LoadingContext
  * @param isLoaded - boolean indicating if data has finished loading
  */
 export function usePageLoading(isLoaded: boolean) {
-  const { completeLoading } = useLoading();
+  const { startLoading, completeLoading } = useLoading();
 
   useEffect(() => {
-    if (isLoaded) {
-      NProgress.done();
+    if (!isLoaded) {
+      startLoading();
+    } else {
       completeLoading();
     }
 
     return () => {
-      NProgress.done();
-      NProgress.remove();
+      // 组件卸载时确保清理
     };
-  }, [isLoaded, completeLoading]);
+  }, [isLoaded, startLoading, completeLoading]);
 }

@@ -21,7 +21,7 @@ export default function FeedPage({ onSearchClick }: FeedPageProps) {
   usePageLoading(isLoaded);
 
   // SEO Management
-  useSEO({
+  const seoElement = useSEO({
     title: '订阅',
     description: 'RSS Feed 订阅，及时获取最新文章更新',
   });
@@ -70,6 +70,7 @@ export default function FeedPage({ onSearchClick }: FeedPageProps) {
 
 return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner
         title="订阅"
         subtitle="通过 RSS 随时获取最新文章，无广告、无算法干扰"

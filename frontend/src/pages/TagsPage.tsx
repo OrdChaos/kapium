@@ -42,7 +42,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
 
   // SEO Management
   const tagName = tag ? decodeURIComponent(tag) : null;
-  useSEO({
+  const seoElement = useSEO({
     title: tagName ? `标签：${tagName}` : '标签',
     description: tagName ? `浏览标签下的所有文章：${tagName}` : '浏览本站所有标签',
   });
@@ -77,6 +77,7 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner
         title={decodedTag ? `标签：${decodedTag}` : "标签"}
         subtitle={decodedTag ? `共 ${postsForTag?.length ?? 0} 篇文章` : "按标签浏览文章"}

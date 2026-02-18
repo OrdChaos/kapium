@@ -80,14 +80,17 @@
         "@types/react-dom": "^19.2.3",
         "@vitejs/plugin-react": "^4.3.4",
         "@vitejs/plugin-react-swc": "^3.10.1",
-        "drizzle-kit": "^0.31.5",
+        "@vitejs/plugin-vue": "^6.0.4",
+        "drizzle-kit": "^1.0.0-beta.15-859cf75",
         "eslint": "^9.28.0",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.19",
         "globals": "^16.0.0",
+        "jsdom": "^28.1.0",
         "tailwindcss": "^4.1.11",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.38.0",
-        "vite": "npm:rolldown-vite@latest"
+        "typescript-eslint": "^8.14.0",
+        "vite": "npm:rolldown-vite@latest",
+        "vite-ssg": "^28.3.0"
     }
 }

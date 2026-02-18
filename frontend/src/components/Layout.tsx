@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useState, useEffect, useRef } from 'react';
 import { ChevronUp } from 'lucide-react';
 import Navbar from './Navbar';
 import LoadingBar from "./ui/loading-bar";
@@ -12,6 +12,7 @@ interface LayoutProps {
 export default function Layout({ children, onSearchClick }: LayoutProps) {
   const [showTopButton, setShowTopButton] = useState(false);
   const [postIds, setPostIds] = useState<string[]>([]);
+  const topButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     fetch('/data/postIds.json')
@@ -22,18 +23,39 @@ export default function Layout({ children, onSearchClick }: LayoutProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setShowTopButton(window.scrollY > 300);
+      const shouldBeVisible = window.scrollY > 300;
+      // 使用防抖避免频繁的状态更新
+      if (shouldBeVisible !== showTopButton) {
+        setShowTopButton(shouldBeVisible);
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    // 使用 requestAnimationFrame 优化滚动性能
+    let ticking = false;
+    const optimizedScrollHandler = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
+    return () => window.removeEventListener('scroll', optimizedScrollHandler);
+  }, [showTopButton]);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    try {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } catch (error) {
+      // 降级处理：如果 smooth 滚动不支持
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -51,8 +73,10 @@ export default function Layout({ children, onSearchClick }: LayoutProps) {
 
       <Footer />
 
+      {/* 使用 Portal 或条件渲染避免 DOM 插入错误 */}
       {showTopButton && (
         <button
+          ref={topButtonRef}
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 rounded-lg bg-card text-foreground border border-border shadow-md transition-all duration-300 hover:shadow-lg hover:border-primary/50 z-50 p-3 active:scale-95"
           aria-label="返回顶部"

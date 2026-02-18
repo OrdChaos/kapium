@@ -5,9 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import { useEffect, useState } from 'react';
-import { useSEO } from '@/hooks/use-seo';
+import { useSEO, createWebsiteSchema } from '@/hooks/use-seo';
 import { usePageLoading } from '@/hooks/use-page-loading';
-import { createWebsiteSchema } from '@/lib/seo';
 
 interface HomePageProps {
   onSearchClick: () => void;
@@ -22,11 +21,9 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
   const [location] = useLocation();
   const pageFromUrl = parseInt(location.split('/')[2]) || 1;
 
-  // Complete loading bar when posts are loaded
   usePageLoading(posts !== null);
 
-  // SEO Management
-  useSEO({
+  const seoElement = useSEO({
     title: pageFromUrl > 1 ? `第 ${pageFromUrl} 页` : '',
     description: import.meta.env.VITE_SITE_DESCRIPTION,
     ogType: 'website',
@@ -37,7 +34,6 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
       url: window.location.origin,
       logo: import.meta.env.VITE_SITE_OG_IMAGE,
     }),
-    structuredDataId: 'website-schema',
   });
 
   useEffect(() => {
@@ -89,6 +85,7 @@ export default function HomePage({ onSearchClick }: HomePageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner
         title={import.meta.env.VITE_SITE_TITLE}
         subtitle={import.meta.env.VITE_SITE_DESCRIPTION}

@@ -65,7 +65,7 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
   usePageLoading(profile !== null);
 
   // SEO Management
-  useSEO({
+  const seoElement = useSEO({
     title: '关于',
     description: '了解博客作者的信息和背景',
   });
@@ -116,6 +116,7 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
 
   return (
     <Layout onSearchClick={onSearchClick}>
+      {seoElement}
       <Banner title="关于" subtitle="了解更多" height="standard" />
 
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
