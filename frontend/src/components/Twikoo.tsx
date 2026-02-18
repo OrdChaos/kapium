@@ -1,8 +1,6 @@
 import { useEffect, lazy, Suspense} from 'react'
-//import twikoo from 'twikoo/dist/twikoo.nocss'
-import 'twikoo/dist/twikoo.css'
 
-import '@/styles/twikoo.override.css'
+import overrideUrl from '@/styles/twikoo.override.css?url'
 
 interface TwikooProps {
   envId: string
@@ -10,7 +8,8 @@ interface TwikooProps {
 }
 
 const LazyTwikoo = lazy(async () => {
-  const twikoo = (await import('twikoo/dist/twikoo.nocss')).default
+  const twikoo = (await import('twikoo/dist/twikoo.min')).default
+  
   return {
     default: function TwikooComponent({ envId, path }: TwikooProps) {
       useEffect(() => {
@@ -19,6 +18,13 @@ const LazyTwikoo = lazy(async () => {
           el: '#twikoo',
           path: path || window.location.pathname,
         })
+
+        if (!document.getElementById('twikoo-overrides')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = overrideUrl;
+          document.head.appendChild(link);
+        }
       }, [envId, path])
 
       return <div id="twikoo" />

@@ -1,11 +1,3 @@
-/**
- * Helmet-based SEO utilities for unified meta tag and structured data management
- * 使用Helmet统一管理SEO、Meta标签和结构化数据
- */
-
-/**
- * SEO元数据接口，与之前兼容
- */
 export interface SEOMetadata {
   title?: string;
   description?: string;
@@ -25,18 +17,12 @@ export interface SEOMetadata {
   lang?: string;
 }
 
-/**
- * 结构化数据接口
- */
 export interface StructuredData {
   '@context': string;
   '@type': string;
   [key: string]: any;
 }
 
-/**
- * Helmet SEO配置
- */
 export interface HelmetConfig {
   title?: string;
   titleTemplate?: string;
@@ -58,10 +44,6 @@ export interface HelmetConfig {
   structuredData?: StructuredData[];
   author?: string;
 }
-
-/**
- * 将SEOMetadata转换为Helmet配置
- */
 export function seoMetadataToHelmetConfig(
   metadata: SEOMetadata,
   titleTemplate = '%s - Kapium'
@@ -88,10 +70,6 @@ export function seoMetadataToHelmetConfig(
     author: metadata.author,
   };
 }
-
-/**
- * 生成Helmet meta标签JSX配置
- */
 export function generateHelmetMeta(config: HelmetConfig): Array<Record<string, string>> {
   const meta: Array<Record<string, string>> = [];
 
@@ -111,7 +89,6 @@ export function generateHelmetMeta(config: HelmetConfig): Array<Record<string, s
     meta.push({ name: 'author', content: config.author });
   }
 
-  // Open Graph标签
   if (config.ogType) {
     meta.push({ property: 'og:type', content: config.ogType });
   }
@@ -132,7 +109,6 @@ export function generateHelmetMeta(config: HelmetConfig): Array<Record<string, s
     meta.push({ property: 'og:url', content: config.ogUrl });
   }
 
-  // Twitter Card标签
   if (config.twitterCard) {
     meta.push({ name: 'twitter:card', content: config.twitterCard });
   }
@@ -152,9 +128,6 @@ export function generateHelmetMeta(config: HelmetConfig): Array<Record<string, s
   return meta;
 }
 
-/**
- * 生成Helmet link标签JSX配置
- */
 export function generateHelmetLink(config: HelmetConfig): Array<Record<string, string>> {
   const link: Array<Record<string, string>> = [];
 
@@ -165,9 +138,6 @@ export function generateHelmetLink(config: HelmetConfig): Array<Record<string, s
   return link;
 }
 
-/**
- * 生成Helmet script标签JSX配置（用于结构化数据）
- */
 export function generateHelmetScript(structuredData: StructuredData[]): Array<Record<string, any>> {
   return structuredData.map((data) => ({
     type: 'application/ld+json',
@@ -175,9 +145,6 @@ export function generateHelmetScript(structuredData: StructuredData[]): Array<Re
   }));
 }
 
-/**
- * 获取基础SEO元数据
- */
 export function getBaseMetadata(): SEOMetadata {
   return {
     title: import.meta.env.VITE_SITE_TITLE || 'Blog',
@@ -189,9 +156,6 @@ export function getBaseMetadata(): SEOMetadata {
   };
 }
 
-/**
- * 合并基础元数据与页面特定元数据
- */
 export function mergeMetadata(base: SEOMetadata, page: SEOMetadata): SEOMetadata {
   return {
     ...base,
@@ -200,9 +164,6 @@ export function mergeMetadata(base: SEOMetadata, page: SEOMetadata): SEOMetadata
   };
 }
 
-/**
- * 创建BlogPosting结构化数据
- */
 export function createArticleSchema(data: {
   title: string;
   description: string;
@@ -233,9 +194,6 @@ export function createArticleSchema(data: {
   };
 }
 
-/**
- * 创建WebSite结构化数据
- */
 export function createWebsiteSchema(data: {
   name: string;
   description: string;
@@ -252,9 +210,6 @@ export function createWebsiteSchema(data: {
   };
 }
 
-/**
- * 创建BreadcrumbList结构化数据
- */
 export function createBreadcrumbSchema(items: Array<{
   name: string;
   url: string;
