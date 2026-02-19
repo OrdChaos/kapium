@@ -1,7 +1,11 @@
 /**
- * SEO utilities for managing meta tags and structured data
+ * SEO utilities for unified meta tag and structured data management
+ * 统一管理SEO、Meta标签和结构化数据的工具
  */
 
+/**
+ * SEO元数据接口，与之前兼容
+ */
 export interface SEOMetadata {
   title?: string;
   description?: string;
@@ -21,6 +25,9 @@ export interface SEOMetadata {
   lang?: string;
 }
 
+/**
+ * 结构化数据接口
+ */
 export interface StructuredData {
   '@context': string;
   '@type': string;
@@ -28,156 +35,148 @@ export interface StructuredData {
 }
 
 /**
- * Update document meta tags
+ * SEO配置接口
  */
-export function updateMetaTags(metadata: SEOMetadata): void {
-  // Update or create title tag
-  if (metadata.title) {
-    document.title = metadata.title;
+export interface SEOConfig {
+  title?: string;
+  titleTemplate?: string;
+  defaultTitle?: string;
+  description?: string;
+  keywords?: string;
+  canonical?: string;
+  robots?: string;
+  lang?: string;
+  ogType?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  ogUrl?: string;
+  twitterCard?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+  twitterImage?: string;
+  structuredData?: StructuredData[];
+  author?: string;
+}
+
+/**
+ * 将SEOMetadata转换为SEO配置
+ */
+export function seoMetadataToSEOConfig(
+  metadata: SEOMetadata,
+  titleTemplate = '%s - Kapium'
+): SEOConfig {
+  const keywords = metadata.keywords?.join(', ');
+
+  return {
+    title: metadata.title,
+    titleTemplate,
+    description: metadata.description,
+    keywords,
+    canonical: metadata.canonical,
+    robots: metadata.robots,
+    lang: metadata.lang,
+    ogType: metadata.ogType,
+    ogTitle: metadata.ogTitle,
+    ogDescription: metadata.ogDescription,
+    ogImage: metadata.ogImage,
+    ogUrl: metadata.ogUrl,
+    twitterCard: metadata.twitterCard,
+    twitterTitle: metadata.twitterTitle,
+    twitterDescription: metadata.twitterDescription,
+    twitterImage: metadata.twitterImage,
+    author: metadata.author,
+  };
+}
+
+/**
+ * 生成meta标签配置
+ */
+export function generateMetaTags(config: SEOConfig): Array<Record<string, string>> {
+  const meta: Array<Record<string, string>> = [];
+
+  if (config.description) {
+    meta.push({ name: 'description', content: config.description });
   }
 
-  // Helper function to update or create meta tags
-  const updateMeta = (name: string, content: string, isProperty = false): void => {
-    const attrName = isProperty ? 'property' : 'name';
-    let meta = document.querySelector(`meta[${attrName}="${name}"]`) as HTMLMetaElement;
-    
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.setAttribute(attrName, name);
-      document.head.appendChild(meta);
-    }
-    meta.content = content;
-  };
-
-  if (metadata.description) updateMeta('description', metadata.description);
-  if (metadata.keywords?.length) updateMeta('keywords', metadata.keywords.join(', '));
-  if (metadata.author) updateMeta('author', metadata.author);
-  if (metadata.robots) updateMeta('robots', metadata.robots);
-
-  // OG tags
-  if (metadata.ogTitle) updateMeta('og:title', metadata.ogTitle, true);
-  if (metadata.ogDescription) updateMeta('og:description', metadata.ogDescription, true);
-  if (metadata.ogImage) updateMeta('og:image', metadata.ogImage, true);
-  if (metadata.ogUrl) updateMeta('og:url', metadata.ogUrl, true);
-  if (metadata.ogType) updateMeta('og:type', metadata.ogType, true);
-
-  // Twitter Card tags
-  if (metadata.twitterCard) updateMeta('twitter:card', metadata.twitterCard);
-  if (metadata.twitterTitle) updateMeta('twitter:title', metadata.twitterTitle);
-  if (metadata.twitterDescription) updateMeta('twitter:description', metadata.twitterDescription);
-  if (metadata.twitterImage) updateMeta('twitter:image', metadata.twitterImage);
-}
-
-/**
- * Update canonical link
- */
-export function setCanonical(url: string): void {
-  let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-  
-  if (!canonical) {
-    canonical = document.createElement('link');
-    canonical.rel = 'canonical';
-    document.head.appendChild(canonical);
+  if (config.keywords) {
+    meta.push({ name: 'keywords', content: config.keywords });
   }
-  
-  canonical.href = url;
-}
 
-/**
- * Add structured data (JSON-LD) to the page
- */
-export function addStructuredData(data: StructuredData, id?: string): HTMLScriptElement {
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  if (id) script.id = id;
-  script.textContent = JSON.stringify(data);
-  document.head.appendChild(script);
-  return script;
-}
-
-/**
- * Remove structured data by ID
- */
-export function removeStructuredData(id: string): void {
-  const script = document.getElementById(id);
-  if (script) {
-    script.remove();
+  if (config.robots) {
+    meta.push({ name: 'robots', content: config.robots });
   }
+
+  if (config.author) {
+    meta.push({ name: 'author', content: config.author });
+  }
+
+  // Open Graph标签
+  if (config.ogType) {
+    meta.push({ property: 'og:type', content: config.ogType });
+  }
+
+  if (config.ogTitle) {
+    meta.push({ property: 'og:title', content: config.ogTitle });
+  }
+
+  if (config.ogDescription) {
+    meta.push({ property: 'og:description', content: config.ogDescription });
+  }
+
+  if (config.ogImage) {
+    meta.push({ property: 'og:image', content: config.ogImage });
+  }
+
+  if (config.ogUrl) {
+    meta.push({ property: 'og:url', content: config.ogUrl });
+  }
+
+  // Twitter Card标签
+  if (config.twitterCard) {
+    meta.push({ name: 'twitter:card', content: config.twitterCard });
+  }
+
+  if (config.twitterTitle) {
+    meta.push({ name: 'twitter:title', content: config.twitterTitle });
+  }
+
+  if (config.twitterDescription) {
+    meta.push({ name: 'twitter:description', content: config.twitterDescription });
+  }
+
+  if (config.twitterImage) {
+    meta.push({ name: 'twitter:image', content: config.twitterImage });
+  }
+
+  return meta;
 }
 
 /**
- * Create Article structured data
+ * 生成link标签配置
  */
-export function createArticleSchema(data: {
-  title: string;
-  description: string;
-  image?: string;
-  datePublished: string;
-  dateModified?: string;
-  author: string;
-  url: string;
-  keywords?: string[];
-}): StructuredData {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: data.title,
-    description: data.description,
-    image: data.image,
-    datePublished: data.datePublished,
-    dateModified: data.dateModified || data.datePublished,
-    author: {
-      '@type': 'Person',
-      name: data.author,
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': data.url,
-    },
-    ...(data.keywords && { keywords: data.keywords.join(', ') }),
-  };
+export function generateLinkTags(config: SEOConfig): Array<Record<string, string>> {
+  const link: Array<Record<string, string>> = [];
+
+  if (config.canonical) {
+    link.push({ rel: 'canonical', href: config.canonical });
+  }
+
+  return link;
 }
 
 /**
- * Create WebSite structured data
+ * 生成script标签配置（用于结构化数据）
  */
-export function createWebsiteSchema(data: {
-  name: string;
-  description: string;
-  url: string;
-  logo?: string;
-}): StructuredData {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: data.name,
-    description: data.description,
-    url: data.url,
-    ...(data.logo && { image: data.logo }),
-  };
+export function generateScriptTags(structuredData: StructuredData[]): Array<Record<string, any>> {
+  return structuredData.map((data) => ({
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify(data),
+  }));
 }
 
 /**
- * Create BreadcrumbList structured data
- */
-export function createBreadcrumbSchema(items: Array<{
-  name: string;
-  url: string;
-}>): StructuredData {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.url,
-    })),
-  };
-}
-
-/**
- * Get base SEO metadata from environment
+ * 获取基础SEO元数据
  */
 export function getBaseMetadata(): SEOMetadata {
   return {
@@ -191,13 +190,102 @@ export function getBaseMetadata(): SEOMetadata {
 }
 
 /**
- * Merge base metadata with page-specific metadata
+ * 合并基础元数据与页面特定元数据
  */
 export function mergeMetadata(base: SEOMetadata, page: SEOMetadata): SEOMetadata {
   return {
     ...base,
     ...page,
+    title: page.title || base.title,
+    description: page.description || base.description,
+    ogTitle: page.ogTitle || page.title || base.ogTitle,
+    ogDescription: page.ogDescription || page.description || base.ogDescription,
+    ogImage: page.ogImage || base.ogImage,
+    ogUrl: page.ogUrl || base.ogUrl,
+    ogType: page.ogType || base.ogType,
+    twitterCard: page.twitterCard || base.twitterCard,
+    twitterTitle: page.twitterTitle || page.ogTitle || page.title || base.twitterTitle,
+    twitterDescription: page.twitterDescription || page.ogDescription || page.description || base.twitterDescription,
+    twitterImage: page.twitterImage || page.ogImage || base.twitterImage,
     keywords: page.keywords || base.keywords,
     robots: page.robots || base.robots,
+    author: page.author || base.author,
+  };
+}
+
+/**
+ * 创建文章结构化数据 (BlogPosting)
+ */
+export function createArticleSchema(article: {
+  title: string;
+  description: string;
+  image?: string;
+  datePublished: string;
+  author: string;
+  url: string;
+  keywords?: string[];
+}): StructuredData {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: article.title,
+    description: article.description,
+    image: article.image,
+    datePublished: article.datePublished,
+    dateModified: article.datePublished,
+    author: {
+      '@type': 'Person',
+      name: article.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: import.meta.env.VITE_SITE_TITLE || 'Kapium',
+      logo: {
+        '@type': 'ImageObject',
+        url: import.meta.env.VITE_SITE_LOGO || '',
+      },
+    },
+    keywords: article.keywords?.join(', '),
+    url: article.url,
+  };
+}
+
+/**
+ * 创建网站结构化数据 (WebSite)
+ */
+export function createWebsiteSchema(website: {
+  name: string;
+  description: string;
+  url: string;
+  logo?: string;
+}): StructuredData {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: website.name,
+    description: website.description,
+    url: website.url,
+    logo: website.logo,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${website.url}/search?q={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
+/**
+ * 创建面包屑结构化数据 (BreadcrumbList)
+ */
+export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>): StructuredData {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }

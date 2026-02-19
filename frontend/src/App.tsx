@@ -19,6 +19,9 @@ import FeedPage from '@/pages/FeedPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import OfflinePage from '@/pages/OfflinePage';
 import RedirectPage from '@/pages/RedirectPage';
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
+import CookiesPolicyPage from '@/pages/CookiesPolicyPage';
+import CopyrightPolicyPage from '@/pages/CopyrightPolicyPage';
 
 export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -51,6 +54,9 @@ export default function App() {
   const NotFoundRoute = useCallback(() => <NotFoundPage onSearchClick={openSearch} />, [openSearch]);
   const OfflineRoute = useCallback(() => <OfflinePage onSearchClick={openSearch} />, [openSearch]);
   const RedirectRoute = useCallback(() => <RedirectPage onSearchClick={openSearch} />, [openSearch]);
+  const PrivacyPolicyRoute = useCallback(() => <PrivacyPolicyPage onSearchClick={openSearch} />, [openSearch]);
+  const CookiesPolicyRoute = useCallback(() => <CookiesPolicyPage onSearchClick={openSearch} />, [openSearch]);
+  const CopyrightPolicyRoute = useCallback(() => <CopyrightPolicyPage onSearchClick={openSearch} />, [openSearch]);
 
   if (!isOnline) {
     return (
@@ -92,6 +98,9 @@ export default function App() {
         <Route path="/timeline" component={TimelineRoute} />
         <Route path="/feed" component={FeedRoute} />
         <Route path="/redirect" component={RedirectRoute} />
+        <Route path="/privacy-policy" component={PrivacyPolicyRoute} />
+        <Route path="/cookies-policy" component={CookiesPolicyRoute} />
+        <Route path="/copyright-policy" component={CopyrightPolicyRoute} />
         <Route component={NotFoundRoute} />
       </Switch>
       <Toaster />

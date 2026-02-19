@@ -1,16 +1,13 @@
 {
   "name": "序炁",
   "avatar": "/img/avatar.jpg",
-  "title": "前端开发者 / 技术爱好者",
+  "title": "事学生",
   "location": "中国 · 武汉",
   "bio": "A dragon that born in the Order and Chaos.",
   "skills": [
+    "C / C++",
     "JavaScript",
-    "TypeScript",
-    "React",
-    "Vite",
-    "Markdown",
-    "C / C++"
+    "TypeScript"
   ],
   "education": [
     {

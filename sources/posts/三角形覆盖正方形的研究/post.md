@@ -15,7 +15,7 @@ $$
 \\
 \therefore \angle A=\angle B=90\degree\text{，}AB\bot AC\text{于点}A\text{且}\bot BD\text{于点}B\text{，}AB\text{//}CD
 \\
-\therefore \bigtriangleup AEC\text{与}\bigtriangleup BFD\text{都是直角三角形，其中}∠A=∠B=90\degree\text{，且}\bigtriangleup GCD\text{\sim}\bigtriangleup GEF
+\therefore \bigtriangleup AEC\text{与}\bigtriangleup BFD\text{都是直角三角形，其中}∠A=∠B=90\degree\text{，且}\bigtriangleup GCD\text{∼}\bigtriangleup GEF
 \\
 \text{又}\because \text{三角形}GEF\text{的高是}\left( x-a \right) \text{，三角形}GCD\text{的高是}x
 \\
@@ -57,7 +57,7 @@ $$
 \\
 \therefore AB//CD
 \\
-\therefore \bigtriangleup GCD\text{\sim}\bigtriangleup GEF\text{，四边形}EFCD\text{是梯形}
+\therefore \bigtriangleup GCD\text{∼}\bigtriangleup GEF\text{，四边形}EFCD\text{是梯形}
 \\
 \text{又}\because \bigtriangleup GEF\text{的高是}\left( x-a \right) \text{，}\bigtriangleup GCD\text{的高是}x
 \\

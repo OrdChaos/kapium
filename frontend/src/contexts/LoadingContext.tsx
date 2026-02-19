@@ -14,21 +14,25 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   const completionTimer = useRef<NodeJS.Timeout | null>(null);
 
   const startLoading = useCallback(() => {
-    setIsLoading(true);
-    NProgress.start();
+    setIsLoading(prev => {
+      if (!prev) {
+        NProgress.start();
+        return true;
+      }
+      return prev;
+    });
   }, []);
 
   const completeLoading = useCallback(() => {
-    // 清除之前的定时器
-    if (completionTimer.current) {
-      clearTimeout(completionTimer.current);
-    }
-
-    NProgress.done();
-    setIsLoading(false);
+    setIsLoading(prev => {
+      if (prev) {
+        NProgress.done();
+        return false;
+      }
+      return prev;
+    });
   }, []);
 
-  // 清理函数
   const cleanup = useCallback(() => {
     if (completionTimer.current) {
       clearTimeout(completionTimer.current);
@@ -36,10 +40,7 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
     NProgress.remove();
   }, []);
 
-  // 组件卸载时清理
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanupRef = useRef(cleanup);
-  // cleanupRef.current = cleanup;
 
   return (
     <LoadingContext.Provider value={{ startLoading, completeLoading, isLoading }}>

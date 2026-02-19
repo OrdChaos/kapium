@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'wouter';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -29,8 +30,9 @@ export default function Footer() {
     <footer className="border-t border-border/90 bg-background">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-2 text-center text-sm text-muted-foreground">
-          <p>© {currentYear} 谐元场域 - 保留一切权利</p>
+          <p>© {currentYear} <Link href="/" className="transition-colors hover:text-primary duration-300">{import.meta.env.VITE_SITE_TITLE}</Link> - 保留一切权利</p>
           <p>由 <a href="https://github.com/ordchaos/kapium" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary duration-300">Kapium</a> 构建</p>
+          <p><Link href="/copyright-policy" className="transition-colors hover:text-primary duration-300">版权政策</Link> | <Link href="/cookies-policy" className="transition-colors hover:text-primary duration-300">Cookies 政策</Link> | <Link href="/privacy-policy" className="transition-colors hover:text-primary duration-300">隐私政策</Link></p>
           <p>本站已稳定运行 {uptime.days} 天 {uptime.hours} 时 {uptime.minutes} 分 {uptime.seconds} 秒</p>
           <p><a href="https://icp.gov.moe/?keyword=20220824" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-primary duration-300">萌 ICP 备 20220824 号</a></p>
         </div>

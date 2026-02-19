@@ -39,6 +39,9 @@ export default function CategoriesPage({ onSearchClick }: CategoriesPageProps) {
   useEffect(() => {
     setDisplayLimit(ITEMS_PER_PAGE);
 
+    setCategories(null);
+    setCategoryPosts(null);
+
     Promise.all([
       fetch('/data/categories.json').then(res => res.json()),
       fetch('/data/categoryPosts.json').then(res => res.json()),

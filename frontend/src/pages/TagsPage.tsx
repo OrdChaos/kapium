@@ -48,6 +48,9 @@ export default function TagsPage({ onSearchClick }: TagsPageProps) {
   });
 
   useEffect(() => {
+    setAllTags(null);
+    setTagPosts(null);
+
     Promise.all([
       fetch('/data/tags.json').then(res => res.json()),
       fetch('/data/tagPosts.json').then(res => res.json()),

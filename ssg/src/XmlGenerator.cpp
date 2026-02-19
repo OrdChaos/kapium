@@ -96,6 +96,9 @@ namespace xml_generator {
         add_url("/links", "", "0.5");
         add_url("/about", "", "0.7");
         add_url("/timeline", "", "0.6");
+        add_url("/privacy-policy", "", "0.6");
+        add_url("/cookies-policy", "", "0.6");
+        add_url("/copyright-policy", "", "0.6");
 
         for (const auto& cat : categories) {
             add_url("/categories/" + cat["name"].get<std::string>(), "", "0.6");

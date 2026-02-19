@@ -3,8 +3,10 @@ import Banner from '@/components/Banner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ExternalLink } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useParams } from 'wouter';
 import { useSEO } from '@/hooks/use-seo';
 import { usePageLoading } from '@/hooks/use-page-loading';
+import Twikoo from '@/components/Twikoo';
 
 interface LinksPageProps {
   onSearchClick: () => void;
@@ -13,6 +15,8 @@ interface LinksPageProps {
 export default function LinksPage({ onSearchClick }: LinksPageProps) {
   const [links, setLinks] = useState<any[] | null>(null);
   const [visible, setVisible] = useState(false);
+
+  const { id } = useParams();
 
   // Complete loading bar when links are loaded
   usePageLoading(links !== null);
@@ -45,13 +49,6 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
       />
       <div className="container mx-auto px-4 py-12">
         <div className="mx-auto max-w-4xl">
-          <div className="mb-8 rounded-lg border border-border bg-muted/50 p-6">
-            <h2 className="mb-2 text-lg font-semibold">交换友链</h2>
-            <p className="text-sm text-muted-foreground">
-              如果你想与我交换友链，欢迎通过邮件联系我。请确保你的博客内容原创且定期更新。
-            </p>
-          </div>
-
           <div className={`grid gap-6 md:grid-cols-2 transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
             {links &&
               links.map((link) => (
@@ -90,8 +87,42 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
                     </CardContent>
                   </Card>
                 </a>
-              ))}
+            ))}
           </div>
+          <div className="mb-8 rounded-lg border border-border bg-muted/50 p-6 mt-8">
+            <h2 className="mb-2 text-lg font-semibold">交换友链</h2>
+            <p className="text-sm text-muted-foreground mb-4">
+              如果你想与我交换友链，欢迎在下方留言联系我。
+            </p>
+            <p className="text-sm text-muted-foreground">
+              要求如下：
+            </p>
+            <p className="text-sm text-muted-foreground mb-4">
+              <ul className="list-disc pl-5">
+                <li>非营利性，非资源分享类及盗版传播内容</li>
+                <li>SFW，全年龄向</li>
+                <li>启用全站 https</li>
+                <li>文章数&gt;=10</li>
+                <li>已添加本站友链</li>
+              </ul>
+            </p>
+            <p className="text-sm text-muted-foreground">
+              本站信息：
+            </p>
+            <p className="text-sm text-muted-foreground">
+              <ul className="list-disc pl-5">
+                <li>网站名称：{import.meta.env.VITE_SITE_TITLE}</li>
+                <li>介绍：{import.meta.env.VITE_SITE_DESCRIPTION}</li>
+                <li>地址：{import.meta.env.VITE_SITE_URL}</li>
+                <li>头像：https://www.ordchaos.com/img/avatar.jpg</li>
+              </ul>
+            </p>
+          </div>
+
+          <div key={`twikoo-${id}`} className="mt-8">
+            <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
+          </div>
+
         </div>
       </div>
     </Layout>

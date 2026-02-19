@@ -2,13 +2,13 @@ import { ReactNode, useEffect } from 'react';
 import {
   SEOMetadata,
   StructuredData,
-  seoMetadataToHelmetConfig,
-  generateHelmetMeta,
-  generateHelmetLink,
-  generateHelmetScript,
+  seoMetadataToSEOConfig,
+  generateMetaTags,
+  generateLinkTags,
+  generateScriptTags,
   getBaseMetadata,
   mergeMetadata,
-} from '@/lib/helmet';
+} from '@/lib/seo';
 
 interface UseSEOOptions {
   title?: string;
@@ -84,9 +84,9 @@ export function useSEO(options: UseSEOOptions = {}): ReactNode {
     author,
   });
 
-  const helmetConfig = seoMetadataToHelmetConfig(metadata);
-  const metaTags = generateHelmetMeta(helmetConfig);
-  const linkTags = generateHelmetLink({ ...helmetConfig, canonical: canonical || currentUrl });
+  const seoConfig = seoMetadataToSEOConfig(metadata);
+  const metaTags = generateMetaTags(seoConfig);
+  const linkTags = generateLinkTags({ ...seoConfig, canonical: canonical || currentUrl });
 
   // 处理structuredData - 支持单个对象或数组
   let structuredDataArray: StructuredData[] = [];
@@ -97,13 +97,13 @@ export function useSEO(options: UseSEOOptions = {}): ReactNode {
       structuredDataArray = [structuredData];
     }
   }
-  const scriptTags = generateHelmetScript(structuredDataArray);
+  const scriptTags = generateScriptTags(structuredDataArray);
 
   // 使用useEffect直接操作DOM来设置SEO标签
   useEffect(() => {
     // 设置title
-    if (helmetConfig.title) {
-      document.title = helmetConfig.title;
+    if (seoConfig.title) {
+      document.title = seoConfig.title;
     }
 
     // 设置meta标签
@@ -151,8 +151,8 @@ export function useSEO(options: UseSEOOptions = {}): ReactNode {
     });
 
     // 设置html lang属性
-    if (helmetConfig.lang) {
-      document.documentElement.lang = helmetConfig.lang;
+    if (seoConfig.lang) {
+      document.documentElement.lang = seoConfig.lang;
     }
 
     // 清理函数
@@ -184,28 +184,26 @@ export function useSEO(options: UseSEOOptions = {}): ReactNode {
         }
       });
     };
-  }, [helmetConfig, metaTags, linkTags, scriptTags]);
+  }, [seoConfig, metaTags, linkTags, scriptTags]);
 
-  // 返回null，因为我们直接操作DOM
-  return null;
+  return null; // 不再返回JSX元素，因为直接操作DOM
 }
 
 /**
- * Hook to set page title only
+ * Hook to set page title only (deprecated, use useSEO instead)
+ * @deprecated Use useSEO instead
  */
-export function usePageTitle(title: string): void {
-  useEffect(() => {
-    document.title = title ? `${title} - ${import.meta.env.VITE_SITE_TITLE}` : import.meta.env.VITE_SITE_TITLE;
-  }, [title]);
+export function usePageTitle(title: string): ReactNode {
+  return useSEO({ title });
 }
 
 // Export SEO utilities for direct use
-export type { SEOMetadata, StructuredData } from '@/lib/helmet';
+export type { SEOMetadata, StructuredData } from '@/lib/seo';
 export {
   createArticleSchema,
   createWebsiteSchema,
   createBreadcrumbSchema,
   getBaseMetadata,
   mergeMetadata,
-  seoMetadataToHelmetConfig,
-} from '@/lib/helmet';
+  seoMetadataToSEOConfig,
+} from '@/lib/seo';

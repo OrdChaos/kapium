@@ -255,7 +255,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
 
                 {/* 文章摘要 */}
                 {post.summary && (
-                  <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8">
+                  <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
                     <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
                   </div>
@@ -315,7 +315,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
               {tocAndOffsets.toc.length > 0 && (
                 <aside className="hidden xl:block absolute h-full" style={{ left: 'calc(50% + 384px + 40px)', width: '260px' }}>
                   <div className="sticky top-24">
-                    <Card className="rounded-lg border-border shadow-md bg-card">
+                    <Card className="rounded-lg border-border shadow-md bg-card duration-300 hover:shadow-lg hover:border-primary/50">
                       <CardContent className="p-5">
                         <CardTitle className="text-sm font-bold mb-4">目录</CardTitle>
                         <nav>
