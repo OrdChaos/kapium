@@ -231,7 +231,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
           <div className="container mx-auto px-4 py-12 relative min-h-screen">
             <div className="flex justify-center">
               <main className="w-full max-w-[768px] min-w-0">
-                {/* 顶部元数据 */}
                 <div className="mb-8 space-y-4">
                   <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
@@ -246,14 +245,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                     <div className="flex flex-wrap gap-2">
                       {post.tags.map((tag: string) => (
                         <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
-                          <Badge variant="outline" className="text-xs cursor-pointer hover:bg-primary">{tag}</Badge>
+                          <Badge variant="outline" className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground">{tag}</Badge>
                         </Link>
                       ))}
                     </div>
                   </div>
                 </div>
 
-                {/* 文章摘要 */}
                 {post.summary && (
                   <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
                     <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
@@ -261,7 +259,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   </div>
                 )}
 
-                {/* 正文内容：强制 Key 刷新 */}
                 <article className="prose prose-neutral dark:prose-invert max-w-none">
                   <div 
                     key={`content-${id}`}
@@ -283,35 +280,72 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
 
                 <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
 
-                {/* 上下篇导航 */}
                 {navigation && (
-                  <div className="mt-8 flex flex-col sm:flex-row justify-between gap-6 text-sm mb-12">
-                    <div className="flex-1">
-                      {navigation.next ? (
-                        <Link to={`/posts/${navigation.next.id}`} className="group block p-4 rounded-lg border border-border hover:border-primary/50 transition-colors">
-                          <div className="flex items-center gap-2 text-muted-foreground mb-1"><ChevronLeft className="h-4 w-4" /><span>下一篇</span></div>
-                          <div className="font-medium group-hover:text-primary">{navigation.next.title}</div>
-                        </Link>
-                      ) : <div className="p-4 rounded-lg border bg-muted/30 text-muted-foreground">已是最新文章</div>}
-                    </div>
-                    <div className="flex-1 text-right sm:text-left">
-                      {navigation.prev ? (
-                        <Link to={`/posts/${navigation.prev.id}`} className="group block p-4 rounded-lg border border-border hover:border-primary/50 transition-colors">
-                          <div className="flex items-center gap-2 text-muted-foreground mb-1"><span>上一篇</span><ChevronRight className="h-4 w-4" /></div>
-                          <div className="font-medium group-hover:text-primary">{navigation.prev.title}</div>
-                        </Link>
-                      ) : <div className="p-4 rounded-lg border bg-muted/30 text-muted-foreground">已是最旧文章</div>}
+                  <div className="mt-4 pt-4 mb-8">
+                    <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
+                      <div className="flex-1 min-w-0">
+                        {navigation.next ? (
+                          <Link
+                            to={`/posts/${navigation.next.id}`}
+                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                              <ChevronLeft className="h-4 w-4" />
+                              <span className="font-medium">下一篇</span>
+                            </div>
+                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                              {navigation.next.title}
+                            </div>
+                          </Link>
+                        ) : (
+                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                            <div className="flex items-center gap-2 mb-1">
+                              <ChevronLeft className="h-4 w-4" />
+                              <span className="font-medium">下一篇</span>
+                            </div>
+                            <div className="line-clamp-2 font-medium">
+                              已是最新文章
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0 text-right sm:text-left">
+                        {navigation.prev ? (
+                          <Link
+                            to={`/posts/${navigation.prev.id}`}
+                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                          >
+                            <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
+                              <span className="font-medium">上一篇</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </div>
+                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                              {navigation.prev.title}
+                            </div>
+                          </Link>
+                        ) : (
+                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                            <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
+                              <span className="font-medium">上一篇</span>
+                              <ChevronRight className="h-4 w-4" />
+                            </div>
+                            <div className="line-clamp-2 font-medium">
+                              已是最旧文章
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
                     </div>
                   </div>
                 )}
 
-                {/* 评论区：独立 Key */}
                 <div key={`twikoo-${id}`} className="mt-8">
                   <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
                 </div>
               </main>
 
-              {/* 侧边栏目录 */}
               {tocAndOffsets.toc.length > 0 && (
                 <aside className="hidden xl:block absolute h-full" style={{ left: 'calc(50% + 384px + 40px)', width: '260px' }}>
                   <div className="sticky top-24">

@@ -1,11 +1,3 @@
-/**
- * SEO utilities for unified meta tag and structured data management
- * 统一管理SEO、Meta标签和结构化数据的工具
- */
-
-/**
- * SEO元数据接口，与之前兼容
- */
 export interface SEOMetadata {
   title?: string;
   description?: string;
@@ -25,18 +17,12 @@ export interface SEOMetadata {
   lang?: string;
 }
 
-/**
- * 结构化数据接口
- */
 export interface StructuredData {
   '@context': string;
   '@type': string;
   [key: string]: any;
 }
 
-/**
- * SEO配置接口
- */
 export interface SEOConfig {
   title?: string;
   titleTemplate?: string;
@@ -59,9 +45,6 @@ export interface SEOConfig {
   author?: string;
 }
 
-/**
- * 将SEOMetadata转换为SEO配置
- */
 export function seoMetadataToSEOConfig(
   metadata: SEOMetadata,
   titleTemplate = '%s - Kapium'
@@ -89,9 +72,6 @@ export function seoMetadataToSEOConfig(
   };
 }
 
-/**
- * 生成meta标签配置
- */
 export function generateMetaTags(config: SEOConfig): Array<Record<string, string>> {
   const meta: Array<Record<string, string>> = [];
 
@@ -152,9 +132,6 @@ export function generateMetaTags(config: SEOConfig): Array<Record<string, string
   return meta;
 }
 
-/**
- * 生成link标签配置
- */
 export function generateLinkTags(config: SEOConfig): Array<Record<string, string>> {
   const link: Array<Record<string, string>> = [];
 
@@ -165,9 +142,6 @@ export function generateLinkTags(config: SEOConfig): Array<Record<string, string
   return link;
 }
 
-/**
- * 生成script标签配置（用于结构化数据）
- */
 export function generateScriptTags(structuredData: StructuredData[]): Array<Record<string, any>> {
   return structuredData.map((data) => ({
     type: 'application/ld+json',
@@ -175,9 +149,6 @@ export function generateScriptTags(structuredData: StructuredData[]): Array<Reco
   }));
 }
 
-/**
- * 获取基础SEO元数据
- */
 export function getBaseMetadata(): SEOMetadata {
   return {
     title: import.meta.env.VITE_SITE_TITLE || 'Blog',
@@ -189,9 +160,6 @@ export function getBaseMetadata(): SEOMetadata {
   };
 }
 
-/**
- * 合并基础元数据与页面特定元数据
- */
 export function mergeMetadata(base: SEOMetadata, page: SEOMetadata): SEOMetadata {
   return {
     ...base,
@@ -213,9 +181,6 @@ export function mergeMetadata(base: SEOMetadata, page: SEOMetadata): SEOMetadata
   };
 }
 
-/**
- * 创建文章结构化数据 (BlogPosting)
- */
 export function createArticleSchema(article: {
   title: string;
   description: string;
@@ -250,9 +215,6 @@ export function createArticleSchema(article: {
   };
 }
 
-/**
- * 创建网站结构化数据 (WebSite)
- */
 export function createWebsiteSchema(website: {
   name: string;
   description: string;
@@ -274,9 +236,6 @@ export function createWebsiteSchema(website: {
   };
 }
 
-/**
- * 创建面包屑结构化数据 (BreadcrumbList)
- */
 export function createBreadcrumbSchema(items: Array<{ name: string; url: string }>): StructuredData {
   return {
     '@context': 'https://schema.org',

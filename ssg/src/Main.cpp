@@ -137,7 +137,9 @@ auto main(int argc, char* argv[]) -> int {
             {"id", abbr},
             {"title", composed_post_json["title"]},
             {"excerpt", composed_post_json["excerpt"]},
-            {"category", composed_post_json["category"]}
+            {"category", composed_post_json["category"]},
+            {"content", plain},
+            {"tags", composed_post_json["tags"]}
         });
 
         std::cout << "[SSG] Processed: " << abbr << std::endl;

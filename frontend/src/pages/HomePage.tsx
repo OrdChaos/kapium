@@ -10,16 +10,17 @@ import { usePageLoading } from '@/hooks/use-page-loading';
 
 interface HomePageProps {
   onSearchClick: () => void;
+  initialPage?: number;
 }
 
-export default function HomePage({ onSearchClick }: HomePageProps) {
+export default function HomePage({ onSearchClick, initialPage }: HomePageProps) {
   const [posts, setPosts] = useState<any[] | null>(null);
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 21;
   
   const [location] = useLocation();
-  const pageFromUrl = parseInt(location.split('/')[2]) || 1;
+  const pageFromUrl = initialPage !== undefined ? initialPage : (parseInt(location.split('/')[2]) || 1);
 
   usePageLoading(posts !== null);
 

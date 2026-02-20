@@ -1,6 +1,6 @@
 include ../../common.mk
 
-BIN_DIR := $(BUILD_DIR)/tools/summary/
+BIN_DIR := $(BUILD_DIR)/tools/summary
 
 CXX := g++
 C := gcc

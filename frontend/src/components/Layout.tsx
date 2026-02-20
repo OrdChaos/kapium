@@ -73,7 +73,6 @@ export default function Layout({ children, onSearchClick }: LayoutProps) {
 
       <Footer />
 
-      {/* 使用 Portal 或条件渲染避免 DOM 插入错误 */}
       {showTopButton && (
         <button
           ref={topButtonRef}

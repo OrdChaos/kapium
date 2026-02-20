@@ -125,7 +125,8 @@ export default function RedirectPage({ onSearchClick }: RedirectPageProps) {
                   <p className="font-mono text-foreground">{targetUrl}</p>
                 </div>
                 <p className="text-sm text-muted-foreground mb-6">
-                  请确保您信任此链接，然后继续。
+                  博主只能保证在编写此博文时该链接的有效性和安全性。<br />
+                  请自行确认链接的有效性和安全性，避免遭受损失。
                 </p>
                 <div className="flex gap-4 justify-end">
                   <Button

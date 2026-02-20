@@ -8,10 +8,42 @@ function autoSpacingContent(html) {
   const protectedBlocks = [];
   let blockIndex = 0;
 
-  let content = html.replace(
+  let content = html;
+
+  content = content.replace(
     /(<(pre|code|script|style|textarea|x-equation)\b[^>]*>[\s\S]*?<\/\2>)/gi,
     (match) => {
-      const placeholder = `__PROTECT_${blockIndex}__`;
+      const placeholder = `__BLOCK_${blockIndex}__`;
+      protectedBlocks.push(match);
+      blockIndex++;
+      return placeholder;
+    }
+  );
+
+  content = content.replace(
+    /(&[a-zA-Z0-9#]+;)/g,
+    (match) => {
+      const placeholder = `__ENTITY_${blockIndex}__`;
+      protectedBlocks.push(match);
+      blockIndex++;
+      return placeholder;
+    }
+  );
+
+  content = content.replace(
+    /(<[a-z][a-z0-9-]*\b[^>]*>)/gi,
+    (match) => {
+      const placeholder = `__TAG_START_${blockIndex}__`;
+      protectedBlocks.push(match);
+      blockIndex++;
+      return placeholder;
+    }
+  );
+
+  content = content.replace(
+    /(<\/[a-z][a-z0-9-]*>)/gi,
+    (match) => {
+      const placeholder = `__TAG_END_${blockIndex}__`;
       protectedBlocks.push(match);
       blockIndex++;
       return placeholder;
@@ -20,7 +52,10 @@ function autoSpacingContent(html) {
 
   content = pangu.spacingText(content);
 
-  content = content.replace(/__PROTECT_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
+  content = content.replace(/__TAG_END_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
+  content = content.replace(/__TAG_START_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
+  content = content.replace(/__ENTITY_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
+  content = content.replace(/__BLOCK_(\d+)__/g, (_, idx) => protectedBlocks[Number(idx)] || '');
 
   return content;
 }

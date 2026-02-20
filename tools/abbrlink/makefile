@@ -1,6 +1,6 @@
 include ../../common.mk
 
-BIN_DIR := $(BUILD_DIR)/tools/abbrlink/
+BIN_DIR := $(BUILD_DIR)/tools/abbrlink
 
 CXX := g++
 C := gcc

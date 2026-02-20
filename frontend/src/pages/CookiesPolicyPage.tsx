@@ -44,6 +44,13 @@ export default function CookiesPolicyPage({ onSearchClick }: CookiesPolicyPagePr
                 <li><strong>Twikoo 评论系统 Cookie</strong> - 用于评论功能</li>
               </ul>
 
+              <h3>本地存储</h3>
+              <p>除了 Cookies，我们还使用浏览器的本地存储（LocalStorage）来存储以下信息：</p>
+              <ul>
+                <li><strong>搜索历史</strong> - 记录您在本站的搜索历史，方便您快速重复搜索，最多保存 10 条记录</li>
+              </ul>
+              <p>搜索历史仅存储在您的本地设备上，不会上传到我们的服务器。您可以随时在搜索界面中删除单条记录或清空全部历史。</p>
+
               <h2>4. 如何管理 Cookies</h2>
               <p>您可以通过浏览器设置来控制和/或删除 Cookies。您可以删除计算机上已存在的所有 Cookies，也可以设置大多数浏览器阻止放置它们。但是，如果您这样做，每次访问网站时可能需要手动调整一些偏好设置，某些服务和功能可能无法正常工作。</p>
 

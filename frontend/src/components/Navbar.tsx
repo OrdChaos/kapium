@@ -73,7 +73,6 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
 
-          {/* Logo */}
           <Link href="/" className="text-xl font-bold tracking-tight">
             {import.meta.env.VITE_SITE_TITLE}
           </Link>
@@ -264,10 +263,8 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                 );
               })}
 
-              {/* 分隔线 */}
               <div className="border-t border-border/40 my-3" />
 
-              {/* 移动端功能按钮 */}
               <div className="flex gap-2">
 
                 <Button

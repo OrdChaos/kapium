@@ -1,5 +1,5 @@
-import { Route, Switch } from 'wouter';
-import { useState, useCallback, useEffect } from 'react';
+import { Route, Switch, useLocation, useParams } from 'wouter';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import UmamiAnalytics from '@danielgtmn/umami-react';
 
@@ -22,6 +22,67 @@ import RedirectPage from '@/pages/RedirectPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import CookiesPolicyPage from '@/pages/CookiesPolicyPage';
 import CopyrightPolicyPage from '@/pages/CopyrightPolicyPage';
+
+function PageRoute({ onSearchClick }: { onSearchClick: () => void }) {
+  const [, navigate] = useLocation();
+  const params = useParams();
+  const [posts, setPosts] = useState<any[] | null>(null);
+  const [shouldShowNotFound, setShouldShowNotFound] = useState(false);
+  const [validPage, setValidPage] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch('/data/posts.json')
+      .then(res => res.json())
+      .then(data => setPosts(data))
+      .catch(() => setPosts([]));
+  }, []);
+
+  useEffect(() => {
+    if (posts === null) return;
+
+    const pageStr = params.page;
+    if (!pageStr) {
+      setShouldShowNotFound(true);
+      return;
+    }
+
+    const pageNum = parseInt(pageStr, 10);
+    
+    if (isNaN(pageNum) || pageNum < 1 || !/^\d+$/.test(pageStr)) {
+      setShouldShowNotFound(true);
+      return;
+    }
+
+    if (pageNum === 1) {
+      navigate('/');
+      return;
+    }
+
+    const postsPerPage = 21;
+    const totalPages = Math.ceil(posts.length / postsPerPage);
+    
+    if (pageNum > totalPages) {
+      setShouldShowNotFound(true);
+      return;
+    }
+
+    setValidPage(pageNum);
+  }, [posts, params.page, navigate]);
+
+  if (posts === null) {
+    return null;
+  }
+
+  if (shouldShowNotFound) {
+    return <NotFoundPage onSearchClick={onSearchClick} />;
+  }
+
+  if (validPage !== null) {
+    return <HomePage onSearchClick={onSearchClick} initialPage={validPage} />;
+  }
+
+  return null;
+}
 
 export default function App() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -86,7 +147,9 @@ export default function App() {
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <Switch>
         <Route path="/" component={HomeRoute} />
-        <Route path="/page/:page" component={HomeRoute} />
+        <Route path="/page/:page">
+          <PageRoute onSearchClick={openSearch} />
+        </Route>
         <Route path="/categories" component={CategoriesRoute} />
         <Route path="/categories/:category" component={CategoriesRoute} />
         <Route path="/tags" component={TagsRoute} />
