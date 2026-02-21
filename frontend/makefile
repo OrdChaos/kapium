@@ -13,7 +13,7 @@ init:
 	@$(NPM) install
 
 build:
-	@bun --no-env-file run build
+	@$(BUN) --no-env-file run build
 
 dev:
 	@$(BUN) dev --host

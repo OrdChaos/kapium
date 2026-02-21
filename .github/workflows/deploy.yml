@@ -1,0 +1,89 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y make
+          cd scripts && npm ci
+          cd ../frontend && bun install --frozen-lockfile
+
+      - name: Build toolchain and data
+        run: make toolchain data pre-rendered render
+
+      - name: Commit and push generated changes
+        id: commit-changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: auto-update generated content"
+            git push
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Add VPS SSH known hosts
+        env:
+          VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS Git repository
+        env:
+          VPS_USER: ${{ secrets.DEPLOY_VPS_USER }}
+          VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
+          VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_REPO_PATH }}
+        run: |
+          git clone --depth 1 "$VPS_USER@$VPS_HOST:$VPS_REPO_PATH" deploy-repo
+          cd deploy-repo || exit 1
+          
+          git rm -rf .
+          cp -r ../build/dist/* .
+          
+          git add -A
+          if ! git diff --staged --quiet; then
+            git commit -m "deploy: update from kapium build"
+            git push
+          else
+            echo "No changes to deploy"
+          fi

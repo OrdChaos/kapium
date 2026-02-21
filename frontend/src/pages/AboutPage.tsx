@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Wrench, MapPin, Briefcase, GraduationCap, Link as LinkIcon } from 'lucide-react';
+import { Wrench, MapPin, Briefcase, GraduationCap, Link as LinkIcon, Heart, Target, Zap, Gamepad2, Sparkles, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSEO } from '@/hooks/use-seo';
 import { usePageLoading } from '@/hooks/use-page-loading';
@@ -33,6 +33,11 @@ interface ExperienceItem {
   description: string;
 }
 
+interface MbtiTrait {
+  name: string;
+  value: number;
+}
+
 interface ProfileData {
   name: string;
   avatar: string;
@@ -43,6 +48,16 @@ interface ProfileData {
   education?: EducationItem[];
   experience?: ExperienceItem[];
   socialLinks?: SocialLink[];
+  titleFull?: string;
+  mbti?: string;
+  mbtiTitle?: string;
+  mbtiRole?: string;
+  mbtiStrategy?: string;
+  mbtiTraits?: MbtiTrait[];
+  alignment?: string;
+  games?: string[];
+  interests?: string[];
+  pursuits?: string[];
 }
 
 interface AboutPageProps {
@@ -67,38 +82,14 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
   // SEO Management
   const seoElement = useSEO({
     title: '关于',
-    description: '了解博客作者的信息和背景',
+    description: '了解更多',
   });
 
   useEffect(() => {
     fetch('/data/profile.json')
       .then(res => res.json())
       .then(data => {
-        setProfile({
-          ...data,
-          socialLinks: [
-            {
-              platform: 'GitHub',
-              url: 'https://github.com/ordchaos',
-            },
-            {
-              platform: 'Bilibili',
-              url: 'https://space.bilibili.com/403648634',
-            },
-            {
-              platform: 'Stack Overflow',
-              url: 'https://stackoverflow.com/users/17990099/orderchaos',
-            },
-            {
-              platform: 'Steam',
-              url: 'https://steamcommunity.com/id/OrdChaos',
-            },
-            {
-              platform: 'Email',
-              url: 'mailto:orderchaos@ordchaos.com',
-            },
-          ],
-        });
+        setProfile(data);
       });
   }, []);
 
@@ -137,8 +128,15 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                         {profile.name}
                       </CardTitle>
 
+                      {profile.titleFull && (
+                        <div className="mt-2 flex items-center justify-center gap-2 text-primary font-medium md:justify-start">
+                          <Sparkles className="h-4 w-4" />
+                          <span>{profile.titleFull}</span>
+                        </div>
+                      )}
+
                       {profile.title && (
-                        <div className="flex items-center justify-center gap-2 text-muted-foreground md:justify-start">
+                        <div className="mt-2 flex items-center justify-center gap-2 text-muted-foreground md:justify-start">
                           <Briefcase className="h-4 w-4" />
                           <span>{profile.title}</span>
                         </div>
@@ -176,6 +174,127 @@ export default function AboutPage({ onSearchClick }: AboutPageProps) {
                     </p>
                   </CardContent>
                 )}
+              </Card>
+
+              {/* 个人信息卡片 */}
+              <Card className="mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    个人信息
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    {profile.mbti && (
+                      <div className="space-y-4 md:col-span-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Zap className="h-4 w-4" />
+                          MBTI
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Badge variant="secondary" className="text-lg px-5 py-2">
+                            {profile.mbti}
+                            {profile.mbtiTitle && (
+                              <span className="ml-2 text-sm text-muted-foreground">({profile.mbtiTitle})</span>
+                            )}
+                          </Badge>
+                          {profile.mbtiRole && (
+                            <Badge variant="outline" className="text-sm px-4 py-1.5">
+                              角色：{profile.mbtiRole}
+                            </Badge>
+                          )}
+                          {profile.mbtiStrategy && (
+                            <Badge variant="outline" className="text-sm px-4 py-1.5">
+                              策略：{profile.mbtiStrategy}
+                            </Badge>
+                          )}
+                        </div>
+
+                        {profile.mbtiTraits && profile.mbtiTraits.length > 0 && (
+                          <div className="space-y-3 pt-2">
+                            <div className="text-sm font-medium text-muted-foreground">人格特征</div>
+                            {profile.mbtiTraits.map((trait, index) => (
+                              <div key={index} className="space-y-1">
+                                <div className="flex justify-between text-sm">
+                                  <span>{trait.name}</span>
+                                  <span className="text-muted-foreground">{trait.value}%</span>
+                                </div>
+                                <div className="h-2 w-full overflow-hidden rounded-full bg-secondary">
+                                  <div 
+                                    className="h-full bg-primary transition-all duration-500"
+                                    style={{ width: `${trait.value}%` }}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {profile.alignment && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Target className="h-4 w-4" />
+                          阵营
+                        </div>
+                        <Badge variant="secondary" className="text-base px-4 py-2">
+                          {profile.alignment}
+                        </Badge>
+                      </div>
+                    )}
+
+                    {profile.pursuits && profile.pursuits.length > 0 && (
+                      <div className="space-y-2 md:col-span-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Heart className="h-4 w-4" />
+                          追求
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.pursuits.map((pursuit, index) => (
+                            <Badge key={index} variant="secondary" className="px-3 py-1.5">
+                              {pursuit}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {profile.games && profile.games.length > 0 && (
+                      <div className="space-y-2 md:col-span-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Gamepad2 className="h-4 w-4" />
+                          爱好游戏
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.games.map((game, index) => (
+                            <Badge key={index} variant="secondary" className="px-3 py-1.5">
+                              {game}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {profile.interests && profile.interests.length > 0 && (
+                      <div className="space-y-2 md:col-span-2">
+                        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Sparkles className="h-4 w-4" />
+                          关注偏好
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {profile.interests.map((interest, index) => (
+                            <Badge key={index} variant="secondary" className="px-3 py-1.5">
+                              {interest}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
               </Card>
 
               {profile.skills?.length ? (

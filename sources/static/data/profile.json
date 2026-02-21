@@ -2,12 +2,66 @@
   "name": "序炁",
   "avatar": "/img/avatar.jpg",
   "title": "事学生",
+  "titleFull": "不羁之形骸 \"混元秩龙\" 序炁",
+  "mbti": "INTP-T",
+  "mbtiTitle": "逻辑学家",
+  "mbtiRole": "分析家",
+  "mbtiStrategy": "持续精进",
+  "mbtiTraits": [
+    { "name": "内向", "value": 57 },
+    { "name": "天马行空", "value": 76 },
+    { "name": "理性思考", "value": 54 },
+    { "name": "随机应变", "value": 67 },
+    { "name": "情绪易波动", "value": 71 }
+  ],
+  "alignment": "绝对中立[22]",
   "location": "中国 · 武汉",
   "bio": "A dragon that born in the Order and Chaos.",
   "skills": [
     "C / C++",
     "JavaScript",
     "TypeScript"
+  ],
+  "games": [
+    "Minecraft",
+    "游戏王：大师决斗",
+    "Phigros",
+    "Arcaea",
+    "植物大战僵尸2"
+  ],
+  "interests": [
+    "数码",
+    "科技",
+    "系统"
+  ],
+  "pursuits": [
+    "尝试",
+    "体验",
+    "了解",
+    "感受",
+    "无羁"
+  ],
+  "socialLinks": [
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/ordchaos"
+    },
+    {
+      "platform": "Bilibili",
+      "url": "https://space.bilibili.com/403648634"
+    },
+    {
+      "platform": "Stack Overflow",
+      "url": "https://stackoverflow.com/users/17990099/orderchaos"
+    },
+    {
+      "platform": "Steam",
+      "url": "https://steamcommunity.com/id/OrdChaos"
+    },
+    {
+      "platform": "Email",
+      "url": "mailto:orderchaos@ordchaos.com"
+    }
   ],
   "education": [
     {
