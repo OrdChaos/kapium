@@ -23,11 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+          cache: "npm"
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -36,11 +32,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y make
-          cd scripts && npm ci
-          cd ../frontend && bun install
+          make init
 
       - name: Build toolchain and data
-        run: make toolchain data pre-rendered render
+        run: make all
 
       - name: Commit and push generated changes
         id: commit-changes

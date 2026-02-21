@@ -1,7 +1,6 @@
 include ../common.mk
 
 NPM := npm
-BUN := bun
 
 DIST := ../build/dist
 
@@ -13,10 +12,10 @@ init:
 	@$(NPM) install
 
 build:
-	@$(BUN) --no-env-file run build
+	@$(NPM) run build
 
 dev:
-	@$(BUN) dev --host
+	@$(NPM) run dev --host
 
 clean:
 	@rm -rf public
