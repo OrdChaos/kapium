@@ -77,7 +77,8 @@ jobs:
           cd temp-repo
 
           git init
-          git remote add origin ${VPS_USER}@${VPS_HOST}:${VPS_REPO_PATH}
+          git remote add origin ssh://${VPS_USER}@${VPS_HOST}:${VPS_REPO_PATH}
+          git remote -v
 
           git checkout --orphan temp-branch
           cp -r ../build/dist/. .
