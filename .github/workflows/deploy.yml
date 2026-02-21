@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
