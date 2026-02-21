@@ -71,14 +71,13 @@ jobs:
         env:
           VPS_USER: ${{ secrets.DEPLOY_VPS_USER }}
           VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
-          VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_BARE_REPO_PATH }}
+          VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_REPO_PATH }}
         run: |
           mkdir -p temp-repo
           cd temp-repo
 
           git init
           git remote add origin ssh://${VPS_USER}@${VPS_HOST}:${VPS_REPO_PATH}
-          git remote -v
 
           git checkout --orphan temp-branch
           cp -r ../build/dist/. .
