@@ -77,7 +77,7 @@ jobs:
           git remote add origin ${VPS_USER}@${VPS_HOST}:${VPS_REPO_PATH}
 
           git checkout --orphan temp-branch
-          cp -r ../dist/. .
+          cp -r ../build/dist/. .
 
           git add -A
           git commit -m "Deploy $(date '+%Y-%m-%d %H:%M:%S') [ci skip]"
