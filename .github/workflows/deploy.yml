@@ -69,9 +69,9 @@ jobs:
 
       - name: Deploy to VPS bare repository
         env:
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_REPO_PATH: ${{ secrets.VPS_BARE_REPO_PATH }}
+          VPS_USER: ${{ secrets.DEPLOY_VPS_USER }}
+          VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
+          VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_BARE_REPO_PATH }}
         run: |
           mkdir -p temp-repo
           cd temp-repo
