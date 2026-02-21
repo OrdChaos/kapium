@@ -35,7 +35,7 @@ jobs:
           sudo apt-get install -y make libssl3 libssl-dev
           make init
 
-      - name: Configure git identity globally
+      - name: Configure GIT identity globally
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
@@ -69,7 +69,6 @@ jobs:
 
       - name: Deploy to VPS bare repository
         env:
-          VPS_USER: ${{ secrets.DEPLOY_VPS_USER }}
           VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
           VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_REPO_PATH }}
         run: |
@@ -77,7 +76,7 @@ jobs:
           cd temp-repo
 
           git init
-          git remote add origin ssh://${VPS_USER}@${VPS_HOST}:${VPS_REPO_PATH}
+          git remote add origin ssh://git@${VPS_HOST}:${VPS_REPO_PATH}
 
           git checkout --orphan temp-branch
           cp -r ../build/dist/. .
