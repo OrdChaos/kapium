@@ -37,7 +37,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y make
           cd scripts && npm ci
-          cd ../frontend && bun install --frozen-lockfile
+          cd ../frontend && bun install
 
       - name: Build toolchain and data
         run: make toolchain data pre-rendered render
