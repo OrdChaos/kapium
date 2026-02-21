@@ -64,7 +64,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
 
-- name: Deploy to VPS bare repository
+      - name: Deploy to VPS bare repository
         env:
           VPS_USER: ${{ secrets.VPS_USER }}
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -82,4 +82,4 @@ jobs:
           git add -A
           git commit -m "Deploy $(date '+%Y-%m-%d %H:%M:%S') [ci skip]"
 
-          git push --force origin temp-branch:main
+          git push --force origin temp-branch:master
