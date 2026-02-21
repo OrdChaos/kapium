@@ -22,7 +22,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	@mkdir -p $(dir $@)
-	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LDLIBS) $(LDFLAGS)
 
 $(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
