@@ -26,11 +26,11 @@ $(TARGET): $(OBJS)
 
 $(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) -c $< -o $@ $(CFLAGS)
 
 $(BIN_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(C) $(CFLAGS) -c $< -o $@
+	$(C) -c $< -o $@ $(CFLAGS)
 
 clean:
 	@rm -rf $(BIN_DIR)
