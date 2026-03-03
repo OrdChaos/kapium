@@ -1040,3 +1040,35 @@
   color: #6b5900;
   align-self: stretch;
 }
+
+/* tk-sort-select 样式美化 */
+.tk-sort-select {
+  color: var(--primary) !important;
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  padding: 0.125rem 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: normal !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  outline: none !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  transform: translateY(3px) !important;
+}
+
+.tk-sort-select:hover {
+  border-color: var(--primary) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.tk-sort-select:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(var(--primary), 0.1) !important;
+}
+
+.tk-sort-select option {
+  color: var(--foreground) !important;
+  background-color: var(--card) !important;
+}
