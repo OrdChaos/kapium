@@ -41,7 +41,11 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Build toolchain and data
-        run: make all
+        env:
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+        run: |
+          cat "$DASHSCOPE_API_KEY" >> .env.local
+          make all
 
       - name: Commit and push generated changes
         id: commit-changes
