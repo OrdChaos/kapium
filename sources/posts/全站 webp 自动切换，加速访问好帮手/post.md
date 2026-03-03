@@ -157,7 +157,7 @@ event.waitUntil(
 最后完整代码如下：
 
 ```javascript
-if(event.request.url.indexOf('img.ordchaos.com') !== -1) {
+if(event.request.url.indexOf('images.ordchaos.com') !== -1) {
     var requestUrl = event.request.url;
     var supportsWebp = false;
     if (event.request.headers.has('accept')){
@@ -200,13 +200,13 @@ if(event.request.url.indexOf('img.ordchaos.com') !== -1) {
 
 要测试无webp支持的情景，则点击右上角的三个点。
 
-![](https://img.ordchaos.com/img/2023/01/01562686a8db1bb30defe61ffa333bd1.png)
+![](https://images.ordchaos.com/2023/01/01562686a8db1bb30defe61ffa333bd1.png)
 
-![](https://img.ordchaos.com/img/2023/01/372ab8df519f78c5d59ea93fcd4caf78.png)
+![](https://images.ordchaos.com/2023/01/372ab8df519f78c5d59ea93fcd4caf78.png)
 
 选择更多工具，找到“渲染”并点击。
 
-![](https://img.ordchaos.com/img/2023/01/6a65c870cbafb3f9f5743d96749c549a.png)
+![](https://images.ordchaos.com/2023/01/6a65c870cbafb3f9f5743d96749c549a.png)
 
 勾选“停用webp”即可。
 
@@ -214,7 +214,7 @@ if(event.request.url.indexOf('img.ordchaos.com') !== -1) {
 
 可以试试我这里的这张图片：（图片来自CYF大佬的`Client Worker`项目的文档）
 
-![](https://img.ordchaos.com/img/2023/01/9f2975321779cda14980431c4595bb37.jpg)
+![](https://images.ordchaos.com/2023/01/9f2975321779cda14980431c4595bb37.jpg)
 
 若浏览器支持webp则会显示`Webp Accept!`，否则为`Webp Reject!This is a jpg file.`
 
@@ -271,7 +271,7 @@ done
 
 `sw.js`重定向段：
 ```javascript
-if (event.request.url.indexOf('img.ordchaos.com') !== -1) {
+if (event.request.url.indexOf('images.ordchaos.com') !== -1) {
     var supportsWebp = false;
     var supportsAvif = false;
     if (event.request.headers.has('accept')) {

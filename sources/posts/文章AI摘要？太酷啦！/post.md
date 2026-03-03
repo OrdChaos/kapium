@@ -100,7 +100,7 @@ span.memos-t {
 
 ## 效果
 
-![](https://img.ordchaos.com/img/2023/07/89262b9071f3c4db0169b20c42cc1549.png)
+![](https://images.ordchaos.com/2023/07/89262b9071f3c4db0169b20c42cc1549.png)
 
 ## 题外话
 

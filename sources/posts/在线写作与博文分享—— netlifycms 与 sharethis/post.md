@@ -14,7 +14,7 @@
 
 很好，但是不太符合我的情况。于是随即翻了翻——
 
-![](https://img.ordchaos.com/img/2022/09/c9dcce95c9ac5cc0b374d8f6f30977ee.png)
+![](https://images.ordchaos.com/2022/09/c9dcce95c9ac5cc0b374d8f6f30977ee.png)
 
 瞳 孔 地 震.jpg
 
@@ -36,17 +36,17 @@
 
 非常简单，进入首页：[https://sharethis.com](https://sharethis.com)
 
-![](https://img.ordchaos.com/img/2022/09/d4c3d172f93f30f67583d155923d9356.png)
+![](https://images.ordchaos.com/2022/09/d4c3d172f93f30f67583d155923d9356.png)
 
 点击“从分享按钮开始”，然后点击第一个选项：
 
-![](https://img.ordchaos.com/img/2022/09/4b1cd38081ce95ec0d3f91679e4fbcc0.png)
+![](https://images.ordchaos.com/2022/09/4b1cd38081ce95ec0d3f91679e4fbcc0.png)
 
 不要急着点击下一步，先用滚轮滚动到页面下方，点击“Customize your Inline Share Buttons”按钮。
 
 在弹出的选项中对按钮进行配置，可以配置包括颜色、媒体、形状等等内容。
 
-![](https://img.ordchaos.com/img/2022/09/4f24034eb100769f87e8264232d51d65.png)
+![](https://images.ordchaos.com/2022/09/4f24034eb100769f87e8264232d51d65.png)
 
 最下方的语言记得调整为中文，然后点击下一步，在新页面中注册登录即可。
 

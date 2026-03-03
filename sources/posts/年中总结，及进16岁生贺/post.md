@@ -26,7 +26,7 @@
 
 中考日以前，最后一个在校日，是一个周六。老师在上午或看自习，或做最后的查漏补缺。而下午，老师开了一场动员会，给每个人发了一块粽子玩偶。既代表端午将临，亦有一举高中之意。一场班会结束，打扫完教室，离开学校，颇有一种或解脱、或不舍的情愫。
 
-![](https://img.ordchaos.com/img/2023/08/6099e101fa1e501ee9e50a3a1a7bf2a9.jpg)
+![](https://images.ordchaos.com/2023/08/6099e101fa1e501ee9e50a3a1a7bf2a9.jpg)
 
 中考前一天，周一，下午我便前往了考点处。每个文化课老师都在考点门口，为我们一张张派发着准考证。面对那一句句叮嘱，我明白，不能当做是像以前那样的老生常谈了。
 
@@ -34,7 +34,7 @@
 
 随后就是[毕业旅行](https://www.ordchaos.com/posts/c2e7460a/)了，很愉快的出行经历，也为初中三年画上了一个圆满的句号。
 
-![](https://img.ordchaos.com/img/2023/07/d2352d5a89443272b242dc2d485012cf.jpg)
+![](https://images.ordchaos.com/2023/07/d2352d5a89443272b242dc2d485012cf.jpg)
 
 ## 7~8月
 
@@ -42,7 +42,7 @@
 
 毫无疑问的被钢三录取，之后是钢三的夏令营，一直到七月二十一。食堂很美味，与同学相处得很愉快，校园环境很好，近乎无可挑剔了。
 
-![](https://img.ordchaos.com/img/2023/08/94e829ac385fbe31768f1ee61242fe69.jpg)
+![](https://images.ordchaos.com/2023/08/94e829ac385fbe31768f1ee61242fe69.jpg)
 
 八月，很放松的一个月，这个月一直在玩master duel和原神，开始了摆烂状态（笑）
 
@@ -58,11 +58,11 @@ Happy Birthday for Me!
 
 {% gi 3 1-2 %}
 
-![](https://img.ordchaos.com/img/2023/08/f1d85bc861f2ece841d0a9335b8a158c.jpg)
+![](https://images.ordchaos.com/2023/08/f1d85bc861f2ece841d0a9335b8a158c.jpg)
 
-![](https://img.ordchaos.com/img/2023/08/8cb70d4e7a728e4284bb74654f2a1cda.jpg)
+![](https://images.ordchaos.com/2023/08/8cb70d4e7a728e4284bb74654f2a1cda.jpg)
 
-![](https://img.ordchaos.com/img/2023/08/853a55642896ca6df431184a4f348297.jpg)
+![](https://images.ordchaos.com/2023/08/853a55642896ca6df431184a4f348297.jpg)
 
 {% endgi %}
 
@@ -70,12 +70,12 @@ Happy Birthday for Me!
 
 {% gi 4 2-1-1 %}
 
-![](https://img.ordchaos.com/img/2023/08/e566af9ac33c10341d308ef6f57b8e04.jpg)
+![](https://images.ordchaos.com/2023/08/e566af9ac33c10341d308ef6f57b8e04.jpg)
 
-![](https://img.ordchaos.com/img/2023/08/9547b00a63868888107ab63ff5beb3d6.jpg)
+![](https://images.ordchaos.com/2023/08/9547b00a63868888107ab63ff5beb3d6.jpg)
 
-![](https://img.ordchaos.com/img/2023/08/dd88f12c1f3f1b3df62efef0487cb224.jpg)
+![](https://images.ordchaos.com/2023/08/dd88f12c1f3f1b3df62efef0487cb224.jpg)
 
-![](https://img.ordchaos.com/img/2023/08/5c82d2f53e97b62d26870ace1b70ef2a.jpg)
+![](https://images.ordchaos.com/2023/08/5c82d2f53e97b62d26870ace1b70ef2a.jpg)
 
 {% endgi %}

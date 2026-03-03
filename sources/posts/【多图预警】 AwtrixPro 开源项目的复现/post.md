@@ -37,17 +37,17 @@
 
 打好的板子如下：
 
-![](https://img.ordchaos.com/img/2022/08/5b9772eb888dbcfcdff2a6ab1c6eede6.png)
+![](https://images.ordchaos.com/2022/08/5b9772eb888dbcfcdff2a6ab1c6eede6.png)
 
 焊接好之后（贴片是用的钢网+锡焊膏+风枪）：
 
-![](https://img.ordchaos.com/img/2022/08/9cf87ef6020be601bbabad04be820af5.png)
+![](https://images.ordchaos.com/2022/08/9cf87ef6020be601bbabad04be820af5.png)
 
 焊接针脚时若是无法直接使用锡丝与电烙铁焊接完成，也可以用锡焊膏+电烙铁。把锡焊膏涂抹在针脚背面，不用担心粘连，然后用电烙铁分别探入每两个针脚间的空隙，随后依次处理每个针脚就可以了。
 
 然后刷程序、接线、通电、启动即可（至少理论上是这样）：
 
-![](https://img.ordchaos.com/img/2022/08/4a5b57080cd403b7b5dd66bd2d9afcf6.png)
+![](https://images.ordchaos.com/2022/08/4a5b57080cd403b7b5dd66bd2d9afcf6.png)
 
 很明显，这里并未启动成功，望高手赐教。
 
@@ -57,29 +57,29 @@
 
 这里除了基础配件外，额外加装了光敏电阻、触摸以及Htui21d温湿度模块。基础部分依据[教你做一个可编程像素屏](https://www.bilibili.com/video/av668523753)制作成功，然后通过自主飞线完成了其它组件的安装。
 
-![开机成功](https://img.ordchaos.com/img/2022/08/ab26200d787686758a2818e42c194390.png)
+![开机成功](https://images.ordchaos.com/2022/08/ab26200d787686758a2818e42c194390.png)
 
 没有什么难点，注意需要连接多根导线时用钳子分别剪开线的外皮，露出里面的铜/铁/其他金属丝，拧在一起然后用电烙铁与锡焊在一起就可以了。
 
 裸露的金属丝记得用电工胶带或者热熔胶包裹起来，防止意外：
 
-![](https://img.ordchaos.com/img/2022/08/f7f7f5023c7a24950e5ff5d613f21a77.png)
+![](https://images.ordchaos.com/2022/08/f7f7f5023c7a24950e5ff5d613f21a77.png)
 
-![](https://img.ordchaos.com/img/2022/08/a58efaa7843d68378c55e5853c9fc868.png)
+![](https://images.ordchaos.com/2022/08/a58efaa7843d68378c55e5853c9fc868.png)
 
 然后装入外壳即可：
 
-![](https://img.ordchaos.com/img/2022/08/1b676758ff6b5335e885fdb05582ca29.png)
+![](https://images.ordchaos.com/2022/08/1b676758ff6b5335e885fdb05582ca29.png)
 
-![](https://img.ordchaos.com/img/2022/08/dbe352cad746f465299903afca323065.png)
+![](https://images.ordchaos.com/2022/08/dbe352cad746f465299903afca323065.png)
 
 再放上格栅、均光片及亚克力面板就完成了：
 
-![安装格栅](https://img.ordchaos.com/img/2022/08/6452f475eee4168878bbdf52d869e8ba.png)
+![安装格栅](https://images.ordchaos.com/2022/08/6452f475eee4168878bbdf52d869e8ba.png)
 
-![安装均光片](https://img.ordchaos.com/img/2022/08/218377f02cba747a81eb3206738b6618.png)
+![安装均光片](https://images.ordchaos.com/2022/08/218377f02cba747a81eb3206738b6618.png)
 
-![安装亚克力面板](https://img.ordchaos.com/img/2022/08/e856d4435368c07905d92821cfa562f9.png)
+![安装亚克力面板](https://images.ordchaos.com/2022/08/e856d4435368c07905d92821cfa562f9.png)
 
 ## 软件配置
 
@@ -87,25 +87,25 @@
 
 宝塔面板就可以轻松完成配置，也无需ssh连接。
 
-![](https://img.ordchaos.com/img/2022/08/ef73564d2eab625713028965efc8af76.png)
+![](https://images.ordchaos.com/2022/08/ef73564d2eab625713028965efc8af76.png)
 
 然后安装自己喜欢的软件即可，我这里是这几个：
 
-![](https://img.ordchaos.com/img/2022/08/2d80f8a316ed6a012b5394ce0b69f68c.png)
+![](https://images.ordchaos.com/2022/08/2d80f8a316ed6a012b5394ce0b69f68c.png)
 
 ## 成品
 
-![室温](https://img.ordchaos.com/img/2022/08/9475e4941ebe44b1178c7918267b6d6b.jpg)
+![室温](https://images.ordchaos.com/2022/08/9475e4941ebe44b1178c7918267b6d6b.jpg)
 
-![湿度](https://img.ordchaos.com/img/2022/08/7fed0f0651626ac95c870e24c08f8adb.jpg)
+![湿度](https://images.ordchaos.com/2022/08/7fed0f0651626ac95c870e24c08f8adb.jpg)
 
-![日期](https://img.ordchaos.com/img/2022/08/91bf0f6b36bc47baf2614b09ac84d96f.jpg)
+![日期](https://images.ordchaos.com/2022/08/91bf0f6b36bc47baf2614b09ac84d96f.jpg)
 
-![B站粉丝数量（还不关注我？）](https://img.ordchaos.com/img/2022/08/30b2b40e62891015c3ad612597a85b5b.jpg)
+![B站粉丝数量（还不关注我？）](https://images.ordchaos.com/2022/08/30b2b40e62891015c3ad612597a85b5b.jpg)
 
-![Youtube粉丝数（香港服务器的好处之一就是能够获取到这种信息）（没错，我没有粉丝——当然是因为我没发任何视频）](https://img.ordchaos.com/img/2022/08/91bcff06179f758f36661fe972765083.jpg)
+![Youtube粉丝数（香港服务器的好处之一就是能够获取到这种信息）（没错，我没有粉丝——当然是因为我没发任何视频）](https://images.ordchaos.com/2022/08/91bcff06179f758f36661fe972765083.jpg)
 
-![GitHub Followers](https://img.ordchaos.com/img/2022/08/4ab43612fe1c3cefcda0548b8052c2e3.jpg)
+![GitHub Followers](https://images.ordchaos.com/2022/08/4ab43612fe1c3cefcda0548b8052c2e3.jpg)
 
 ## 题外话
 

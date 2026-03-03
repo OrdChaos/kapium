@@ -54,7 +54,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   const isImage = IMAGE_TYPES.some(ext => url.pathname.toLowerCase().endsWith(ext));
-  const isTargetHost = url.hostname === 'img.ordchaos.com';
+  const isTargetHost = url.hostname === 'images.ordchaos.com';
 
   if (isImage && isTargetHost) {
     handleImageFormatConversion(event, request, url);

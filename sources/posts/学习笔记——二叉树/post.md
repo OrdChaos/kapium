@@ -16,7 +16,7 @@
 
 如下图即二叉树示意图：
 
-![](https://img.ordchaos.com/img/2022/08/8afad25dfbf7ac9ca2c9daf5571ada44.jpg)
+![](https://images.ordchaos.com/2022/08/8afad25dfbf7ac9ca2c9daf5571ada44.jpg)
 
 ### 存储结构
 
@@ -63,7 +63,7 @@ struct bt {
 
 如下图所示：
 
-![](https://img.ordchaos.com/img/2022/08/94e52afbeee2c0f679ae8a88201b6e1b.jpg)
+![](https://images.ordchaos.com/2022/08/94e52afbeee2c0f679ae8a88201b6e1b.jpg)
 
 ### 树的计数
 

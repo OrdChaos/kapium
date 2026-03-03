@@ -1,6 +1,6 @@
 ## 命题
 
-![](https://img.ordchaos.com/img/2022/08/f80ab46950ac64d5ac005a11272a170b.png)
+![](https://images.ordchaos.com/2022/08/f80ab46950ac64d5ac005a11272a170b.png)
 
 如图1.0.1，等腰三角形GCD与正方形ABCD共边CD；CG、DG分别交AB于点E、点F. 则问不断增加等腰三角形GCD的高，能否使等腰三角形GCD完全覆盖住正方形ABCD？
 

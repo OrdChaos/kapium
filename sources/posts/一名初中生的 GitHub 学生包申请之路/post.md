@@ -3,7 +3,7 @@
 ## 我与GitHub学生包
 小时候没有零花钱，但又想建站，于是整天在Google、百度、Youtube等等地方搜索“免费域名”、“免费空间”......一类内容。终于，让我发现了GitHub学生包这个东西。然并卵，它有年龄限制(13岁以上)，这让当时11岁的我感到弱小可怜又无助。然后我就在Youtube上看到了这个：
 
-![](https://img.ordchaos.com/img/2022/08/2368e4abd3e8293efde9f15a0b17ff68.png)
+![](https://images.ordchaos.com/2022/08/2368e4abd3e8293efde9f15a0b17ff68.png)
 
 哇你知道这对我的内心造成了多大的震撼吗？我立马跟着操作了一番，但是却是在最关键也是最重要的一步上卡住了——人家GitHub没有过我的申请。
 
@@ -13,13 +13,13 @@
 
 再然后又到了今年年初，又想起GitHub学生包来。我一想到我一个学生申请不到学生包就来气，于是又申请了一次。与上一次不同，上一次的材料我交的是期末成绩单，这一次是学校发的奖状。说实话，对用奖状申请这回事我是很不抱希望的，但又没想到在三天后我打开电脑例行检查进度时......
 
-![](https://img.ordchaos.com/img/2022/08/0de9620a54ffda05f21d78b3ac035344.png)
+![](https://images.ordchaos.com/2022/08/0de9620a54ffda05f21d78b3ac035344.png)
 
 一个绿底白字的Approved就这么糊到了我的脸上。哇我真的，你能理解吗就是那种，无法言表的欣喜，那种恨不得让全世界的人都知道你干成了什么的自豪感，就是这种感觉充满了我当时的脑海。没有别的原因，就是太高兴了。
 
 附一张当时我的聊天记录：
 
-![](https://img.ordchaos.com/img/2022/08/358fdd234d0ad8ed4cb173ba12de0034.png)
+![](https://images.ordchaos.com/2022/08/358fdd234d0ad8ed4cb173ba12de0034.png)
 
 然后自然是各种折腾、体验<span class="heimu" title="你知道的太多了">、白嫖</span>，这些就不在这篇文章的讨论范围之内了。
 
@@ -41,4 +41,4 @@
 
 最后就以一张我现在GitHub上Profile的截图来收尾吧！
 
-![](https://img.ordchaos.com/img/2022/08/af1998901c6c3bc4b60f058586807bee.png)
+![](https://images.ordchaos.com/2022/08/af1998901c6c3bc4b60f058586807bee.png)

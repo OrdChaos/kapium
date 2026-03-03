@@ -14,4 +14,4 @@
 
 附一张（参考意义不大的）思维导图：
 
-![](https://img.ordchaos.com/img/2022/08/473bdb224961f1a051ea1d80f7e9041f.png)
+![](https://images.ordchaos.com/2022/08/473bdb224961f1a051ea1d80f7e9041f.png)

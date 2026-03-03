@@ -94,11 +94,11 @@ export default function HomePage({ onSearchClick, initialPage }: HomePageProps) 
       />
       <div className="container mx-auto px-4 py-12">
         <div
-          className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}
+          className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-opacity duration-500 w-full max-w-full ${visible ? 'opacity-100' : 'opacity-0'}`}
         >
           {currentPosts &&
             currentPosts.map((post) => (
-              <Card key={post.id} className="flex flex-col h-[280px] transition-all duration-300 hover:shadow-lg hover:border-primary/50">
+              <Card key={post.id} className="flex flex-col h-[280px] transition-all duration-300 hover:shadow-lg hover:border-primary/50 w-full max-w-full">
                 <CardHeader>
                   <div className="mb-2 flex items-center gap-2">
                     <Link href={`/categories/${encodeURIComponent(post.category)}`}>

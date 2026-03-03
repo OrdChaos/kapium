@@ -2,4 +2,4 @@
 
 <!--more-->
 
-![](https://img.ordchaos.com/img/2022/08/6f82a2a2056db775cb9664a0c670e47a.jpg)
+![](https://images.ordchaos.com/2022/08/6f82a2a2056db775cb9664a0c670e47a.jpg)

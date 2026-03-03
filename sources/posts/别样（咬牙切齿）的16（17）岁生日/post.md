@@ -8,7 +8,7 @@
 
 但原本定下来要去外公外婆家里过生日的，所以还是先去了。
 
-![蛋糕还是好吃的](https://img.ordchaos.com/img/2024/08/effb65e61222e94c00259795d7cce521.jpeg)
+![蛋糕还是好吃的](https://images.ordchaos.com/2024/08/effb65e61222e94c00259795d7cce521.jpeg)
 
 下午去了医院，你猜怎么着，得水痘了哈哈（
 
@@ -18,11 +18,11 @@
 
 {% gi 3 3 %}
 
-![](https://img.ordchaos.com/img/2024/08/a9ac3001844f10ca8fb2ed9bdf8651c6.jpg)
+![](https://images.ordchaos.com/2024/08/a9ac3001844f10ca8fb2ed9bdf8651c6.jpg)
 
-![](https://img.ordchaos.com/img/2024/08/e196dab23b0adfbaad264689661378c0.jpg)
+![](https://images.ordchaos.com/2024/08/e196dab23b0adfbaad264689661378c0.jpg)
 
-![](https://img.ordchaos.com/img/2024/08/e4567ba19b2474e3bf7cbbfb34a7fc50.jpg)
+![](https://images.ordchaos.com/2024/08/e4567ba19b2474e3bf7cbbfb34a7fc50.jpg)
 
 {% endgi %}
 

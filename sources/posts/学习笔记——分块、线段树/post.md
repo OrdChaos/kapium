@@ -615,7 +615,7 @@ public:
 
 来看看这张图（备好草稿纸，照着下面的流程对着图自己想象一下）：
 
-![](https://img.ordchaos.com/img/2024/08/79b1b7f18647e1f5596bc89cdfd11b29.png)
+![](https://images.ordchaos.com/2024/08/79b1b7f18647e1f5596bc89cdfd11b29.png)
 
 根据`build`方法，对`{1, 2, 3, 4, 5}`建树，可以得到这样的一棵完全二叉树。
 
