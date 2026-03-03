@@ -71,12 +71,14 @@ jobs:
       - name: Deploy to VPS bare repository
         env:
           VPS_HOST: ${{ secrets.DEPLOY_VPS_HOST }}
+          VPS_PORT: ${{ secrets.DEPLOY_VPS_PORT }}
           VPS_REPO_PATH: ${{ secrets.DEPLOY_VPS_REPO_PATH }}
         run: |
           mkdir -p temp-repo
           cd temp-repo
 
           git init
+          export GIT_SSH_COMMAND="ssh -p $VPS_PORT -o StrictHostKeyChecking=no"
           git remote add origin ssh://git@${VPS_HOST}:${VPS_REPO_PATH}
 
           git checkout --orphan temp-branch
