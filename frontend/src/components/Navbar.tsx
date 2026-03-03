@@ -37,8 +37,8 @@ const navItems: NavItem[] = [
     label: '朋友们',
     children: [
       { href: '/links', label: '友链' },
-      { href: 'https://out.ordchaos.com/travellings', label: '开往' },
-      { href: 'https://out.ordchaos.com/wormhole', label: '虫洞' },
+      { href: 'https://www.travellings.cn/go', label: '开往' },
+      { href: 'https://www.foreverblog.cn/go.html', label: '虫洞' },
     ],
   },
   { href: '/about', label: '关于' },
