@@ -22,13 +22,16 @@ export function useUmamiPageViews({
       return;
     }
 
-    const pagePath = `/posts/${abbrlink}/`;
+    const pagePath = `/posts/${abbrlink}`;
 
     try {
+      const startAt = new Date("2020-01-01").getTime().toString();
+      const endAt = Date.now().toString();
+
       const params = new URLSearchParams({
-        startAt: new Date(import.meta.env.VITE_UMAMI_START_AT).getTime().toString(),
-        endAt: Date.now().toString(),
-        url: pagePath,
+        startAt,
+        endAt,
+        path: pagePath,
       });
 
       const res = await fetch(
@@ -40,15 +43,21 @@ export function useUmamiPageViews({
         }
       );
 
-      if (!res.ok) throw new Error(`Umami API error: ${res.status}`);
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Umami API error: ${res.status} - ${errText}`);
+      }
 
       const data = await res.json();
-      const pv = data?.pageviews?.value ?? 0;
+
+      const pv = typeof data?.pageviews === 'number' 
+        ? data.pageviews 
+        : (data?.pageviews?.value ?? 0);
 
       setPageViews(pv);
       setError(false);
     } catch (err) {
-      console.error('Failed to fetch Umami page views:', err);
+      console.error('Failed to fetch Umami:', err);
       setPageViews(null);
       setError(true);
     }
