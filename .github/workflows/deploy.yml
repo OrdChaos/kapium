@@ -43,9 +43,7 @@ jobs:
       - name: Build toolchain and data
         env:
           DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
-        run: |
-          echo "$DASHSCOPE_API_KEY" > .env.local
-          make all
+        run: make all
 
       - name: Commit and push generated changes
         id: commit-changes
