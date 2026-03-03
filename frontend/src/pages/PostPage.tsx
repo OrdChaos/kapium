@@ -228,165 +228,171 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
 
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         {post && (
-          <div className="container mx-auto px-4 py-12 relative min-h-screen">
+          <div className="container mx-auto px-4 py-12">
             <div className="flex justify-center">
-              <main className="w-full max-w-[768px] min-w-0">
-                <div className="mb-8 space-y-4">
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
-                    <div className="flex items-center gap-1"><Clock className="h-4 w-4" /><span>{post.readTime} 分钟</span></div>
-                    <UmamiPageViews abbrlink={post?.abbrlink} />
-                    <Link href={`/categories/${encodeURIComponent(post.category)}`}>
-                      <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
-                    </Link>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-muted-foreground" />
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.map((tag: string) => (
-                        <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
-                          <Badge variant="outline" className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground">{tag}</Badge>
-                        </Link>
-                      ))}
+              <div className="flex gap-10">
+                <div className="hidden xl:block w-[260px] flex-shrink-0"></div>
+                
+                <main className="w-full max-w-[768px] min-w-0 flex-shrink-0">
+                  <div className="mb-8 space-y-4">
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
+                      <div className="flex items-center gap-1"><Clock className="h-4 w-4" /><span>{post.readTime} 分钟</span></div>
+                      <UmamiPageViews abbrlink={post?.abbrlink} />
+                      <Link href={`/categories/${encodeURIComponent(post.category)}`}>
+                        <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
+                      </Link>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Tag className="h-4 w-4 text-muted-foreground" />
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map((tag: string) => (
+                          <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
+                            <Badge variant="outline" className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground">{tag}</Badge>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {post.summary && (
-                  <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
-                    <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
-                  </div>
-                )}
+                  {post.summary && (
+                    <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
+                      <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
+                    </div>
+                  )}
 
-                <article className="prose prose-neutral dark:prose-invert max-w-none">
-                  <div 
-                    key={`content-${id}`}
-                    id="post-content"
-                    ref={contentRef}
-                    dangerouslySetInnerHTML={{ __html: post.content }} 
-                    onClick={handleContentClick}
+                  <article className="prose prose-neutral dark:prose-invert max-w-none">
+                    <div 
+                      key={`content-${id}`}
+                      id="post-content"
+                      ref={contentRef}
+                      dangerouslySetInnerHTML={{ __html: post.content }} 
+                      onClick={handleContentClick}
+                    />
+                  </article>
+
+                  <LicenseBox 
+                    title={post.title} 
+                    permalink={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} 
+                    author={import.meta.env.VITE_SITE_AUTHOR}
+                    postedAt={post.date.slice(0,10)}
+                    updatedAt={post.update}
+                    license={import.meta.env.VITE_SITE_POSTS_LICENSE}
                   />
-                </article>
 
-                <LicenseBox 
-                  title={post.title} 
-                  permalink={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} 
-                  author={import.meta.env.VITE_SITE_AUTHOR}
-                  postedAt={post.date.slice(0,10)}
-                  updatedAt={post.update}
-                  license={import.meta.env.VITE_SITE_POSTS_LICENSE}
-                />
+                  <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
 
-                <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
+                  {navigation && (
+                    <div className="mt-4 pt-4 mb-8">
+                      <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
+                        <div className="flex-1 min-w-0">
+                          {navigation.next ? (
+                            <Link
+                              to={`/posts/${navigation.next.id}`}
+                              className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                            >
+                              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                                <ChevronLeft className="h-4 w-4" />
+                                <span className="font-medium">下一篇</span>
+                              </div>
+                              <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                                {navigation.next.title}
+                              </div>
+                            </Link>
+                          ) : (
+                            <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                              <div className="flex items-center gap-2 mb-1">
+                                <ChevronLeft className="h-4 w-4" />
+                                <span className="font-medium">下一篇</span>
+                              </div>
+                              <div className="line-clamp-2 font-medium">
+                                已是最新文章
+                              </div>
+                            </div>
+                          )}
+                        </div>
 
-                {navigation && (
-                  <div className="mt-4 pt-4 mb-8">
-                    <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
-                      <div className="flex-1 min-w-0">
-                        {navigation.next ? (
-                          <Link
-                            to={`/posts/${navigation.next.id}`}
-                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                          >
-                            <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                              <ChevronLeft className="h-4 w-4" />
-                              <span className="font-medium">下一篇</span>
+                        <div className="flex-1 min-w-0 text-right sm:text-left">
+                          {navigation.prev ? (
+                            <Link
+                              to={`/posts/${navigation.prev.id}`}
+                              className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
+                            >
+                              <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
+                                <span className="font-medium">上一篇</span>
+                                <ChevronRight className="h-4 w-4" />
+                              </div>
+                              <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
+                                {navigation.prev.title}
+                              </div>
+                            </Link>
+                          ) : (
+                            <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                              <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
+                                <span className="font-medium">上一篇</span>
+                                <ChevronRight className="h-4 w-4" />
+                              </div>
+                              <div className="line-clamp-2 font-medium">
+                                已是最旧文章
+                              </div>
                             </div>
-                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
-                              {navigation.next.title}
-                            </div>
-                          </Link>
-                        ) : (
-                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
-                            <div className="flex items-center gap-2 mb-1">
-                              <ChevronLeft className="h-4 w-4" />
-                              <span className="font-medium">下一篇</span>
-                            </div>
-                            <div className="line-clamp-2 font-medium">
-                              已是最新文章
-                            </div>
-                          </div>
-                        )}
+                          )}
+                        </div>
+
                       </div>
-
-                      <div className="flex-1 min-w-0 text-right sm:text-left">
-                        {navigation.prev ? (
-                          <Link
-                            to={`/posts/${navigation.prev.id}`}
-                            className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                          >
-                            <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
-                              <span className="font-medium">上一篇</span>
-                              <ChevronRight className="h-4 w-4" />
-                            </div>
-                            <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
-                              {navigation.prev.title}
-                            </div>
-                          </Link>
-                        ) : (
-                          <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
-                            <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
-                              <span className="font-medium">上一篇</span>
-                              <ChevronRight className="h-4 w-4" />
-                            </div>
-                            <div className="line-clamp-2 font-medium">
-                              已是最旧文章
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
                     </div>
+                  )}
+
+                  <div key={`twikoo-${id}`} className="mt-8">
+                    <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
                   </div>
+                </main>
+
+                {tocAndOffsets.toc.length > 0 ? (
+                  <aside className="hidden xl:block w-[260px] flex-shrink-0">
+                    <div className="sticky top-24">
+                      <Card className="rounded-lg border-border shadow-md overflow-hidden bg-card duration-300 hover:shadow-lg hover:border-primary/50">
+                        <CardContent className="p-5">
+                          <CardTitle className="text-sm font-bold mb-4">目录</CardTitle>
+                          <nav>
+                            <ul className="space-y-1">
+                              {tocAndOffsets.toc.map((h2) => (
+                                <li key={h2.id}>
+                                  <a
+                                    href={`#${h2.id}`}
+                                    onClick={(e) => handleTocClick(e, h2.id, null)}
+                                    className={`block py-1.5 text-sm transition-all border-l-2 pl-3 ${
+                                      activeId === h2.id ? 'border-primary text-primary font-bold bg-primary/5' : 'border-transparent text-muted-foreground hover:text-foreground'
+                                    }`}
+                                  >{h2.text}</a>
+                                  {expandedId === h2.id && h2.children.length > 0 && (
+                                    <ul className="mt-1 mb-2 ml-4 space-y-1 border-l border-muted/20">
+                                      {h2.children.map((h3) => (
+                                        <li key={h3.id}>
+                                          <a
+                                            href={`#${h3.id}`}
+                                            onClick={(e) => handleTocClick(e, h3.id, h2.id)}
+                                            className={`block py-1 pl-4 text-xs transition-colors border-l-2 ${
+                                              activeId === h3.id ? 'border-primary text-primary font-medium' : 'border-transparent text-muted-foreground'
+                                            }`}
+                                          >{h3.text}</a>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          </nav>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </aside>
+                ) : (
+                  <div className="hidden xl:block w-[260px] flex-shrink-0"></div>
                 )}
-
-                <div key={`twikoo-${id}`} className="mt-8">
-                  <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
-                </div>
-              </main>
-
-              {tocAndOffsets.toc.length > 0 && (
-                <aside className="hidden xl:block absolute h-full" style={{ left: 'calc(50% + 384px + 40px)', width: '260px' }}>
-                  <div className="sticky top-24">
-                    <Card className="rounded-lg border-border shadow-md bg-card duration-300 hover:shadow-lg hover:border-primary/50">
-                      <CardContent className="p-5">
-                        <CardTitle className="text-sm font-bold mb-4">目录</CardTitle>
-                        <nav>
-                          <ul className="space-y-1">
-                            {tocAndOffsets.toc.map((h2) => (
-                              <li key={h2.id}>
-                                <a
-                                  href={`#${h2.id}`}
-                                  onClick={(e) => handleTocClick(e, h2.id, null)}
-                                  className={`block py-1.5 text-sm transition-all border-l-2 pl-3 ${
-                                    activeId === h2.id ? 'border-primary text-primary font-bold bg-primary/5' : 'border-transparent text-muted-foreground hover:text-foreground'
-                                  }`}
-                                >{h2.text}</a>
-                                {expandedId === h2.id && h2.children.length > 0 && (
-                                  <ul className="mt-1 mb-2 ml-4 space-y-1 border-l border-muted/20">
-                                    {h2.children.map((h3) => (
-                                      <li key={h3.id}>
-                                        <a
-                                          href={`#${h3.id}`}
-                                          onClick={(e) => handleTocClick(e, h3.id, h2.id)}
-                                          className={`block py-1 pl-4 text-xs transition-colors border-l-2 ${
-                                            activeId === h3.id ? 'border-primary text-primary font-medium' : 'border-transparent text-muted-foreground'
-                                          }`}
-                                        >{h3.text}</a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                        </nav>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </aside>
-              )}
+              </div>
             </div>
           </div>
         )}
