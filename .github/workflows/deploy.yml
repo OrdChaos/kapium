@@ -50,7 +50,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "changes=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "chore: auto-update generated content"
+            git commit -m "chore: auto-update generated content [ci skip]"
             git push
             echo "changes=true" >> "$GITHUB_OUTPUT"
           fi
