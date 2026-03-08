@@ -107,7 +107,8 @@ async function handleImageWithFallback(request, originalUrl) {
 
   try {
     const primaryResp = await fetch(primaryTarget, { 
-      mode: 'no-cors',
+      mode: 'cors',
+      credentials: 'omit',
       cache: 'default',
       redirect: 'follow'
     });
@@ -128,7 +129,8 @@ async function handleImageWithFallback(request, originalUrl) {
     fbUrl.hostname = host;
 
     return fetch(fbUrl, { 
-      mode: 'no-cors',
+      mode: 'cors',
+      credentials: 'omit',
       cache: 'default',
       redirect: 'follow',
       // 可选：设置较短超时避免卡住太久
