@@ -8,15 +8,15 @@
 
 很简单，首先进入官网[棱束链](https://www.lingshulian.com/)，在顶栏上点击产品，选择棱束链联盟。
 
-![](https://images.ordchaos.com/2022/08/8409f4d334ef7e66ef54de7710ea63f7.png)
+![](https://base.pics.ordchaos.com/2022/08/8409f4d334ef7e66ef54de7710ea63f7.png)
 
 然后就抵达了申请页面：
 
-![](https://images.ordchaos.com/2022/08/a7377b528525a29ca2cc1adb7b258fcd.png)
+![](https://base.pics.ordchaos.com/2022/08/a7377b528525a29ca2cc1adb7b258fcd.png)
 
 填写表单，按要求在网站底部加入棱束链提供的Logo，比如我的：（可以自己在网站底部看看）
 
-![](https://images.ordchaos.com/2022/08/e30bf829e38f596c59c9d3a4748c1989.png)
+![](https://base.pics.ordchaos.com/2022/08/e30bf829e38f596c59c9d3a4748c1989.png)
 
 提交表单，等着就可以了。
 
@@ -32,7 +32,7 @@
 
 打开PicGo，点击“插件设置”，在搜索框中搜索“s3”，安装第一个就可以了：
 
-![](https://images.ordchaos.com/2022/08/dfafc2c6bb5acae1fa5a97b0988e1129.png)
+![](https://base.pics.ordchaos.com/2022/08/dfafc2c6bb5acae1fa5a97b0988e1129.png)
 
 我这里安装过了，所以就显示的是“已安装”。这个插件支持所有s3桶，比如之前的b2以及这个棱束链。
 
@@ -42,13 +42,13 @@
 
 进入棱束链的控制台，点击个人中心，在“功能设置”中开启API并记下secretID与secretKey，若是忘了就只能重新获取。
 
-![](https://images.ordchaos.com/2022/08/bed66b189347589ca1fde8434238c213.png)
+![](https://base.pics.ordchaos.com/2022/08/bed66b189347589ca1fde8434238c213.png)
 
 #### 桶地域信息
 
 前往存储桶列表，点击桶右侧的“配置”按钮，记下“桶信息”卡片中的地域与端点信息即可。
 
-![](https://images.ordchaos.com/2022/08/061751a05597109431e77369bc615abb.png)
+![](https://base.pics.ordchaos.com/2022/08/061751a05597109431e77369bc615abb.png)
 
 注意，这里的桶**一定**要是公开桶！
 

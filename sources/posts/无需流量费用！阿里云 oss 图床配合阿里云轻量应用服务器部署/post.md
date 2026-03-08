@@ -6,17 +6,17 @@
 
 打开[阿里云oss](https://oss.console.aliyun.com/overview)页面，点击bucket列表，选择创建bucket：
 
-![](https://images.ordchaos.com/2022/08/cac38bb76668f802362812e48bc14e0d.png)
+![](https://base.pics.ordchaos.com/2022/08/cac38bb76668f802362812e48bc14e0d.png)
 
 名称随意，但是地域要选择于自己的服务器相同的地区，这样才可以通过内网访问。存储类型选择标准存储，读写权限选择公共读，其余一律默认。
 
 oss桶默认是按量计费，标准可以参考[官方文档](https://www.aliyun.com/price/product#/oss/detail/ossbag)。你也可以像我一样购买资源包，点击资源包管理，再在新页面中点击购买资源包：
 
-![](https://images.ordchaos.com/2022/08/148d980aabaccea58c0230e728ec50f1.png)
+![](https://base.pics.ordchaos.com/2022/08/148d980aabaccea58c0230e728ec50f1.png)
 
 然后在资源包类型一栏中选择标准\(LRS\)存储包，其余按需选择即可：
 
-![](https://images.ordchaos.com/2022/08/0b3001c8013bbb88b7e0b02ec2da5249.png)
+![](https://base.pics.ordchaos.com/2022/08/0b3001c8013bbb88b7e0b02ec2da5249.png)
 
 一年仅需9元，个人认为十分划算。
 
@@ -28,13 +28,13 @@ oss桶默认是按量计费，标准可以参考[官方文档](https://www.aliyu
 
 点击侧栏的网站，然后点击新建站点：
 
-![](https://images.ordchaos.com/2022/08/2e68985d436b72d564d602de0ffa418b.png)
+![](https://base.pics.ordchaos.com/2022/08/2e68985d436b72d564d602de0ffa418b.png)
 
 域名填写最终用来访问图片的域名，如这里的 assets.ordchaos.com。其余默认即可，然后选择提交。
 
 之后点击对应网站的设置——反向代理——添加反向代理。名称随意填写，目标URL填写内容如图所示：
 
-![](https://images.ordchaos.com/2022/08/cc63b49e488b716abf4b88e5cc7ebdbb.png)
+![](https://base.pics.ordchaos.com/2022/08/cc63b49e488b716abf4b88e5cc7ebdbb.png)
 
 填写对应的内网Bucket域名。
 
@@ -50,7 +50,7 @@ oss桶默认是按量计费，标准可以参考[官方文档](https://www.aliyu
 
 打开PicGo，点击“插件设置”，在搜索框中搜索“s3”，安装第一个就可以了：
 
-![](https://images.ordchaos.com/2022/08/dfafc2c6bb5acae1fa5a97b0988e1129.png)
+![](https://base.pics.ordchaos.com/2022/08/dfafc2c6bb5acae1fa5a97b0988e1129.png)
 
 我这里安装过了，所以就显示的是“已安装”。这个插件支持所有s3桶，包括阿里云oss。其实可以直接配置阿里云oss，但是使用s3插件可以自动按规则重命名文件。
 
@@ -58,23 +58,23 @@ oss桶默认是按量计费，标准可以参考[官方文档](https://www.aliyu
 
 把鼠标移到右上角头像上悬浮，在出现的界面上点击访问控制：
 
-![](https://images.ordchaos.com/2022/08/3b5b13f8eeb576411648be98a0b48053.png)
+![](https://base.pics.ordchaos.com/2022/08/3b5b13f8eeb576411648be98a0b48053.png)
 
 然后点击侧栏的用户，再点击创建用户：
 
-![](https://images.ordchaos.com/2022/08/5b11a2f303a9f46c0cf49614e6fc1515.png)
+![](https://base.pics.ordchaos.com/2022/08/5b11a2f303a9f46c0cf49614e6fc1515.png)
 
 登陆名称与显示名称随意，然后勾选下方的“Open API 调用访问”：
 
-![](https://images.ordchaos.com/2022/08/1188eac59b4a500457b13b7c253233b3.png)
+![](https://base.pics.ordchaos.com/2022/08/1188eac59b4a500457b13b7c253233b3.png)
 
 点击确定，验证身份，然后就会出现AccessKey ID 与 Secret，记得保存下来：
 
-![](https://images.ordchaos.com/2022/08/9d20e0dd982685cc6ef898b7e842a232.png)
+![](https://base.pics.ordchaos.com/2022/08/9d20e0dd982685cc6ef898b7e842a232.png)
 
 然后返回到用户管理页面，点击刚刚创建的RAM账号旁边的添加权限，然后添加控制oss桶的权限即可：
 
-![](https://images.ordchaos.com/2022/08/6aa38f2e26a714699ceb7257700dff98.png)
+![](https://base.pics.ordchaos.com/2022/08/6aa38f2e26a714699ceb7257700dff98.png)
 
 ### 配置PicGo图床
 

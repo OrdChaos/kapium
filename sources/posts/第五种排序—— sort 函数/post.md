@@ -328,7 +328,7 @@ int main() {
 
 完成！
 
-![](https://images.ordchaos.com/2022/08/d3ff6fda7f0dc6532149d422709d611f.png)
+![](https://base.pics.ordchaos.com/2022/08/d3ff6fda7f0dc6532149d422709d611f.png)
 
 完整代码如下：
 

@@ -17,8 +17,8 @@
 第二天起来吃了早饭之后我们便走路前往了海边，很近，不过不是海滩。拍了几张照，早上天气真的很差，本来是小雨的天气，结果雨越来越大，风也越来越强。但过了一会天又晴了……
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/e0ed20c3d5136cb686dc2ff3081b54db.jpg)
-![](https://images.ordchaos.com/2023/07/a7bbb72908a3a10572038a31053a7171.jpg)
+![](https://base.pics.ordchaos.com/2023/07/e0ed20c3d5136cb686dc2ff3081b54db.jpg)
+![](https://base.pics.ordchaos.com/2023/07/a7bbb72908a3a10572038a31053a7171.jpg)
 {% endgi %}
 
 然后就是非常晒人。
@@ -26,8 +26,8 @@
 下午乘坐青岛地铁去了中山公园附近的沙滩。只能说不愧是夏天，晚上五六点仍然晴空万里。
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/c55a85172009f20dc72c0fd41657e9bc.jpg)
-![](https://images.ordchaos.com/2023/07/d2352d5a89443272b242dc2d485012cf.jpg)
+![](https://base.pics.ordchaos.com/2023/07/c55a85172009f20dc72c0fd41657e9bc.jpg)
+![](https://base.pics.ordchaos.com/2023/07/d2352d5a89443272b242dc2d485012cf.jpg)
 {% endgi %}
 
 玩水玩得非常开心，不过也仅限于在海水中跑一跑了。毕竟我可不想和部分其他同学一样弄得浑身湿透。
@@ -35,15 +35,15 @@
 请同学拍了两张照！
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/1b6a0517c5cf55f13d8f6a6830682023.jpg)
-![](https://images.ordchaos.com/2023/07/ca804f1c6d7f57b3152a85051d62eb05.jpg)
+![](https://base.pics.ordchaos.com/2023/07/1b6a0517c5cf55f13d8f6a6830682023.jpg)
+![](https://base.pics.ordchaos.com/2023/07/ca804f1c6d7f57b3152a85051d62eb05.jpg)
 {% endgi %}
 
 ## Day 3
 
 走路去了圣弥勒尔大教堂，不过也没进去，就是在外面拍了几张照。
 
-![](https://images.ordchaos.com/2023/07/62238afaa48a06e6242ceafb444a9da1.jpg)
+![](https://base.pics.ordchaos.com/2023/07/62238afaa48a06e6242ceafb444a9da1.jpg)
 
 风景很不错，宝宝喜欢妈妈爱。
 
@@ -52,21 +52,21 @@
 然后就去了老舍故居，看到了《骆驼祥子》相关的很多文物（？）。得亏武汉今年考的是《钢铁是怎样炼成的》，不是《骆驼祥子》<span class="heimu" title="你知道的太多了">，没有被祥子一车创si</span>。
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/30994c7fd487b6138aafaaf90d7f5110.jpg)
-![](https://images.ordchaos.com/2023/07/78f083e6ef27e73305fdc6baa37b5581.jpg)
+![](https://base.pics.ordchaos.com/2023/07/30994c7fd487b6138aafaaf90d7f5110.jpg)
+![](https://base.pics.ordchaos.com/2023/07/78f083e6ef27e73305fdc6baa37b5581.jpg)
 {% endgi %}
 
 然后就是坐地铁回酒店了，这次是从人民会堂到青岛站。
 
-![](https://images.ordchaos.com/2023/07/df00eee487e1d169cc131b3b6c538f55.jpg)
+![](https://base.pics.ordchaos.com/2023/07/df00eee487e1d169cc131b3b6c538f55.jpg)
 
 下午去坐船了，不大不小的船。
 
 我只想说，快艇我不晕，轮船我不晕，所以就是这种两者之间的会晕是吗！！！
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/e4d4c272ccd407ee49becaba89d91cb8.jpg)
-![](https://images.ordchaos.com/2023/07/b20de0855378880fc55b6909a211982a.jpg)
+![](https://base.pics.ordchaos.com/2023/07/e4d4c272ccd407ee49becaba89d91cb8.jpg)
+![](https://base.pics.ordchaos.com/2023/07/b20de0855378880fc55b6909a211982a.jpg)
 {% endgi %}
 
 下午天气很不好，在海上飘着，外面还下大雨，甚至打雷……
@@ -84,9 +84,9 @@
 以及走的时候发现了一条绿意盎然的楼梯，拍了张照，很好看（
 
 {% gi 3 1-2 %}
-![](https://images.ordchaos.com/2023/07/a42b5ac4592e8098a0a1d8f1fa3324d3.jpg)
-![](https://images.ordchaos.com/2023/07/030a20f9951d5cfde976f1bab86d98e2.jpg)
-![](https://images.ordchaos.com/2023/07/6f554c8ce914078e84a3b547d185e59f.jpg)
+![](https://base.pics.ordchaos.com/2023/07/a42b5ac4592e8098a0a1d8f1fa3324d3.jpg)
+![](https://base.pics.ordchaos.com/2023/07/030a20f9951d5cfde976f1bab86d98e2.jpg)
+![](https://base.pics.ordchaos.com/2023/07/6f554c8ce914078e84a3b547d185e59f.jpg)
 {% endgi %}
 
 下午坐一号线去了台东，去了步行街吃晚饭。
@@ -94,8 +94,8 @@
 兴致突然起来了，和同学一起买了地铁票进站而非使用手机app. 运气挺好，买到了不一样样式的单程票。
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/5c8d26bb74174153422278db56a1d5fe.jpg)
-![](https://images.ordchaos.com/2023/07/00b7e4503d7ed04ec859fd458b56986a.jpg)
+![](https://base.pics.ordchaos.com/2023/07/5c8d26bb74174153422278db56a1d5fe.jpg)
+![](https://base.pics.ordchaos.com/2023/07/00b7e4503d7ed04ec859fd458b56986a.jpg)
 {% endgi %}
 
 下车之后全班就直接分组分头行动了。穿梭于人来人往的小吃摊中，感受到烟火气的缭绕，对于一个忙碌了一整年的初三学生来说实在是太酷啦！
@@ -103,10 +103,10 @@
 买了铁板豆腐、臭豆腐、鱿鱼和青岛啤酒，香的嘞。
 
 {% gi 4 2-2  %}
-![](https://images.ordchaos.com/2023/07/f42a14c17adccc1cae15fc5c3600546a.jpg)
-![](https://images.ordchaos.com/2023/07/41e8972b204a1610d0aee08bf096c7e6.jpg)
-![](https://images.ordchaos.com/2023/07/8b4e5734c0a6b66058a460d8206d0279.jpg)
-![](https://images.ordchaos.com/2023/07/58718b4cb621cfd134f6dbec69b1eab7.jpg)
+![](https://base.pics.ordchaos.com/2023/07/f42a14c17adccc1cae15fc5c3600546a.jpg)
+![](https://base.pics.ordchaos.com/2023/07/41e8972b204a1610d0aee08bf096c7e6.jpg)
+![](https://base.pics.ordchaos.com/2023/07/8b4e5734c0a6b66058a460d8206d0279.jpg)
+![](https://base.pics.ordchaos.com/2023/07/58718b4cb621cfd134f6dbec69b1eab7.jpg)
 {% endgi %}
 
 然后去了五四广场，再之后就又回了酒店。
@@ -120,9 +120,9 @@
 还有在五四广场同站换乘。
 
 {% gi 3 2-1 %}
-![](https://images.ordchaos.com/2023/07/ef5c90c7f5b909f67add74d4abb55dcf.jpg)
-![](https://images.ordchaos.com/2023/07/69344b5bfd12c4074dbb4641487d5847.jpg)
-![](https://images.ordchaos.com/2023/07/dbe52b5998dfae665d5c6923d2939a33.jpg)
+![](https://base.pics.ordchaos.com/2023/07/ef5c90c7f5b909f67add74d4abb55dcf.jpg)
+![](https://base.pics.ordchaos.com/2023/07/69344b5bfd12c4074dbb4641487d5847.jpg)
+![](https://base.pics.ordchaos.com/2023/07/dbe52b5998dfae665d5c6923d2939a33.jpg)
 {% endgi %}
 
 说实话，天气真的不好，海边景色这几天也看腻了（
@@ -130,8 +130,8 @@
 浅浅拍了几张照之后就坐地铁回去了，以及又收集到了一种地铁票。
 
 {% gi 2 2 %}
-![](https://images.ordchaos.com/2023/07/04245b72ac38ea4a5573d8cf09aa9f46.jpg)
-![](https://images.ordchaos.com/2023/07/5f4214fcb7818e449854e9baf0b1a0b8.jpg)
+![](https://base.pics.ordchaos.com/2023/07/04245b72ac38ea4a5573d8cf09aa9f46.jpg)
+![](https://base.pics.ordchaos.com/2023/07/5f4214fcb7818e449854e9baf0b1a0b8.jpg)
 {% endgi %}
 
 下午老师组织看电影，一起看了端午档的《消失的她》
@@ -151,13 +151,13 @@
 随便贴几张图吧：
 
 {% gi 7 2-2-3 %}
-![](https://images.ordchaos.com/2023/07/927d9663fbb157687f742417639ba0e7.jpg)
-![](https://images.ordchaos.com/2023/07/5576687f8e9c71df1a21514fc763d10e.jpg)
-![](https://images.ordchaos.com/2023/07/ea37492473b6f9e4d469be71b8ec64f7.jpg)
-![](https://images.ordchaos.com/2023/07/3af2025c5205e1672c02d3273c56aa51.jpg)
-![](https://images.ordchaos.com/2023/07/fe4a159c84065a5b6b3a012e1b070d05.jpg)
-![](https://images.ordchaos.com/2023/07/8c4470186aa87ba5f1a1ea8168207d90.jpg)
-![](https://images.ordchaos.com/2023/07/4e56ebe5058e82bf1c3488484565c558.jpg)
+![](https://base.pics.ordchaos.com/2023/07/927d9663fbb157687f742417639ba0e7.jpg)
+![](https://base.pics.ordchaos.com/2023/07/5576687f8e9c71df1a21514fc763d10e.jpg)
+![](https://base.pics.ordchaos.com/2023/07/ea37492473b6f9e4d469be71b8ec64f7.jpg)
+![](https://base.pics.ordchaos.com/2023/07/3af2025c5205e1672c02d3273c56aa51.jpg)
+![](https://base.pics.ordchaos.com/2023/07/fe4a159c84065a5b6b3a012e1b070d05.jpg)
+![](https://base.pics.ordchaos.com/2023/07/8c4470186aa87ba5f1a1ea8168207d90.jpg)
+![](https://base.pics.ordchaos.com/2023/07/4e56ebe5058e82bf1c3488484565c558.jpg)
 {% endgi %}
 
 ## Day 6
@@ -166,11 +166,11 @@
 
 天气阴了这么多天，结果偏偏走的时候才好，我的评价是，6.
 
-![](https://images.ordchaos.com/2023/07/f7d5e1387fe352a4e0f1a89974044fe8.jpg)
+![](https://base.pics.ordchaos.com/2023/07/f7d5e1387fe352a4e0f1a89974044fe8.jpg)
 
 坐的复兴号高铁，不过站台另一侧有一辆绿皮火车，于是拍了一张个人觉得很好看的照片：
 
-![](https://images.ordchaos.com/2023/07/8155c4412294c426fda908358de30667.jpg)
+![](https://base.pics.ordchaos.com/2023/07/8155c4412294c426fda908358de30667.jpg)
 
 然后又是玩了一天手机……
 
@@ -194,6 +194,6 @@
 
 啊？你真以为我考砸了？
 
-![](https://images.ordchaos.com/2023/07/6f09b89f5c261a0d5d0f0fa89c408ff0.png)
+![](https://base.pics.ordchaos.com/2023/07/6f09b89f5c261a0d5d0f0fa89c408ff0.png)
 
 886！

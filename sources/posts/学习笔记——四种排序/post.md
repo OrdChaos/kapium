@@ -41,7 +41,7 @@ void bubbleSort(int f, int l) {
 
 附一张原理图（来自[菜鸟教程](https://www.runoob.com/w3cnote/selection-sort.html)）：
 
-![](https://images.ordchaos.com/2022/08/44be35da53ae9ee564ce444542a43d10.gif)
+![](https://base.pics.ordchaos.com/2022/08/44be35da53ae9ee564ce444542a43d10.gif)
 
 代码依旧很简单：
 
@@ -90,7 +90,7 @@ void quickSort(int f, int l) {
 
 再放一张动图了解一下原理（图片依旧来自[菜鸟教程](https://www.runoob.com/w3cnote/quick-sort-2.html)）
 
-![](https://images.ordchaos.com/2022/08/71c0f1c0ceb0e053c423426e7f343602.gif)
+![](https://base.pics.ordchaos.com/2022/08/71c0f1c0ceb0e053c423426e7f343602.gif)
 
 ## 归并排序
 

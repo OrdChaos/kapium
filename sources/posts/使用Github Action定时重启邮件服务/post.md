@@ -12,19 +12,19 @@
 
 那么首先，本着轻量化的原则，新建一个仓库拿来干这种事：
 
-![](https://images.ordchaos.com/2024/02/5e1a07ea1593440507e3e0bdb6c80c3b.png)
+![](https://base.pics.ordchaos.com/2024/02/5e1a07ea1593440507e3e0bdb6c80c3b.png)
 
-![](https://images.ordchaos.com/2024/02/9eb9df8cc12a4331e3cb95ccc902c52a.png)
+![](https://base.pics.ordchaos.com/2024/02/9eb9df8cc12a4331e3cb95ccc902c52a.png)
 
 然后切到Action页面：
 
-![](https://images.ordchaos.com/2024/02/a94c8d5c7c4026bb49bda5a0fc93e9d3.png)
+![](https://base.pics.ordchaos.com/2024/02/a94c8d5c7c4026bb49bda5a0fc93e9d3.png)
 
 选择新建一个空白模板：
 
-![](https://images.ordchaos.com/2024/02/235b3a988d6ae333547c22e3bf7cdcc1.png)
+![](https://base.pics.ordchaos.com/2024/02/235b3a988d6ae333547c22e3bf7cdcc1.png)
 
-![](https://images.ordchaos.com/2024/02/d3bc49ec763c91aa05cf79e84e4006b8.png)
+![](https://base.pics.ordchaos.com/2024/02/d3bc49ec763c91aa05cf79e84e4006b8.png)
 
 修改Action名称、内容并设置定时，参考我的：
 
@@ -81,11 +81,11 @@ docker-compose up -d
 
 保存，然后去设置Secret：
 
-![](https://images.ordchaos.com/2024/02/265d26f043a2d554f2fe8a74ad1b1e36.png)
+![](https://base.pics.ordchaos.com/2024/02/265d26f043a2d554f2fe8a74ad1b1e36.png)
 
 分别设置服务器地址、密码等即可：
 
-![](https://images.ordchaos.com/2024/02/dfc32309634675e5cb5269692da37c13.png)
+![](https://base.pics.ordchaos.com/2024/02/dfc32309634675e5cb5269692da37c13.png)
 
 大功告成！
 
@@ -103,15 +103,15 @@ docker-compose up -d
 
 首先，进入仓库设置：
 
-![](https://images.ordchaos.com/2024/02/c4c3600448c97ba96934e025554e40d9.png)
+![](https://base.pics.ordchaos.com/2024/02/c4c3600448c97ba96934e025554e40d9.png)
 
 选择Action选项卡：
 
-![](https://images.ordchaos.com/2024/02/6dd35d54352e8f341f6d4f21e076f78a.png)
+![](https://base.pics.ordchaos.com/2024/02/6dd35d54352e8f341f6d4f21e076f78a.png)
 
 修改访问权限为读写：
 
-![](https://images.ordchaos.com/2024/02/9eef169d5e8f617e4f61b2da73185d6d.png)
+![](https://base.pics.ordchaos.com/2024/02/9eef169d5e8f617e4f61b2da73185d6d.png)
 
 保存即可。
 

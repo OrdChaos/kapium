@@ -14,7 +14,7 @@
 
 如下图即为一颗经典的树：
 
-![](https://images.ordchaos.com/2022/08/f692686c7dfbe8272a3cc794862a4b2b.jpg)
+![](https://base.pics.ordchaos.com/2022/08/f692686c7dfbe8272a3cc794862a4b2b.jpg)
 
 ### 存储结构
 

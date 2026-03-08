@@ -22,7 +22,7 @@
 
 生成都生成了，那就晒一下吧：
 
-![](https://images.ordchaos.com/2022/08/3b4b9e7a33c20d8d73cc86f1d46494a4.png)
+![](https://base.pics.ordchaos.com/2022/08/3b4b9e7a33c20d8d73cc86f1d46494a4.png)
 
 小菜一枚，大佬轻喷。
 

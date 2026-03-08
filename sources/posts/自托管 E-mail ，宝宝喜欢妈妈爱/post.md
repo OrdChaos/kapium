@@ -17,17 +17,17 @@
 
 首先，我需要为vps开通rDNS记录到`mx.ordchaos.com`上。后台可以自主设置，很方便......
 
-![bang!](https://images.ordchaos.com/2022/11/319d4fa4d25c91e5fd4872d6004fac01.png)
+![bang!](https://base.pics.ordchaos.com/2022/11/319d4fa4d25c91e5fd4872d6004fac01.png)
 
 好，很好，我沉得住气。发个工单问一下：
 
-![工单截图](https://images.ordchaos.com/2022/11/497f1f27397c268b35dcccd1fd6c274c.png)
+![工单截图](https://base.pics.ordchaos.com/2022/11/497f1f27397c268b35dcccd1fd6c274c.png)
 
 哦！原来如此！好的，继续交流后，rDNS设置成功，但然而我却发现无法访问？！一番探查之后，发现这样一个事实——被墙啦！
 
 于是只得继续发工单：
 
-![](https://images.ordchaos.com/2022/11/132fdf9f0fb03dbdd0298117cc331d30.png)
+![](https://base.pics.ordchaos.com/2022/11/132fdf9f0fb03dbdd0298117cc331d30.png)
 
 终于搞定。
 
@@ -82,11 +82,11 @@ hostname -f
 
 访问Mailu.io的配置生成网页：[https://setup.mailu.io](https://setup.mailu.io/)
 
-![](https://images.ordchaos.com/2022/11/f467bf5ab91b12fdef1b84d6e2239b05.png)
+![](https://base.pics.ordchaos.com/2022/11/f467bf5ab91b12fdef1b84d6e2239b05.png)
 
 写文时最新版本为1.9，保持不变。下方部署方式选择Compose.
 
-![](https://images.ordchaos.com/2022/11/fb64a5b8475dd80944f74acbd558a224.png)
+![](https://base.pics.ordchaos.com/2022/11/fb64a5b8475dd80944f74acbd558a224.png)
 
 - 1：在此处填写自己的域名
 
@@ -96,7 +96,7 @@ hostname -f
 
 - 4：点击勾选
 
-![](https://images.ordchaos.com/2022/11/85105d9d486d31bb37aa25f69ef7376d.png)
+![](https://base.pics.ordchaos.com/2022/11/85105d9d486d31bb37aa25f69ef7376d.png)
 
 - 1：推荐选择rainloop，更加现代好看
 
@@ -106,7 +106,7 @@ hostname -f
 
 最后，你会看到如下界面：
 
-![](https://images.ordchaos.com/2022/11/decae2b8f721e07d24f8c7ef1b7ea38c.png)
+![](https://base.pics.ordchaos.com/2022/11/decae2b8f721e07d24f8c7ef1b7ea38c.png)
 
 照着界面的指示，回到vps执行指令：
 
@@ -135,17 +135,17 @@ docker-compose -p mailu exec admin flask mailu admin admin example.com PASSWORD
 
 在浏览器中访问`https://mx.example.com`登录您的管理员面板:
 
-![管理员面板](https://images.ordchaos.com/2022/11/bb36706e2cf80fc26e6f1baa7bac5636.png)
+![管理员面板](https://base.pics.ordchaos.com/2022/11/bb36706e2cf80fc26e6f1baa7bac5636.png)
 
 使用账号`admin@example.com`和密码`PASSWORD`登录即可（假设你的域名是`example.com`，密码设置为`PASSWORD`）。
 
 然后点击左侧的“邮件域”：
 
-![](https://images.ordchaos.com/2022/11/0dbf970ce24ab1f18381955949ff2acf.png)
+![](https://base.pics.ordchaos.com/2022/11/0dbf970ce24ab1f18381955949ff2acf.png)
 
 然后点击如下的按钮：
 
-![](https://images.ordchaos.com/2022/11/ff977f14b7bc7c6775de3dcd3a0538f9.png)
+![](https://base.pics.ordchaos.com/2022/11/ff977f14b7bc7c6775de3dcd3a0538f9.png)
 
 在新界面中点击“生成密钥”，然后复制dkim配置：
 
@@ -163,13 +163,13 @@ dkim._domainkey.example.com. 600 IN TXT "v=DKIM1; k=rsa; p=xxxxxxxxxxxxxxxxxxxxx
 
 退出管理员账号，访问`https://mx.example.com/webmail`，登录即可（选择“登录Webmail”）。
 
-![主页面](https://images.ordchaos.com/2022/11/bbd43555ba6226a01d53b697174f8742.png)
+![主页面](https://base.pics.ordchaos.com/2022/11/bbd43555ba6226a01d53b697174f8742.png)
 
 ## 测试
 
 在[MailTester](https://www.mail-tester.com/)上可以进行测试，如下是我测试结果：
 
-![](https://images.ordchaos.com/2022/11/84baf936fcbe9b4663cabce5a51252e0.png)
+![](https://base.pics.ordchaos.com/2022/11/84baf936fcbe9b4663cabce5a51252e0.png)
 
 很完美了，对吧（
 

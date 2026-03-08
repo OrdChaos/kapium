@@ -2,13 +2,13 @@
 
 {% gi 4 2-1-1 %}
 
-![](https://images.ordchaos.com/2022/08/da8138b304fd8dba9eb05ba164be31d0.png)
+![](https://base.pics.ordchaos.com/2022/08/da8138b304fd8dba9eb05ba164be31d0.png)
 
-![](https://images.ordchaos.com/2022/08/b760f4236a451e9d1c3647c2980c05b1.png)
+![](https://base.pics.ordchaos.com/2022/08/b760f4236a451e9d1c3647c2980c05b1.png)
 
-![](https://images.ordchaos.com/2022/08/a99983480ddc5f853f9ab163950badb4.png)
+![](https://base.pics.ordchaos.com/2022/08/a99983480ddc5f853f9ab163950badb4.png)
 
-![](https://images.ordchaos.com/2022/08/c6d48548ba4fc1549c53856aabaaf0f1.png)
+![](https://base.pics.ordchaos.com/2022/08/c6d48548ba4fc1549c53856aabaaf0f1.png)
 
 {% endgi %}
 
