@@ -161,7 +161,7 @@ export default function HomePage({ onSearchClick, initialPage }: HomePageProps) 
               {currentPage > 1 && (
                 <button 
                   onClick={prevPage}
-                  className="px-4 py-2 rounded-md bg-card duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer border border-border"
+                  className="px-4 py-2 rounded-md bg-card duration-300 hover:border-primary/50 hover:bg-muted/50 transition-colors cursor-pointer border border-border"
                 >
                   上一页
                 </button>
@@ -174,7 +174,7 @@ export default function HomePage({ onSearchClick, initialPage }: HomePageProps) 
                   className={`px-4 py-2 rounded-md cursor-pointer ${
                     currentPage === page
                       ? 'bg-primary text-primary-foreground'
-                      : 'bg-card duration-300 hover:shadow-lg hover:border-primary/50 border border-border'
+                      : 'bg-card duration-300 hover:border-primary/50 hover:bg-muted/50 transition-colors border border-border'
                   }`}
                 >
                   {page}
@@ -184,7 +184,7 @@ export default function HomePage({ onSearchClick, initialPage }: HomePageProps) 
               {currentPage < totalPages && (
                 <button 
                   onClick={nextPage}
-                  className="px-4 py-2 rounded-md bg-card duration-300 hover:shadow-lg hover:border-primary/50 cursor-pointer border border-border"
+                  className="px-4 py-2 rounded-md bg-card duration-300 hover:border-primary/50 hover:bg-muted/50 transition-colors cursor-pointer border border-border"
                 >
                   下一页
                 </button>
