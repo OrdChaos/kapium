@@ -12,6 +12,7 @@ import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
 import Twikoo from '@/components/Twikoo';
+import CommentSystem from '@/components/CommentSystem';
 
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -230,8 +231,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
         {post && (
           <div className="container mx-auto px-4 py-12">
             <div className="flex justify-center">
-              <div className="flex gap-10">
-                <div className="hidden xl:block w-[260px] flex-shrink-0"></div>
+              <div className="flex gap-10 items-start max-w-fit">
+                <div className="hidden xl:block w-[260px] flex-shrink-0 min-h-[1px]"></div>
                 
                 <main className="w-full max-w-[768px] min-w-0 flex-shrink-0">
                   <div className="mb-8 space-y-4">
@@ -345,7 +346,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   )}
 
                   <div key={`twikoo-${id}`} className="mt-8">
-                    <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
+                    {/*<Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />*/}
+                    <CommentSystem envId={import.meta.env.VITE_TWIKOO_ENV} url={window.location.pathname} />
                   </div>
                 </main>
 
@@ -390,7 +392,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                     </div>
                   </aside>
                 ) : (
-                  <div className="hidden xl:block w-[260px] flex-shrink-0"></div>
+                  <div className="hidden xl:block w-[260px] flex-shrink-0 min-h-[1px]"></div>
                 )}
               </div>
             </div>
