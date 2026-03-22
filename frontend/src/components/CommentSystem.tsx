@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
+import { marked } from "marked"
 import { callTwikoo } from "@/lib/twikoo-api"
 
 // 评论数据类型（适配 Twikoo 后端）
@@ -177,7 +178,11 @@ function CommentForm({
       }
     }
 
-    onSubmit({ ...formData, comment: formData.comment, turnstileToken: token })
+    onSubmit({ 
+      ...formData, 
+      comment: await marked(formData.comment),
+      turnstileToken: token 
+    })
     setFormData({ nick: '', mail: '', link: '', comment: '' })
     setShowPreview(false)
     setTurnstileToken(null)
