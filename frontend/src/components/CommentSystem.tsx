@@ -1,18 +1,41 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
-import { ThumbsUp, ThumbsDown, MessageCircle, ChevronDown, ChevronUp } from "lucide-react"
+import { ThumbsUp, ThumbsDown, MessageCircle, ChevronDown, ChevronUp, Smile } from "lucide-react"
 import { toast } from "sonner"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
-import remarkBreaks from "remark-breaks"
 import { marked } from "marked"
 import { callTwikoo } from "@/lib/twikoo-api"
+import { StickerPicker } from "./ui/emoji-picker"
+import { loadEmojis } from '@/lib/emojis'
+import { useLocation } from "wouter";
+
+const emojiMap = new Map<string, string>();
+
+const preprocessEmojis = (markdown: string): string => {
+  const emojiRegex = /:([a-zA-Z0-9_\-\u4e00-\u9fa5]+):/g;
+  
+  return markdown.replace(emojiRegex, (match, id) => {
+    const src = emojiMap.get(id);
+    if (src) {
+      return `<img src="${src}" alt="${id}" class="tk-owo-emotion" title="${id}" loading="lazy" />`;
+    }
+    return match;
+  });
+};
+
+const preprocessText = (text: string): string => {
+  const processedMarkdown = preprocessEmojis(text);
+  return marked.parse(processedMarkdown, {
+    async: false,
+    breaks: true,
+    gfm: true
+  }) as string;
+};
 
 // 评论数据类型（适配 Twikoo 后端）
 interface Comment {
@@ -31,6 +54,27 @@ interface Comment {
   replies: Comment[]
   master?: boolean
   isSpam?: boolean
+}
+
+const isExternalUrl = (url: string): boolean => {
+  try {
+    const urlObj = new URL(url)
+    const siteHostname = import.meta.env.VITE_SITE_HOSTNAME
+    const hostname = urlObj.hostname
+    
+    return hostname !== siteHostname && 
+           hostname !== 'localhost' && 
+           hostname !== '127.0.0.1'
+  } catch {
+    return false
+  }
+}
+
+const handleExternalLinkClick = (e: React.MouseEvent, url: string, setLocation: (path: string) => void) => {
+  if (isExternalUrl(url)) {
+    e.preventDefault()
+    setLocation(`/redirect?url=${encodeURIComponent(url)}&from=${encodeURIComponent(window.location.pathname + window.location.search)}`)
+  }
 }
 
 // 排序类型
@@ -71,7 +115,7 @@ const convertToComment = (twikooComment: any): Comment => {
 
 // 获取 Gravatar 头像
 const getAvatarUrl = (mailMd5: string): string => {
-  return `https://cravatar.cn/avatar/${mailMd5}?d=mp`
+  return `https://weavatar.com/avatar/${mailMd5}?d=mp`
 }
 
 // 评论表单组件
@@ -95,6 +139,7 @@ function CommentForm({
     comment: ''
   })
   const [showPreview, setShowPreview] = useState(false)
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 
   const [turnstileLoad, setTurnstileLoad] = useState<Promise<void> | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
@@ -103,16 +148,16 @@ function CommentForm({
 
   // 初始化 Turnstile
   React.useEffect(() => {
-    if (config?.TURNSTILE_SITE_KEY && window.turnstile) {
+    if (config?.TURNSTILE_SITE_KEY && (window as any).turnstile) {
       setTurnstileLoad(Promise.resolve())
       return
     }
 
-    if (config?.TURNSTILE_SITE_KEY && !window.turnstile) {
+    if (config?.TURNSTILE_SITE_KEY && !(window as any).turnstile) {
       const loadPromise = new Promise<void>((resolve, reject) => {
         const scriptEl = document.createElement('script')
         scriptEl.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
-        scriptEl.onload = resolve
+        scriptEl.onload = () => resolve()
         scriptEl.onerror = reject
         if (turnstileRef.current) {
           turnstileRef.current.appendChild(scriptEl)
@@ -129,24 +174,24 @@ function CommentForm({
     await turnstileLoad
     
     return new Promise<string>((resolve, reject) => {
-      if (!window.turnstile || !turnstileRef.current) {
+      if (!(window as any).turnstile || !turnstileRef.current) {
         reject(new Error('Turnstile 未加载'))
         return
       }
 
       // 移除之前的 widget
       if (turnstileWidgetId !== null) {
-        window.turnstile?.remove(turnstileWidgetId)
+        (window as any).turnstile?.remove(turnstileWidgetId)
         setTurnstileWidgetId(null)
       }
 
-      const widgetId = window.turnstile.render(turnstileRef.current, {
+      const widgetId = (window as any).turnstile?.render(turnstileRef.current, {
         sitekey: config.TURNSTILE_SITE_KEY,
         callback: (token) => {
           setTurnstileToken(token)
           resolve(token)
           setTimeout(() => {
-            window.turnstile?.remove(widgetId)
+            (window as any).turnstile?.remove(widgetId)
             setTurnstileWidgetId(null)
           }, 5000)
         },
@@ -169,18 +214,18 @@ function CommentForm({
       return
     }
     
-    let token = null
+    let token: string | null = null;
     if (config?.TURNSTILE_SITE_KEY) {
       try {
-        token = await getTurnstileToken()
+        token = (await getTurnstileToken()) || null
       } catch (error) {
-        console.error('获取验证码失败:', error)
         toast.error('验证码验证失败')
         return
       }
     }
 
-    const commentHtml = await marked(formData.comment, {
+    const commentText = preprocessText(formData.comment)
+    const commentHtml = await marked(commentText, {
       breaks: true,
       gfm: true
     })
@@ -197,7 +242,6 @@ function CommentForm({
 
   return (
     <div className={`${isReply ? 'ml-12 mt-4 p-4 bg-muted/50 rounded-lg' : ''}`}>
-      {!isReply && <h3 className="text-lg font-semibold mb-4">发表评论</h3>}
       {isReply && replyTo && (
         <div className="text-sm text-muted-foreground mb-4">
           回复 <span className="font-medium text-foreground">{replyTo}</span>
@@ -206,19 +250,22 @@ function CommentForm({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-3">
           <Input
-            placeholder="昵称 *"
+            name="nick"
+            placeholder="昵称"
             value={formData.nick}
             onChange={(e) => setFormData({ ...formData, nick: e.target.value })}
             required
           />
           <Input
+            name="email"
             type="email"
-            placeholder="邮箱 *"
+            placeholder="邮箱"
             value={formData.mail}
             onChange={(e) => setFormData({ ...formData, mail: e.target.value })}
             required
           />
           <Input
+            name="url"
             type="url"
             placeholder="网站（可选）"
             value={formData.link}
@@ -226,7 +273,7 @@ function CommentForm({
           />
         </div>
         <Textarea
-          placeholder="写下你的评论... 支持 Markdown 语法 *"
+          placeholder={"写下你的评论...\n请确保您输入的评论符合中国大陆相关法律法规\n可在 Gravatar 上传头像或输入 QQ 邮箱以自动使用 QQ 头像\n支持 Markdown 语法"}
           value={formData.comment}
           onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
           rows={4}
@@ -240,9 +287,7 @@ function CommentForm({
             <div className="text-sm font-medium text-muted-foreground mb-2">预览</div>
             <div className="prose prose-sm dark:prose-invert max-w-none">
               {formData.comment ? (
-                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-                  {formData.comment}
-                </ReactMarkdown>
+                <div dangerouslySetInnerHTML={{ __html: preprocessText(formData.comment) }} />
               ) : (
                 <p className="text-muted-foreground">暂无内容</p>
               )}
@@ -255,20 +300,43 @@ function CommentForm({
           <div className="flex justify-end my-2" ref={turnstileRef}></div>
         )}
 
-        <div className="flex justify-end gap-2">
-          {onCancel && (
-            <Button type="button" variant="outline" onClick={onCancel}>
-              取消
+        <div className="flex justify-between items-start gap-2 mt-0">
+          <div className="flex items-start gap-2">
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="p-2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Smile className="h-5 w-5" />
+              </button>
+              {showEmojiPicker && (
+                <div className="absolute left-0 bottom-full mb-2 z-50">
+                  <div className="relative w-[300px]">
+                    <StickerPicker onSelect={(emoji) => {
+                      setFormData(prev => ({ ...prev, comment: (prev.comment || '') + emoji }))
+                      setShowEmojiPicker(false)
+                    }} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            {onCancel && (
+              <Button type="button" variant="outline" onClick={onCancel}>
+                取消
+              </Button>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowPreview(!showPreview)}
+            >
+              {showPreview ? '关闭' : '预览'}
             </Button>
-          )}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setShowPreview(!showPreview)}
-          >
-            {showPreview ? '编辑' : '预览'}
-          </Button>
-          <Button type="submit">发表评论</Button>
+            <Button type="submit">发表</Button>
+          </div>
         </div>
       </form>
     </div>
@@ -297,17 +365,18 @@ function CommentItem({
   onCancelReply: () => void
   config?: { TURNSTILE_SITE_KEY?: string; GEETEST_CAPTCHA_ID?: string }
 }) {
-  const getInitials = (name: string) => {
-    return name.slice(0, 2).toUpperCase()
-  }
-
+  const [, setLocation] = useLocation()
+  
   const formatTime = (timestamp: number) => {
     const now = Date.now()
     const diff = now - timestamp
     const minutes = Math.floor(diff / 60000)
     const hours = Math.floor(diff / 3600000)
     const days = Math.floor(diff / 86400000)
+    const months = Math.floor(days / 30)
 
+    if (months > 3) return `${new Date(timestamp).toLocaleDateString()}`
+    if (months > 0) return `${months}个月前`
     if (days > 0) return `${days}天前`
     if (hours > 0) return `${hours}小时前`
     if (minutes > 0) return `${minutes}分钟前`
@@ -337,6 +406,7 @@ function CommentItem({
                 href={comment.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => handleExternalLinkClick(e, comment.link || '', setLocation)}
                 className={`font-medium hover:text-primary transition-colors ${isReply ? 'text-sm' : ''}`}
               >
                 {comment.nick}
@@ -352,13 +422,22 @@ function CommentItem({
             {comment.isSpam && (
               <span className="text-xs bg-yellow-500 dark:bg-yellow-600 text-yellow-950 dark:text-yellow-50 px-2 py-0.5 rounded-full">审核中</span>
             )}
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground translate-y-[1px]">
               {formatTime(comment.created)}
             </span>
           </div>
 
           <div className={`mt-2 text-foreground prose prose-sm dark:prose-invert max-w-none ${isReply ? 'text-sm' : ''}`}>
-            <div dangerouslySetInnerHTML={{ __html: comment.comment }} />
+            <div 
+              dangerouslySetInnerHTML={{ __html: comment.comment }} 
+              onClick={(e) => {
+                const target = e.target as HTMLElement
+                const link = target.closest('a')
+                if (link?.href) {
+                  handleExternalLinkClick(e, link.href, setLocation)
+                }
+              }}
+            />
           </div>
 
           <div className="mt-3 flex items-center gap-4">
@@ -485,41 +564,60 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
   const [loading, setLoading] = useState(true)
   const [totalCount, setTotalCount] = useState(0)
   const [config, setConfig] = useState<{ TURNSTILE_SITE_KEY?: string } | undefined>(undefined)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [emojiLoaded, setEmojiLoaded] = useState(false)
+  const commentsEndRef = React.useRef<HTMLDivElement>(null)
+  const ITEMS_PER_PAGE = 10
+
+  // 加载表情数据
+  useEffect(() => {
+    loadEmojis().then(() => {
+      const categories = (window as any).customCategories || []
+      categories.forEach((cat: any) => {
+        cat.emojis.forEach((e: any) => {
+          emojiMap.set(e.id, e.skins[0].src);
+        });
+      });
+      setEmojiLoaded(true)
+    })
+  }, [])
 
   // 加载评论
-  const loadComments = async () => {
+  const loadComments = async (loadMore = false) => {
     try {
-      console.log('[CommentSystem] 开始加载评论...')
-      console.log('[CommentSystem] URL:', url)
-      console.log('[CommentSystem] EnvId:', envId)
-      console.log('[CommentSystem] SortBy:', sortBy)
-      console.log('[CommentSystem] SortOrder:', sortOrder)
+      if (loadMore) {
+        setLoadingMore(true)
+      } else {
+        setLoading(true)
+      }
       
-      setLoading(true)
       const result = await callTwikoo('COMMENT_GET', {
         url,
-        sort: sortBy === 'popular' ? 'popular' : (sortOrder === 'desc' ? 'newest' : 'oldest')
+        sort: sortBy === 'popular' ? 'popular' : (sortOrder === 'desc' ? 'newest' : 'oldest'),
+        r: ITEMS_PER_PAGE,
+        p: loadMore ? page : 1
       }, { envId })
-      
-      console.log('[CommentSystem] API 返回结果:', result)
       
       const commentsData = result.data || result.result?.data
       const totalCount = result.count || (result.result?.count as number) || 0
       
       if (commentsData) {
-        console.log('[CommentSystem] 评论数据:', commentsData)
         const convertedComments = commentsData.map(convertToComment)
-        console.log('[CommentSystem] 转换后的评论:', convertedComments)
-        setComments(convertedComments)
-        setTotalCount(totalCount)
-      } else {
-        console.warn('[CommentSystem] API 返回格式异常:', result)
-        console.warn('[CommentSystem] result.data:', result.data)
-        console.warn('[CommentSystem] result.result?.data:', result.result?.data)
+        
+        if (loadMore) {
+          setComments(prev => [...prev, ...convertedComments])
+          setPage(prev => prev + 1)
+          setHasMore(convertedComments.length === ITEMS_PER_PAGE)
+        } else {
+          setComments(convertedComments)
+          setTotalCount(totalCount)
+          setHasMore(convertedComments.length === ITEMS_PER_PAGE)
+        }
       }
 
       const configResult = await callTwikoo('GET_CONFIG', {}, { envId })
-      console.log('[CommentSystem] 配置结果:', configResult)
       const configData = configResult.config || configResult.result?.config || {}
       if (configData) {
         setConfig({
@@ -527,11 +625,13 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         })
       }
     } catch (error) {
-      console.error('[CommentSystem] 加载评论失败:', error)
-      toast.error('加载评论失败')
+      toast.error(loadMore ? '加载更多评论失败' : '加载评论失败')
     } finally {
-      console.log('[CommentSystem] 加载完成，评论数量:', comments.length)
-      setLoading(false)
+      if (loadMore) {
+        setLoadingMore(false)
+      } else {
+        setLoading(false)
+      }
     }
   }
 
@@ -563,9 +663,29 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
 
   // 组件挂载时加载评论
   React.useEffect(() => {
-    console.log('[CommentSystem] useEffect 触发，url 变化:', url)
-    loadComments()
-  }, [url, sortBy, sortOrder])
+    setPage(1)
+    setHasMore(true)
+    loadComments(false)
+  }, [url, sortBy, sortOrder, emojiLoaded])
+
+  // 滚动加载更多评论
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop
+      const scrollHeight = document.documentElement.scrollHeight
+      const clientHeight = window.innerHeight
+      
+      // 距离底部 200px 时加载更多
+      if (scrollTop + clientHeight >= scrollHeight - 200) {
+        if (hasMore && !loadingMore && !loading) {
+          loadComments(true)
+        }
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [hasMore, loadingMore, loading])
 
   // 处理主评论提交
   const handleSubmitComment = async (data: FormData) => {
@@ -603,11 +723,10 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         toast.success('评论发表成功！')
         
         setTimeout(() => {
-          loadComments()
-        }, 1000)
+          loadComments(false)
+        }, 300)
       }
     } catch (error) {
-      console.error('发表评论失败:', error)
       toast.error('发表评论失败')
     }
   }
@@ -656,11 +775,10 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         toast.success('回复发表成功！')
         
         setTimeout(() => {
-          loadComments()
-        }, 1000)
+          loadComments(false)
+        }, 300)
       }
     } catch (error) {
-      console.error('发表回复失败:', error)
       toast.error('发表回复失败')
     }
   }
@@ -711,7 +829,6 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         )
       }
     } catch (error) {
-      console.error('点赞失败:', error)
       toast.error('点赞失败')
     }
   }
@@ -752,7 +869,6 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         )
       }
     } catch (error) {
-      console.error('踩失败:', error)
       toast.error('踩失败')
     }
   }
@@ -780,14 +896,12 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
   const totalComments = totalCount
 
   return (
-    <div className="w-full z-50">
-      {/* 评论表单 */}
-      <CommentForm onSubmit={handleSubmitComment} config={config} />
-
+    <div className="w-full z-[60]">
       <Separator className="my-8" />
 
-      {/* 评论标题和排序 */}
-      <div className="flex items-center justify-between mb-6">
+      <CommentForm onSubmit={handleSubmitComment} config={config} />
+
+      <div className="flex items-center justify-between mb-6 mt-6">
         <h3 className="text-lg font-semibold">
           评论 <span className="text-muted-foreground">({totalComments})</span>
         </h3>
@@ -846,11 +960,25 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         </div>
       )}
 
-      {comments.length === 0 && !loading && (
-        <div className="text-center py-12 text-muted-foreground">
-          还没有评论，来发表第一条吧！
+      {loadingMore && (
+        <div className="text-center py-4 text-muted-foreground">
+          加载中...
         </div>
       )}
+
+      {!hasMore && comments.length > 0 && !loading && (
+        <div className="text-center py-4 text-muted-foreground">
+          已经到底啦
+        </div>
+      )}
+
+      {comments.length === 0 && !loading && (
+        <div className="text-center py-12 text-muted-foreground">
+          还没有评论呢，快来发表一条吧
+        </div>
+      )}
+      
+      <div ref={commentsEndRef} />
     </div>
   )
 }

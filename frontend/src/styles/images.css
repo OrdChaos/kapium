@@ -36,3 +36,17 @@
 .dark .yarl__container {
   background: color-mix(in srgb, #000000 40%, transparent) !important;
 }
+
+.tk-owo-emotion {
+  display: inline-block;
+  height: 1.5em; /* 略高于 1em，视觉上更自然 */
+  width: auto;
+  min-width: 1.5em;
+  vertical-align: text-bottom; /* 关键：对齐文字底线 */
+  margin: 0 0.15rem;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  /* 避免被 Markdown 默认的 img 样式（如 max-width: 100%）干扰 */
+  border: none !important;
+  box-shadow: none !important;
+}

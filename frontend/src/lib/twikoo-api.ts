@@ -62,10 +62,6 @@ export const callTwikoo = async <T = any>(
 ): Promise<TwikooResponse<T>> => {
   const { envId = 'http://localhost:8080' } = config
 
-  console.log('[TwikooAPI] 调用事件:', event)
-  console.log('[TwikooAPI] 请求数据:', data)
-  console.log('[TwikooAPI] 配置:', config)
-
   if (!isUrl(envId)) {
     throw new TwikooError('缺少 envId 配置，请提供有效的服务器地址', undefined, 0)
   }
@@ -77,10 +73,6 @@ export const callTwikoo = async <T = any>(
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
-          console.log('[TwikooAPI] readyState:', xhr.readyState)
-          console.log('[TwikooAPI] HTTP 状态:', xhr.status)
-          console.log('[TwikooAPI] 响应文本:', xhr.responseText)
-
           if (xhr.status === 200) {
             try {
               const result = JSON.parse(xhr.responseText)
@@ -100,7 +92,6 @@ export const callTwikoo = async <T = any>(
                 return
               }
 
-              console.log('[TwikooAPI] 解析成功，返回结果:', result)
               resolve(result)
             } catch (e) {
               reject(
@@ -124,7 +115,6 @@ export const callTwikoo = async <T = any>(
       }
 
       xhr.onerror = () => {
-        console.error('[TwikooAPI] 网络请求出错')
         reject(
           new TwikooError(
             '网络请求失败',
@@ -137,7 +127,6 @@ export const callTwikoo = async <T = any>(
       xhr.open('POST', envId)
       xhr.setRequestHeader('Content-Type', 'application/json')
       const requestBody = JSON.stringify({ event, accessToken, ...data })
-      console.log('[TwikooAPI] 请求体:', requestBody)
       xhr.send(requestBody)
     } catch (e) {
       reject(

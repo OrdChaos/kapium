@@ -11,7 +11,6 @@ import { usePageLoading } from '@/hooks/use-page-loading';
 import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
-import Twikoo from '@/components/Twikoo';
 import CommentSystem from '@/components/CommentSystem';
 
 import Lightbox from "yet-another-react-lightbox";
@@ -230,11 +229,12 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         {post && (
           <div className="container mx-auto px-4 py-12">
-            <div className="flex justify-center">
-              <div className="flex gap-10 items-start max-w-fit">
-                <div className="hidden xl:block w-[260px] flex-shrink-0 min-h-[1px]"></div>
-                
-                <main className="w-full max-w-[768px] min-w-0 flex-shrink-0">
+            <div className={`flex ${tocAndOffsets.toc.length > 0 ? 'justify-center gap-10' : 'justify-center'}`}>
+              <div className="flex gap-10">
+              {tocAndOffsets.toc.length > 0 && (
+                <div className="hidden xl:block w-[260px] flex-shrink-0" />
+              )}
+                <main className="flex-1 max-w-[768px] min-w-0">
                   <div className="mb-8 space-y-4">
                     <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
@@ -263,7 +263,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                     </div>
                   )}
 
-                  <article className="prose prose-neutral dark:prose-invert max-w-none">
+                  <article className="prose prose-neutral dark:prose-invert max-w-none w-full">
                     <div 
                       key={`content-${id}`}
                       id="post-content"
@@ -346,12 +346,11 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   )}
 
                   <div key={`twikoo-${id}`} className="mt-8">
-                    {/*<Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />*/}
                     <CommentSystem envId={import.meta.env.VITE_TWIKOO_ENV} url={window.location.pathname} />
                   </div>
                 </main>
 
-                {tocAndOffsets.toc.length > 0 ? (
+                {tocAndOffsets.toc.length > 0 && (
                   <aside className="hidden xl:block w-[260px] flex-shrink-0">
                     <div className="sticky top-24">
                       <Card className="rounded-lg border-border shadow-md overflow-hidden bg-card duration-300 hover:shadow-lg hover:border-primary/50">
@@ -391,8 +390,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                       </Card>
                     </div>
                   </aside>
-                ) : (
-                  <div className="hidden xl:block w-[260px] flex-shrink-0 min-h-[1px]"></div>
                 )}
               </div>
             </div>

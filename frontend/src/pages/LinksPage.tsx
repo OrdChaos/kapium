@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'wouter';
 import { useSEO } from '@/hooks/use-seo';
 import { usePageLoading } from '@/hooks/use-page-loading';
-import Twikoo from '@/components/Twikoo';
+import CommentSystem from '@/components/CommentSystem';
 
 interface LinksPageProps {
   onSearchClick: () => void;
@@ -120,7 +120,7 @@ export default function LinksPage({ onSearchClick }: LinksPageProps) {
           </div>
 
           <div key={`twikoo-${id}`} className="mt-8">
-            <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} />
+            <CommentSystem envId={import.meta.env.VITE_TWIKOO_ENV} url={window.location.pathname} />
           </div>
 
         </div>

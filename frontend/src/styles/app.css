@@ -220,6 +220,13 @@
   box-shadow: var(--shadow);
 }
 
+html body[data-scroll-locked] {
+  overflow: visible !important;
+  overflow: visible !important;
+  margin-right: 0 !important;     /* 取消补的滚动条宽度 */
+  margin-left: 0 !important;      /* 如果是 RTL 布局 */
+}
+
 @import './typography.css';
 @import './tables.css';
 @import './search-scroll.css';
