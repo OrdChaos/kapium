@@ -30,6 +30,7 @@ interface Comment {
   disliked?: boolean
   replies: Comment[]
   master?: boolean
+  isSpam?: boolean
 }
 
 // 排序类型
@@ -63,7 +64,8 @@ const convertToComment = (twikooComment: any): Comment => {
     liked: twikooComment.liked || false,
     disliked: twikooComment.disliked || false,
     master: twikooComment.master || false,
-    replies: convertedReplies
+    replies: convertedReplies,
+    isSpam: twikooComment.isSpam || false
   }
 }
 
@@ -178,9 +180,14 @@ function CommentForm({
       }
     }
 
+    const commentHtml = await marked(formData.comment, {
+      breaks: true,
+      gfm: true
+    })
+    
     onSubmit({ 
       ...formData, 
-      comment: await marked(formData.comment),
+      comment: commentHtml,
       turnstileToken: token 
     })
     setFormData({ nick: '', mail: '', link: '', comment: '' })
@@ -224,12 +231,8 @@ function CommentForm({
           onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
           rows={4}
           required
+          className={isReply ? 'bg-muted/30' : ''}
         />
-        
-        {/* Turnstile 验证码 */}
-        {config?.TURNSTILE_SITE_KEY && (
-          <div className="flex justify-center my-2" ref={turnstileRef}></div>
-        )}
         
         {/* 预览区域 - 实时预览 */}
         {showPreview && (
@@ -245,6 +248,11 @@ function CommentForm({
               )}
             </div>
           </div>
+        )}
+
+        {/* Turnstile 验证码 */}
+        {config?.TURNSTILE_SITE_KEY && (
+          <div className="flex justify-end my-2" ref={turnstileRef}></div>
         )}
 
         <div className="flex justify-end gap-2">
@@ -276,7 +284,8 @@ function CommentItem({
   onDislike,
   replyingTo,
   onSubmitReply,
-  onCancelReply
+  onCancelReply,
+  config
 }: {
   comment: Comment
   isReply?: boolean
@@ -286,6 +295,7 @@ function CommentItem({
   replyingTo: string | null
   onSubmitReply: (commentId: string, data: FormData) => void
   onCancelReply: () => void
+  config?: { TURNSTILE_SITE_KEY?: string; GEETEST_CAPTCHA_ID?: string }
 }) {
   const getInitials = (name: string) => {
     return name.slice(0, 2).toUpperCase()
@@ -308,9 +318,15 @@ function CommentItem({
     <div>
       <div className={`flex gap-3 ${isReply ? 'py-3' : 'py-4'}`}>
         <Avatar className={isReply ? 'h-8 w-8' : 'h-10 w-10'}>
-          <AvatarImage src={comment.avatar || getAvatarUrl(comment.mailMd5)} />
-          <AvatarFallback className="bg-primary/10 text-primary">
-            {getInitials(comment.nick)}
+          <AvatarImage 
+            src={comment.avatar || getAvatarUrl(comment.mailMd5)} 
+            alt={comment.nick}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement
+              target.style.display = 'none'
+            }}
+          />
+          <AvatarFallback className="bg-muted">
           </AvatarFallback>
         </Avatar>
 
@@ -332,6 +348,9 @@ function CommentItem({
             )}
             {comment.master && (
               <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">博主</span>
+            )}
+            {comment.isSpam && (
+              <span className="text-xs bg-yellow-500 dark:bg-yellow-600 text-yellow-950 dark:text-yellow-50 px-2 py-0.5 rounded-full">审核中</span>
             )}
             <span className="text-xs text-muted-foreground">
               {formatTime(comment.created)}
@@ -516,6 +535,32 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
     }
   }
 
+  // 处理 URL hash 滚动和高亮
+  React.useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash && hash.length > 1) {
+        const element = document.querySelector(hash)
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            element.classList.add('bg-primary/10', 'transition-colors')
+            setTimeout(() => {
+              element.classList.remove('bg-primary/10')
+            }, 1000)
+          }, 100)
+        }
+      }
+    }
+    
+    window.addEventListener('hashchange', handleHashChange)
+    handleHashChange()
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+  }, [])
+
   // 组件挂载时加载评论
   React.useEffect(() => {
     console.log('[CommentSystem] useEffect 触发，url 变化:', url)
@@ -556,6 +601,10 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         setComments([newComment, ...comments])
         setTotalCount(totalCount + 1)
         toast.success('评论发表成功！')
+        
+        setTimeout(() => {
+          loadComments()
+        }, 1000)
       }
     } catch (error) {
       console.error('发表评论失败:', error)
@@ -605,6 +654,10 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         setTotalCount(totalCount + 1)
         setReplyingTo(null)
         toast.success('回复发表成功！')
+        
+        setTimeout(() => {
+          loadComments()
+        }, 1000)
       }
     } catch (error) {
       console.error('发表回复失败:', error)
@@ -727,7 +780,7 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
   const totalComments = totalCount
 
   return (
-    <div className="w-full">
+    <div className="w-full z-50">
       {/* 评论表单 */}
       <CommentForm onSubmit={handleSubmitComment} config={config} />
 
@@ -769,7 +822,7 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         /* 评论列表 */
         <div className="space-y-2">
           {getSortedComments().map((comment, index) => (
-            <div key={comment.id}>
+            <div key={comment.id} id={`comment-${comment.id}`}>
               <CommentItem
                 comment={comment}
                 onReply={handleReply}
@@ -788,7 +841,6 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
                 onSubmitReply={handleSubmitReply}
                 onCancelReply={handleCancelReply}
               />
-              {index < comments.length - 1 && <Separator className="my-2" />}
             </div>
           ))}
         </div>
