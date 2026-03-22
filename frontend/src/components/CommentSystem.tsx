@@ -13,8 +13,16 @@ import { callTwikoo } from "@/lib/twikoo-api"
 import { StickerPicker } from "./ui/emoji-picker"
 import { loadEmojis } from '@/lib/emojis'
 import { useLocation } from "wouter";
+import md5 from "blueimp-md5";
+
+const categories = await loadEmojis();
 
 const emojiMap = new Map<string, string>();
+categories.forEach(cat => {
+  cat.emojis.forEach(e => {
+    emojiMap.set(e.id, e.skins[0].src);
+  });
+});
 
 const preprocessEmojis = (markdown: string): string => {
   const emojiRegex = /:([a-zA-Z0-9_\-\u4e00-\u9fa5]+):/g;
@@ -687,7 +695,6 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
     return () => window.removeEventListener('scroll', handleScroll)
   }, [hasMore, loadingMore, loading])
 
-  // 处理主评论提交
   const handleSubmitComment = async (data: FormData) => {
     try {
       const result = await callTwikoo('COMMENT_SUBMIT', {
@@ -701,30 +708,43 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         turnstileToken: data.turnstileToken || undefined
       }, { envId })
 
-      if (result.result?.id) {
+      const newId = result.result?.id || result.id;
+
+      if (newId) {
+        // 1. 计算 MD5 以便立即显示正确的头像
+        const emailMd5 = md5(data.mail.trim().toLowerCase());
+
+        // 2. 手动构造临时评论对象
         const newComment: Comment = {
-          id: result.result.id,
+          id: newId,
           nick: data.nick,
           mail: data.mail,
           link: data.link,
-          comment: data.comment,
-          mailMd5: '',
+          comment: data.comment, // 这里的 comment 已经是转换后的 HTML
+          mailMd5: emailMd5,
+          avatar: getAvatarUrl(emailMd5),
           created: Date.now(),
           ups: 0,
           downs: 0,
           liked: false,
           disliked: false,
-          master: false,
+          master: false, // 临时设为 false
           replies: []
         }
-        
-        setComments([newComment, ...comments])
-        setTotalCount(totalCount + 1)
+
+        // 3. 立即更新 UI
+        setComments(prev => [newComment, ...prev])
+        setTotalCount(prev => prev + 1)
         toast.success('评论发表成功！')
-        
+
+        // 4. 跳转到新评论位置并高亮
+        // 使用 requestAnimationFrame 或 setTimeout 确保 React 完成 DOM 渲染
         setTimeout(() => {
-          loadComments(false)
-        }, 300)
+          window.location.hash = `${newId}`
+        }, 150)
+
+        // 5. 5秒后静默拉取服务器真实数据（校准博主标识、IP属地等）
+        setTimeout(() => loadComments(false), 5000)
       }
     } catch (error) {
       toast.error('发表评论失败')
@@ -746,14 +766,18 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         turnstileToken: data.turnstileToken || undefined
       }, { envId })
 
-      if (result.result?.id) {
+      const newId = result.result?.id || result.id;
+
+      if (newId) {
+        const emailMd5 = md5(data.mail.trim().toLowerCase());
+
         const newReply: Comment = {
-          id: result.result.id,
+          id: newId,
           nick: data.nick,
           mail: data.mail,
           link: data.link,
           comment: data.comment,
-          mailMd5: '',
+          mailMd5: emailMd5,
           created: Date.now(),
           ups: 0,
           downs: 0,
@@ -763,20 +787,22 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
           replies: []
         }
 
-        setComments(
-          comments.map((comment) =>
+        setComments(prev =>
+          prev.map((comment) =>
             comment.id === commentId
               ? { ...comment, replies: [...comment.replies, newReply] }
               : comment
           )
         )
-        setTotalCount(totalCount + 1)
+        
+        setTotalCount(prev => prev + 1)
         setReplyingTo(null)
         toast.success('回复发表成功！')
-        
+
+        // 跳转高亮
         setTimeout(() => {
-          loadComments(false)
-        }, 300)
+          window.location.hash = `${newId}`
+        }, 150)
       }
     } catch (error) {
       toast.error('发表回复失败')
@@ -936,7 +962,7 @@ export default function CommentSystem({ url, envId }: { url: string; envId?: str
         /* 评论列表 */
         <div className="space-y-2">
           {getSortedComments().map((comment, index) => (
-            <div key={comment.id} id={`comment-${comment.id}`}>
+            <div key={comment.id} id={`${comment.id}`}>
               <CommentItem
                 comment={comment}
                 onReply={handleReply}
