@@ -22,7 +22,6 @@ import RedirectPage from '@/pages/RedirectPage';
 import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
 import CookiesPolicyPage from '@/pages/CookiesPolicyPage';
 import CopyrightPolicyPage from '@/pages/CopyrightPolicyPage';
-import TwikooAdminPage from '@/pages/TwikooAdminPage';
 
 function PageRoute({ onSearchClick }: { onSearchClick: () => void }) {
   const [, navigate] = useLocation();
@@ -119,7 +118,6 @@ export default function App() {
   const PrivacyPolicyRoute = useCallback(() => <PrivacyPolicyPage onSearchClick={openSearch} />, [openSearch]);
   const CookiesPolicyRoute = useCallback(() => <CookiesPolicyPage onSearchClick={openSearch} />, [openSearch]);
   const CopyrightPolicyRoute = useCallback(() => <CopyrightPolicyPage onSearchClick={openSearch} />, [openSearch]);
-  const TwikooAdminRoute = useCallback(() => <TwikooAdminPage onSearchClick={openSearch} />, [openSearch]);
 
   if (!isOnline) {
     return (
@@ -166,7 +164,6 @@ export default function App() {
         <Route path="/privacy-policy" component={PrivacyPolicyRoute} />
         <Route path="/cookies-policy" component={CookiesPolicyRoute} />
         <Route path="/copyright-policy" component={CopyrightPolicyRoute} />
-        <Route path="/twikoo-admin" component={TwikooAdminRoute} />
         <Route component={NotFoundRoute} />
       </Switch>
       <Toaster />

@@ -11,7 +11,7 @@ import { usePageLoading } from '@/hooks/use-page-loading';
 import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
-import CommentSystem from '@/components/CommentSystem';
+import Twikoo from '@/components/Twikoo';
 
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -346,7 +346,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                   )}
 
                   <div key={`twikoo-${id}`} className="mt-8">
-                    <CommentSystem envId={import.meta.env.VITE_TWIKOO_ENV} url={window.location.pathname} />
+                    <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} path={window.location.pathname} />
                   </div>
                 </main>
 
