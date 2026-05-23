@@ -202,7 +202,10 @@
     background-position: -200% 0;
   }
 }
-
+/* 灯箱打开时将 sticky navbar 切换为 fixed 避免因 body position:fixed 而失效 */
+body.lightbox-open nav {
+  position: fixed !important;
+}
 .error-boundary {
   min-height: 100vh;
   display: flex;

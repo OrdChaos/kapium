@@ -38,6 +38,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   const isManualScrolling = useRef(false);
   const scrollEndTimeoutRef = useRef<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const savedScrollY = useRef(0);
+  const updateOffsetsRef = useRef<() => void>(() => {});
 
   usePageLoading(dataLoaded);
 
@@ -122,6 +124,9 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     });
   }, [tocAndOffsets]);
 
+  // 保持 ref 与最新 updateOffsets 同步，供 lightbox 关闭后强制重算
+  updateOffsetsRef.current = updateOffsets;
+
   const debouncedUpdateOffsets = useCallback(() => {
     window.requestAnimationFrame(updateOffsets);
   }, [updateOffsets]);
@@ -190,7 +195,31 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     }, 800);
   };
 
-  // 8. 其他 Hook
+  // 8. 自定义滚动锁定（替代 Lightbox 默认的 NoScroll，避免 body overflow:hidden 破坏 sticky 定位）
+  useEffect(() => {
+    if (open) {
+      const scrollY = window.scrollY;
+      savedScrollY.current = scrollY;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.cssText =
+        `position: fixed; width: 100%; top: -${scrollY}px; padding-right: ${scrollbarWidth}px;`;
+    } else {
+      document.documentElement.style.cssText = '';
+      const restoreY = savedScrollY.current;
+      savedScrollY.current = 0;
+      if (restoreY > 0) {
+        window.scrollTo({ top: restoreY, behavior: 'instant' });
+      }
+      // html position:fixed 期间 updateOffsets 计算值不正确，关闭后强制重算
+      updateOffsetsRef.current();
+    }
+
+    return () => {
+      document.documentElement.style.cssText = '';
+    };
+  }, [open]);
+
+  // 9. 其他 Hook
   useGlobalCopy();
   const images = useMemo(() => {
     if (!post?.content) return [];
@@ -224,6 +253,7 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
         index={index}
         slides={images}
         plugins={[Zoom]}
+        noScroll={{ disabled: true }}
       />
 
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
