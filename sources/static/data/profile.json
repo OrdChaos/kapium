@@ -63,6 +63,38 @@
       "url": "mailto:orderchaos@ordchaos.com"
     }
   ],
+  "projects": [
+    {
+      "name": "kapium",
+      "desc": "本博客——静态站点生成器与前端",
+      "url": "https://github.com/OrdChaos/kapium",
+      "tech": ["C++", "TypeScript", "React"]
+    },
+    {
+      "name": "blogpusher",
+      "desc": "一键推流工具，帮你推送博客或任意 git 仓库",
+      "url": "https://github.com/OrdChaos/blogpusher",
+      "tech": ["C++"]
+    },
+    {
+      "name": "ordchaosgpt-cloud-function",
+      "desc": "无服务器 AI 摘要后端",
+      "url": "https://github.com/OrdChaos/ordchaosgpt-cloud-function",
+      "tech": ["JavaScript"]
+    },
+    {
+      "name": "clipcc-extension-dictionary",
+      "desc": "Clipcc 词典扩展",
+      "url": "https://github.com/OrdChaos/clipcc-extension-dictionary",
+      "tech": ["JavaScript"]
+    },
+    {
+      "name": "MXSERVER_Restart",
+      "desc": "定时重启邮件服务",
+      "url": "https://github.com/OrdChaos/MXSERVER_Restart",
+      "tech": ["Shell"]
+    }
+  ],
   "education": [
     {
       "degree": "苦逼高中生",

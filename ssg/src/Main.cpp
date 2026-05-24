@@ -208,6 +208,12 @@ auto main(int argc, char* argv[]) -> int {
     std::ofstream(meta_output / "data" / "tagPosts.json") << tag_posts.dump(4);
     std::ofstream(meta_output / "data" / "searchResults.json") << search_results.dump(4);
 
+    nlohmann::json stats;
+    stats["postCount"] = all_posts.size();
+    stats["categoryCount"] = categories.size();
+    stats["tagCount"] = tags.size();
+    std::ofstream(meta_output / "data" / "stats.json") << stats.dump(4);
+
     std::string rss_content = xml_generator::generate_rss(all_posts);
     std::string sitemap_content = xml_generator::generate_sitemap(all_posts, categories, tags);
     std::ofstream(meta_output / "info" / "rss.xml") << rss_content;
