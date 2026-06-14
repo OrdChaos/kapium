@@ -97,7 +97,7 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                       <ChevronDown className="h-3 w-3 group-hover:rotate-180 transition-transform" />
                     </div>
 
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full hidden group-hover:block bg-card border rounded-md shadow-md py-2 z-50 w-20">
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full opacity-0 scale-95 -translate-y-1 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none group-hover:pointer-events-auto bg-card border rounded-md shadow-md py-2 z-50 w-20">
                       {item.children.map((c) => (
                         <a
                           key={c.href}
@@ -186,8 +186,12 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
           </div>
         </div>
 
-        {isOpen && (
-          <div className="border-t border-border/40 py-3 md:hidden">
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
+          isOpen 
+            ? 'max-h-[600px] opacity-100' 
+            : 'max-h-0 opacity-0 invisible'
+        }`}>
+          <div className="border-t border-border/40 py-3">
             <div className="flex flex-col">
 
               {navItems.map((item, idx) => {
@@ -219,7 +223,11 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                         />
                       </button>
 
-                      {openMenus[idx] && (
+                      <div className={`overflow-hidden transition-all duration-200 ease-out ${
+                        openMenus[idx] 
+                          ? 'max-h-[200px] opacity-100 translate-y-0' 
+                          : 'max-h-0 opacity-0 -translate-y-1 invisible'
+                      }`}>
                         <div className="flex flex-col pl-3">
                           {item.children.map((c) => (
                             <a
@@ -242,7 +250,7 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                             </a>
                           ))}
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 }
@@ -293,7 +301,7 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

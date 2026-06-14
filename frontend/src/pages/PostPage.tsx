@@ -131,12 +131,11 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     window.requestAnimationFrame(updateOffsets);
   }, [updateOffsets]);
 
-  // 5. 【核心修复】文章内容生命周期管理
+  // 5. 文章内容生命周期管理
   useEffect(() => {
     const contentEl = contentRef.current;
     if (!post || !contentEl) return;
 
-    // 既然使用原生 loading="lazy"，我们只需要在图片加载完后更新 TOC 偏移量
     const handleImgLoad = (e: Event) => {
       if ((e.target as HTMLElement).tagName === 'IMG') {
         debouncedUpdateOffsets();
@@ -158,15 +157,40 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     };
   }, [id, post?.content, debouncedUpdateOffsets]);
 
-  // 6. 滚动监听
+  // 6. 滚动监听（智能检测到达目标或滚动停止，替代固定超时）
   useEffect(() => {
     const onScroll = () => {
-      if (isManualScrolling.current || !headingOffsets.current.length) return;
+      if (!headingOffsets.current.length) return;
+
       const triggerPoint = window.scrollY + 100;
       let current: OffsetItem | null = null;
       for (const h of headingOffsets.current) {
         if (h.top <= triggerPoint) current = h; else break;
       }
+
+      // 清除上一次的滚动停止检测
+      if (scrollEndTimeoutRef.current) {
+        window.clearTimeout(scrollEndTimeoutRef.current);
+        scrollEndTimeoutRef.current = null;
+      }
+
+      if (isManualScrolling.current) {
+        // 已到达目标标题位置 → 立即退出手动模式
+        if (current && current.id === activeId) {
+          isManualScrolling.current = false;
+          // 继续执行下方高亮更新（id 相同则跳过）
+        } else {
+          // 滚动停止 150ms 后退出手动模式（用户打断或动画异常终止）
+          scrollEndTimeoutRef.current = window.setTimeout(() => {
+            scrollEndTimeoutRef.current = null;
+            isManualScrolling.current = false;
+            // 派发 scroll 事件以立即刷新实际位置高亮
+            window.dispatchEvent(new Event('scroll'));
+          }, 150);
+          return;
+        }
+      }
+
       if (current && current.id !== activeId) {
         setActiveId(current.id);
         setExpandedId(current.parentId || current.id);
@@ -188,11 +212,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
 
     const targetTop = element.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: targetTop, behavior: 'smooth' });
-
-    if (scrollEndTimeoutRef.current) window.clearTimeout(scrollEndTimeoutRef.current);
-    scrollEndTimeoutRef.current = window.setTimeout(() => {
-      isManualScrolling.current = false;
-    }, 800);
   };
 
   // 8. 自定义滚动锁定（替代 Lightbox 默认的 NoScroll，避免 body overflow:hidden 破坏 sticky 定位）
