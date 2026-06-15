@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, Tag, Bot, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Calendar, Clock, Tag, Bot, ChevronLeft, ChevronRight, List, X } from 'lucide-react';
 import { Link, useParams, useLocation } from 'wouter';
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
@@ -47,6 +47,8 @@ export default function PostSection({ onSearchClick }: PostPageProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [mobileTocOpen, setMobileTocOpen] = useState(false);
+  const [showTopBtn, setShowTopBtn] = useState(false);
   const headingOffsets = useRef<{ id: string; top: number; parentId: string | null }[]>([]);
   const isManualScrolling = useRef(false);
   const scrollEndTimeoutRef = useRef<number | null>(null);
@@ -194,9 +196,21 @@ export default function PostSection({ onSearchClick }: PostPageProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, [activeId]);
 
+  // 6.5 返回顶部按钮可见性
+  useEffect(() => {
+    const onScroll = () => {
+      const shouldShow = window.scrollY > 300;
+      if (shouldShow !== showTopBtn) setShowTopBtn(shouldShow);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [showTopBtn]);
+
   // 7. 目录点击
   const handleTocClick = (e: any, targetId: string, parentId: string | null) => {
     e.preventDefault();
+    e.stopPropagation();
     const element = document.getElementById(targetId);
     if (!element) return;
     isManualScrolling.current = true;
@@ -204,6 +218,7 @@ export default function PostSection({ onSearchClick }: PostPageProps) {
     setExpandedId(parentId || targetId);
     const targetTop = element.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    // 移动端点击目录项后不关闭抽屉
   };
 
   // 8. Lightbox 滚动锁定
@@ -419,6 +434,87 @@ export default function PostSection({ onSearchClick }: PostPageProps) {
           </div>
         )}
       </div>
+
+      {/* 移动端 TOC 浮动按钮 */}
+      {hasToc && (
+        <button
+          onClick={() => setMobileTocOpen(true)}
+          className={`xl:hidden fixed right-6 z-50 rounded-lg bg-card text-foreground border border-border shadow-md p-3 transition-all duration-300 hover:shadow-lg hover:border-primary/50 active:scale-95 ${
+            showTopBtn ? 'bottom-[5.25rem]' : 'bottom-6'
+          }`}
+          aria-label="打开目录"
+        >
+          <List className="h-6 w-6" />
+        </button>
+      )}
+
+      {/* 移动端 TOC 抽屉 */}
+      {hasToc && (
+        <>
+          {/* 背景遮罩 - 点击关闭 */}
+          <div
+            className={`xl:hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+              mobileTocOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+            onClick={() => setMobileTocOpen(false)}
+          />
+          {/* 抽屉面板 */}
+          <div
+            className={`xl:hidden fixed top-0 right-0 z-[70] h-full w-72 max-w-[85vw] bg-card border-l border-border shadow-2xl transition-transform duration-300 ease-out ${
+              mobileTocOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h3 className="text-sm font-bold">目录</h3>
+              <button
+                onClick={() => setMobileTocOpen(false)}
+                className="rounded-md p-1 text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="关闭目录"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <nav className="overflow-y-auto p-4" style={{ maxHeight: 'calc(100vh - 57px)' }}>
+              <ul className="space-y-1">
+                {tocAndOffsets.toc.map((h2) => (
+                  <li key={h2.id}>
+                    <a
+                      href={`#${h2.id}`}
+                      onClick={(e) => handleTocClick(e, h2.id, null)}
+                      className={`block py-1.5 text-sm transition-all border-l-2 pl-3 ${
+                        activeId === h2.id
+                          ? 'border-primary text-primary font-bold bg-primary/5'
+                          : 'border-transparent text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      {h2.text}
+                    </a>
+                    {expandedId === h2.id && h2.children.length > 0 && (
+                      <ul className="mt-1 mb-2 ml-4 space-y-1 border-l border-muted/20">
+                        {h2.children.map((h3) => (
+                          <li key={h3.id}>
+                            <a
+                              href={`#${h3.id}`}
+                              onClick={(e) => handleTocClick(e, h3.id, h2.id)}
+                              className={`block py-1 pl-4 text-xs transition-colors border-l-2 ${
+                                activeId === h3.id
+                                  ? 'border-primary text-primary font-medium'
+                                  : 'border-transparent text-muted-foreground'
+                              }`}
+                            >
+                              {h3.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        </>
+      )}
     </Layout>
   );
 }

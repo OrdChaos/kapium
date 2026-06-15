@@ -186,10 +186,10 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
           </div>
         </div>
 
-        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
+        <div className={`md:hidden overflow-hidden ease-out ${
           isOpen 
-            ? 'max-h-[600px] opacity-100' 
-            : 'max-h-0 opacity-0 invisible'
+            ? 'max-h-[600px] opacity-100 duration-500' 
+            : 'max-h-0 opacity-0 pointer-events-none duration-300'
         }`}>
           <div className="border-t border-border/40 py-3">
             <div className="flex flex-col">
@@ -223,10 +223,10 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                         />
                       </button>
 
-                      <div className={`overflow-hidden transition-all duration-200 ease-out ${
+                      <div className={`overflow-hidden ease-out ${
                         openMenus[idx] 
-                          ? 'max-h-[200px] opacity-100 translate-y-0' 
-                          : 'max-h-0 opacity-0 -translate-y-1 invisible'
+                          ? 'max-h-[200px] opacity-100 translate-y-0 duration-500' 
+                          : 'max-h-0 opacity-0 -translate-y-1 pointer-events-none duration-300'
                       }`}>
                         <div className="flex flex-col pl-3">
                           {item.children.map((c) => (
