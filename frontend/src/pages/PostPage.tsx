@@ -12,17 +12,31 @@ import { UmamiPageViews } from '@/components/ui/umami-page-views';
 import LicenseBox from '@/components/LicenseBox';
 import SocialShare from '@/components/SocialShare';
 import Twikoo from '@/components/Twikoo';
-
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 
-interface TocItem { id: string; text: string; level: number; }
-interface TocNode { id: string; text: string; parentId: string | null; children: { id: string; text: string }[]; }
-interface PostPageProps { onSearchClick: () => void; }
-interface OffsetItem { id: string; top: number; parentId: string | null; }
+interface TocItem {
+  id: string;
+  text: string;
+  level: number;
+}
+interface TocNode {
+  id: string;
+  text: string;
+  parentId: string | null;
+  children: { id: string; text: string }[];
+}
+interface PostPageProps {
+  onSearchClick: () => void;
+}
+interface OffsetItem {
+  id: string;
+  top: number;
+  parentId: string | null;
+}
 
-export default function PostPage({ onSearchClick }: PostPageProps) {
+export default function PostSection({ onSearchClick }: PostPageProps) {
   const { id } = useParams();
   const [location, setLocation] = useLocation();
   const [post, setPost] = useState<any | null>(null);
@@ -33,7 +47,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
-
   const headingOffsets = useRef<{ id: string; top: number; parentId: string | null }[]>([]);
   const isManualScrolling = useRef(false);
   const scrollEndTimeoutRef = useRef<number | null>(null);
@@ -48,14 +61,12 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     if (!id) return;
     setDataLoaded(false);
     const controller = new AbortController();
-    
     const fetchData = async () => {
       try {
         const [postRes, navRes] = await Promise.all([
           fetch(`/data/posts/${id}.json`, { signal: controller.signal }),
           fetch('/data/postNavigation.json', { signal: controller.signal })
         ]);
-
         if (postRes.ok) setPost(await postRes.json());
         if (navRes.ok) {
           const navData = await navRes.json();
@@ -69,7 +80,6 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
         }
       }
     };
-
     fetchData();
     return () => controller.abort();
   }, [id]);
@@ -96,13 +106,12 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     if (post && !visible) requestAnimationFrame(() => setVisible(true));
   }, [post, visible]);
 
-  // 4. 目录与偏移量计算
+  // 4. TOC 数据
   const tocAndOffsets = useMemo(() => {
     if (!post?.toc) return { toc: [], offsets: [] };
     const nodes: TocNode[] = [];
     const offsets: any[] = [];
     let lastH2: TocNode | null = null;
-
     post.toc.forEach((item: TocItem) => {
       if (item.level === 2) {
         lastH2 = { id: item.id, text: item.text, parentId: null, children: [] };
@@ -116,6 +125,8 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     return { toc: nodes, offsets };
   }, [post]);
 
+  const hasToc = tocAndOffsets.toc.length > 0;
+
   const updateOffsets = useCallback(() => {
     if (!contentRef.current?.isConnected || isManualScrolling.current) return;
     headingOffsets.current = tocAndOffsets.offsets.map((h) => {
@@ -124,73 +135,56 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     });
   }, [tocAndOffsets]);
 
-  // 保持 ref 与最新 updateOffsets 同步，供 lightbox 关闭后强制重算
   updateOffsetsRef.current = updateOffsets;
 
   const debouncedUpdateOffsets = useCallback(() => {
     window.requestAnimationFrame(updateOffsets);
   }, [updateOffsets]);
 
-  // 5. 文章内容生命周期管理
+  // 5. 文章内容生命周期
   useEffect(() => {
     const contentEl = contentRef.current;
     if (!post || !contentEl) return;
-
     const handleImgLoad = (e: Event) => {
-      if ((e.target as HTMLElement).tagName === 'IMG') {
-        debouncedUpdateOffsets();
-      }
+      if ((e.target as HTMLElement).tagName === 'IMG') debouncedUpdateOffsets();
     };
-
     contentEl.addEventListener('load', handleImgLoad, true);
-    
-    // 初始校准偏移量
     const timer = setTimeout(debouncedUpdateOffsets, 500);
-
     return () => {
       clearTimeout(timer);
       if (contentEl) {
         contentEl.removeEventListener('load', handleImgLoad, true);
-        // 关键：在 React 销毁前手动清空内容，防止 Reconciliation 报错
-        contentEl.innerHTML = ''; 
+        contentEl.innerHTML = '';
       }
     };
   }, [id, post?.content, debouncedUpdateOffsets]);
 
-  // 6. 滚动监听（智能检测到达目标或滚动停止，替代固定超时）
+  // 6. 滚动监听
   useEffect(() => {
     const onScroll = () => {
       if (!headingOffsets.current.length) return;
-
       const triggerPoint = window.scrollY + 100;
       let current: OffsetItem | null = null;
       for (const h of headingOffsets.current) {
-        if (h.top <= triggerPoint) current = h; else break;
+        if (h.top <= triggerPoint) current = h;
+        else break;
       }
-
-      // 清除上一次的滚动停止检测
       if (scrollEndTimeoutRef.current) {
         window.clearTimeout(scrollEndTimeoutRef.current);
         scrollEndTimeoutRef.current = null;
       }
-
       if (isManualScrolling.current) {
-        // 已到达目标标题位置 → 立即退出手动模式
         if (current && current.id === activeId) {
           isManualScrolling.current = false;
-          // 继续执行下方高亮更新（id 相同则跳过）
         } else {
-          // 滚动停止 150ms 后退出手动模式（用户打断或动画异常终止）
           scrollEndTimeoutRef.current = window.setTimeout(() => {
             scrollEndTimeoutRef.current = null;
             isManualScrolling.current = false;
-            // 派发 scroll 事件以立即刷新实际位置高亮
             window.dispatchEvent(new Event('scroll'));
           }, 150);
           return;
         }
       }
-
       if (current && current.id !== activeId) {
         setActiveId(current.id);
         setExpandedId(current.parentId || current.id);
@@ -200,46 +194,37 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, [activeId]);
 
-  // 7. 目录跳转
+  // 7. 目录点击
   const handleTocClick = (e: any, targetId: string, parentId: string | null) => {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (!element) return;
-
     isManualScrolling.current = true;
     setActiveId(targetId);
     setExpandedId(parentId || targetId);
-
     const targetTop = element.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: targetTop, behavior: 'smooth' });
   };
 
-  // 8. 自定义滚动锁定（替代 Lightbox 默认的 NoScroll，避免 body overflow:hidden 破坏 sticky 定位）
+  // 8. Lightbox 滚动锁定
   useEffect(() => {
     if (open) {
       const scrollY = window.scrollY;
       savedScrollY.current = scrollY;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.documentElement.style.cssText =
-        `position: fixed; width: 100%; top: -${scrollY}px; padding-right: ${scrollbarWidth}px;`;
+      document.documentElement.style.cssText = `position: fixed; width: 100%; top: -${scrollY}px; padding-right: ${scrollbarWidth}px;`;
     } else {
       document.documentElement.style.cssText = '';
       const restoreY = savedScrollY.current;
       savedScrollY.current = 0;
-      if (restoreY > 0) {
-        window.scrollTo({ top: restoreY, behavior: 'instant' });
-      }
-      // html position:fixed 期间 updateOffsets 计算值不正确，关闭后强制重算
+      if (restoreY > 0) window.scrollTo({ top: restoreY, behavior: 'instant' });
       updateOffsetsRef.current();
     }
-
-    return () => {
-      document.documentElement.style.cssText = '';
-    };
+    return () => { document.documentElement.style.cssText = ''; };
   }, [open]);
 
-  // 9. 其他 Hook
   useGlobalCopy();
+
   const images = useMemo(() => {
     if (!post?.content) return [];
     const doc = new DOMParser().parseFromString(post.content, 'text/html');
@@ -250,7 +235,10 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
     const target = e.target as HTMLElement;
     if (target.tagName === 'IMG') {
       const imgIndex = images.findIndex(img => img.src === target.getAttribute('src'));
-      if (imgIndex !== -1) { setIndex(imgIndex); setOpen(true); }
+      if (imgIndex !== -1) {
+        setIndex(imgIndex);
+        setOpen(true);
+      }
       return;
     }
     const link = target.closest('a');
@@ -261,147 +249,127 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
   };
 
   return (
-    // 使用 id 作为 key 强制刷新 Layout 实例
     <Layout onSearchClick={onSearchClick} key={id}>
       {seoElement}
       <Banner title={post?.title ?? ''} height="standard" />
-
-      <Lightbox
-        open={open}
-        close={() => setOpen(false)}
-        index={index}
-        slides={images}
-        plugins={[Zoom]}
-        noScroll={{ disabled: true }}
-      />
-
+      <Lightbox open={open} close={() => setOpen(false)} index={index} slides={images} plugins={[Zoom]} noScroll={{ disabled: true }} />
+      
       <div className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
         {post && (
-          <div className="container mx-auto px-4 py-12">
-            <div className={`flex ${tocAndOffsets.toc.length > 0 ? 'justify-center gap-10' : 'justify-center'}`}>
-              <div className="flex gap-10">
-              {tocAndOffsets.toc.length > 0 && (
-                <div className="hidden xl:block w-[260px] flex-shrink-0" />
-              )}
-                <main className="flex-1 max-w-[768px] min-w-0">
-                  <div className="mb-8 space-y-4">
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
-                      <div className="flex items-center gap-1"><Clock className="h-4 w-4" /><span>{post.readTime} 分钟</span></div>
-                      <UmamiPageViews abbrlink={post?.abbrlink} />
-                      <Link href={`/categories/${encodeURIComponent(post.category)}`}>
-                        <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
-                      </Link>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Tag className="h-4 w-4 text-muted-foreground" />
-                      <div className="flex flex-wrap gap-2">
-                        {post.tags.map((tag: string) => (
-                          <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
-                            <Badge variant="outline" className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground">{tag}</Badge>
-                          </Link>
-                        ))}
+          <div className="grid py-12 px-4 grid-cols-1 xl:grid-cols-[1fr_768px_1fr] xl:gap-x-6">
+            {/* 中间文章内容列 */}
+            <div className="w-full max-w-[768px] mx-auto xl:mx-0 xl:col-start-2">
+                    {/* 元信息 */}
+                    <div className="mb-8 space-y-4">
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1"><Calendar className="h-4 w-4" /><span>{post.date.slice(0,10)}</span></div>
+                        <div className="flex items-center gap-1"><Clock className="h-4 w-4" /><span>{post.readTime} 分钟</span></div>
+                        <UmamiPageViews abbrlink={post?.abbrlink} />
+                        <Link href={`/categories/${encodeURIComponent(post.category)}`}>
+                          <Badge variant="secondary" className="cursor-pointer hover:bg-primary hover:text-primary-foreground">{post.category}</Badge>
+                        </Link>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Tag className="h-4 w-4 text-muted-foreground" />
+                        <div className="flex flex-wrap gap-2">
+                          {post.tags.map((tag: string) => (
+                            <Link key={tag} href={`/tags/${encodeURIComponent(tag)}`}>
+                              <Badge variant="outline" className="text-xs shrink-0 cursor-pointer transition-colors hover:bg-primary hover:text-primary-foreground">{tag}</Badge>
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {post.summary && (
-                    <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
-                      <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
-                    </div>
-                  )}
+                    {/* 文章摘要 */}
+                    {post.summary && (
+                      <div className="rounded-lg border border-border shadow-md bg-card p-4 mb-8 duration-300 hover:shadow-lg hover:border-primary/50">
+                        <h3 className="text-base font-semibold mb-2 flex items-center gap-2"><Bot />文章摘要</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{post.summary}</p>
+                      </div>
+                    )}
 
-                  <article className="prose prose-neutral dark:prose-invert max-w-none w-full">
-                    <div 
-                      key={`content-${id}`}
-                      id="post-content"
-                      ref={contentRef}
-                      dangerouslySetInnerHTML={{ __html: post.content }} 
-                      onClick={handleContentClick}
+                    {/* 文章主体 */}
+                    <article className="prose prose-neutral dark:prose-invert max-w-none w-full overflow-x-hidden">
+                      <div 
+                        key={`content-${id}`} 
+                        id="post-content" 
+                        ref={contentRef} 
+                        style={{ width: '100%', maxWidth: '100%', minWidth: '0', overflowX: 'hidden', boxSizing: 'border-box' }} 
+                        dangerouslySetInnerHTML={{ __html: post.content }} 
+                        onClick={handleContentClick} 
+                      />
+                    </article>
+
+                    {/* License、分享、导航、评论 */}
+                    <LicenseBox 
+                      title={post.title} 
+                      permalink={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} 
+                      author={import.meta.env.VITE_SITE_AUTHOR} 
+                      postedAt={post.date.slice(0,10)} 
+                      updatedAt={post.update} 
+                      license={import.meta.env.VITE_SITE_POSTS_LICENSE} 
                     />
-                  </article>
-
-                  <LicenseBox 
-                    title={post.title} 
-                    permalink={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} 
-                    author={import.meta.env.VITE_SITE_AUTHOR}
-                    postedAt={post.date.slice(0,10)}
-                    updatedAt={post.update}
-                    license={import.meta.env.VITE_SITE_POSTS_LICENSE}
-                  />
-
-                  <SocialShare title={post.title} url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} />
-
-                  {navigation && (
-                    <div className="mt-4 pt-4 mb-8">
-                      <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
-                        <div className="flex-1 min-w-0">
-                          {navigation.next ? (
-                            <Link
-                              to={`/posts/${navigation.next.id}`}
-                              className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                            >
-                              <div className="flex items-center gap-2 text-muted-foreground mb-1">
-                                <ChevronLeft className="h-4 w-4" />
-                                <span className="font-medium">下一篇</span>
+                    <SocialShare 
+                      title={post.title} 
+                      url={import.meta.env.VITE_SITE_URL + `/posts/${post.abbrlink}`} 
+                    />
+                    
+                    {/* 上下篇导航 */}
+                    {navigation && (
+                      <div className="mt-4 pt-4 mb-8">
+                        <div className="flex flex-col sm:flex-row justify-between gap-6 text-sm">
+                          <div className="flex-1 min-w-0">
+                            {navigation.next ? (
+                              <Link to={`/posts/${navigation.next.id}`} className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors">
+                                <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                                  <ChevronLeft className="h-4 w-4" />
+                                  <span className="font-medium">下一篇</span>
+                                </div>
+                                <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">{navigation.next.title}</div>
+                              </Link>
+                            ) : (
+                              <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <ChevronLeft className="h-4 w-4" />
+                                  <span className="font-medium">下一篇</span>
+                                </div>
+                                <div className="line-clamp-2 font-medium">已是最新文章</div>
                               </div>
-                              <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
-                                {navigation.next.title}
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0 text-right sm:text-left">
+                            {navigation.prev ? (
+                              <Link to={`/posts/${navigation.prev.id}`} className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors">
+                                <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
+                                  <span className="font-medium">上一篇</span>
+                                  <ChevronRight className="h-4 w-4" />
+                                </div>
+                                <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">{navigation.prev.title}</div>
+                              </Link>
+                            ) : (
+                              <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
+                                <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
+                                  <span className="font-medium">上一篇</span>
+                                  <ChevronRight className="h-4 w-4" />
+                                </div>
+                                <div className="line-clamp-2 font-medium">已是最旧文章</div>
                               </div>
-                            </Link>
-                          ) : (
-                            <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
-                              <div className="flex items-center gap-2 mb-1">
-                                <ChevronLeft className="h-4 w-4" />
-                                <span className="font-medium">下一篇</span>
-                              </div>
-                              <div className="line-clamp-2 font-medium">
-                                已是最新文章
-                              </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-
-                        <div className="flex-1 min-w-0 text-right sm:text-left">
-                          {navigation.prev ? (
-                            <Link
-                              to={`/posts/${navigation.prev.id}`}
-                              className="group block p-4 rounded-lg border border-border hover:border-primary/50 hover:bg-muted/50 transition-colors"
-                            >
-                              <div className="flex items-center justify-end sm:justify-start gap-2 text-muted-foreground mb-1">
-                                <span className="font-medium">上一篇</span>
-                                <ChevronRight className="h-4 w-4" />
-                              </div>
-                              <div className="line-clamp-2 font-medium group-hover:text-primary transition-colors">
-                                {navigation.prev.title}
-                              </div>
-                            </Link>
-                          ) : (
-                            <div className="p-4 rounded-lg border border-border bg-muted/30 text-muted-foreground">
-                              <div className="flex items-center justify-end sm:justify-start gap-2 mb-1">
-                                <span className="font-medium">上一篇</span>
-                                <ChevronRight className="h-4 w-4" />
-                              </div>
-                              <div className="line-clamp-2 font-medium">
-                                已是最旧文章
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
                       </div>
+                    )}
+                    
+                    <div key={`twikoo-${id}`} className="mt-8">
+                      <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} path={window.location.pathname} />
                     </div>
-                  )}
-
-                  <div key={`twikoo-${id}`} className="mt-8">
-                    <Twikoo envId={import.meta.env.VITE_TWIKOO_ENV} path={window.location.pathname} />
                   </div>
-                </main>
 
-                {tocAndOffsets.toc.length > 0 && (
-                  <aside className="hidden xl:block w-[260px] flex-shrink-0">
-                    <div className="sticky top-24">
+                  {/* 目录容器 (TOC) - 仅在大屏幕显示 */}
+                  {hasToc && (
+                    <aside className="hidden xl:block w-64">
+                      <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
                       <Card className="rounded-lg border-border shadow-md overflow-hidden bg-card duration-300 hover:shadow-lg hover:border-primary/50">
                         <CardContent className="p-5">
                           <CardTitle className="text-sm font-bold mb-4">目录</CardTitle>
@@ -413,9 +381,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                                     href={`#${h2.id}`}
                                     onClick={(e) => handleTocClick(e, h2.id, null)}
                                     className={`block py-1.5 text-sm transition-all border-l-2 pl-3 ${
-                                      activeId === h2.id ? 'border-primary text-primary font-bold bg-primary/5' : 'border-transparent text-muted-foreground hover:text-foreground'
+                                      activeId === h2.id
+                                        ? 'border-primary text-primary font-bold bg-primary/5'
+                                        : 'border-transparent text-muted-foreground hover:text-foreground'
                                     }`}
-                                  >{h2.text}</a>
+                                  >
+                                    {h2.text}
+                                  </a>
                                   {expandedId === h2.id && h2.children.length > 0 && (
                                     <ul className="mt-1 mb-2 ml-4 space-y-1 border-l border-muted/20">
                                       {h2.children.map((h3) => (
@@ -424,9 +396,13 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                                             href={`#${h3.id}`}
                                             onClick={(e) => handleTocClick(e, h3.id, h2.id)}
                                             className={`block py-1 pl-4 text-xs transition-colors border-l-2 ${
-                                              activeId === h3.id ? 'border-primary text-primary font-medium' : 'border-transparent text-muted-foreground'
+                                              activeId === h3.id
+                                                ? 'border-primary text-primary font-medium'
+                                                : 'border-transparent text-muted-foreground'
                                             }`}
-                                          >{h3.text}</a>
+                                          >
+                                            {h3.text}
+                                          </a>
                                         </li>
                                       ))}
                                     </ul>
@@ -436,12 +412,10 @@ export default function PostPage({ onSearchClick }: PostPageProps) {
                             </ul>
                           </nav>
                         </CardContent>
-                      </Card>
+                    </Card>
                     </div>
-                  </aside>
-                )}
-              </div>
-            </div>
+                    </aside>
+                  )}
           </div>
         )}
       </div>
