@@ -10,7 +10,7 @@ import {
   Dice5,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface NavbarProps {
   onSearchClick?: () => void;
@@ -49,6 +49,22 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [openMenus, setOpenMenus] = useState<Record<number, boolean>>({});
+  const [hoveredMenu, setHoveredMenu] = useState<number | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMenuEnter = useCallback((idx: number) => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setHoveredMenu(idx);
+  }, []);
+
+  const handleMenuLeave = useCallback(() => {
+    closeTimerRef.current = setTimeout(() => {
+      setHoveredMenu(null);
+    }, 150);
+  }, []);
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'));
@@ -84,8 +100,14 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                 item.children?.some((c) => c.href === location);
 
               if (item.children) {
+                const isMenuOpen = hoveredMenu === idx;
                 return (
-                  <div key={item.label} className="relative group">
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => handleMenuEnter(idx)}
+                    onMouseLeave={handleMenuLeave}
+                  >
                     <div
                       className={`flex items-center gap-1 text-sm font-medium cursor-pointer transition-colors hover:text-primary ${
                         isActive
@@ -94,27 +116,39 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
                       }`}
                     >
                       {item.label}
-                      <ChevronDown className="h-3 w-3 group-hover:rotate-180 transition-transform" />
+                      <ChevronDown
+                        className={`h-3 w-3 transition-transform ${
+                          isMenuOpen ? 'rotate-180' : ''
+                        }`}
+                      />
                     </div>
 
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full opacity-0 scale-95 -translate-y-1 group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 transition-all duration-200 ease-out pointer-events-none group-hover:pointer-events-auto bg-card border rounded-md shadow-md py-2 z-50 w-20">
-                      {item.children.map((c) => (
-                        <a
-                          key={c.href}
-                          href={c.href}
-                          target={
-                            c.href.startsWith('http') ? '_blank' : undefined
-                          }
-                          rel={
-                            c.href.startsWith('http')
-                              ? 'noopener noreferrer'
-                              : undefined
-                          }
-                          className="block px-4 py-1.5 text-sm text-muted-foreground whitespace-nowrap text-center hover:text-primary"
-                        >
-                          {c.label}
-                        </a>
-                      ))}
+                    <div
+                      className={`absolute left-1/2 -translate-x-1/2 pt-1.5 top-full transition-all duration-200 ease-out z-50 ${
+                        isMenuOpen
+                          ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto'
+                          : 'opacity-0 scale-95 -translate-y-1 pointer-events-none'
+                      }`}
+                    >
+                      <div className="bg-card border rounded-md shadow-md py-2 w-20">
+                        {item.children.map((c) => (
+                          <a
+                            key={c.href}
+                            href={c.href}
+                            target={
+                              c.href.startsWith('http') ? '_blank' : undefined
+                            }
+                            rel={
+                              c.href.startsWith('http')
+                                ? 'noopener noreferrer'
+                                : undefined
+                            }
+                            className="block px-4 py-1.5 text-sm text-muted-foreground whitespace-nowrap text-center hover:text-primary"
+                          >
+                            {c.label}
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 );
