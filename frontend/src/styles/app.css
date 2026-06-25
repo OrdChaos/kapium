@@ -253,4 +253,5 @@ html body[data-scroll-locked] {
 @import './gallary.css';
 @import './heimu.css';
 @import 'katex/dist/katex.min.css';
+@import './katex-overflow.css';
 @import 'nprogress/nprogress.css';
