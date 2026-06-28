@@ -1,0 +1,1 @@
+这篇博文详细记录了博主为一台2017年HP Envy 13-ad1xx笔记本（配备i7-8550U、NVIDIA MX150独显和8GB内存）安装加密Btrfs+LUKS的Arch Linux系统全过程，涵盖网络共享配置、Live环境准备、Wi-Fi连接、SSH远程操作、镜像源切换、磁盘分区与加密、子卷布局、系统包安装、chroot环境配置、时区与本地化设置、initramfs定制、systemd-boot引导及UKI生成等关键步骤，并特别处理了NVIDIA驱动兼容性与Secure Boot支持问题。
