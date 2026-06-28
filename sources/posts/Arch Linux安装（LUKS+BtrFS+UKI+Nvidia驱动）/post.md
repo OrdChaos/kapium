@@ -556,12 +556,10 @@ sudo pacman -S mesa lib32-mesa vulkan-intel lib32-vulkan-intel
 
 对于Nvidia显卡，先检查自己电脑显卡对应的驱动版本。对我而言，MX150是`Pascal`架构的显卡，已经被Nvidia停止支持，因此需要安装旧版本驱动。
 
-同时，要安装让内核能与驱动通信的头。
-
 如下：
 
 ```shell
-paru -S nvidia-550xx-dkms nvidia-550xx-utils lib32-nvidia-550xx-utils linux-headers
+paru -S nvidia-550xx-dkms nvidia-550xx-utils lib32-nvidia-550xx-utils
 ```
 
 编辑`/etc/mkinitcpio.conf`，找到`MODULES=(...)`行，把Intel和Nvidia的模块按顺序填进去：
