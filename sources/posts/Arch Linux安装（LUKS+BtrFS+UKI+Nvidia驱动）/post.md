@@ -636,6 +636,29 @@ pacman -S prime-run
 mkinitcpio -P
 ```
 
+## 本地化
+
+安装字体：
+
+```shell
+pacman -S adobe-source-han-sans-cn-fonts adobe-source-han-serif-cn-fonts noto-fonts-cjk ttf-dejavu  wqy-microhei
+```
+
+更换一个可以显示中文的VT（KMSCON）：
+
+```shell
+pacman -S kmscon
+
+systemctl disable getty@tty1.service
+systemctl enable kmsconvt@tty1.service
+```
+
+把全局locale换为简体中文（zh_CN）。编辑`/etc/locale.conf`：
+
+```text
+LANG=zh_CN.UTF-8
+```
+
 重启电脑，搞定。
 
 ## 题外话
