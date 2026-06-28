@@ -285,7 +285,7 @@ hwclock --systohc
 
 ### 区域和本地化设置
 
-编辑`/etc/locale.gen`，取消需要地区的注释。于我而言，取消`en_US.UTF-8 UTF-8``en_SG.UTF-8 UTF-8``zh_CN.UTF-8 UTF-8`三行。
+编辑`/etc/locale.gen`，取消需要地区的注释。于我而言，取消`en_US.UTF-8 UTF-8`、`en_SG.UTF-8 UTF-8`和`zh_CN.UTF-8 UTF-8`三行。
 
 然后执行`locale-gen`以生成locale信息。
 
