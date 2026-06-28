@@ -4,7 +4,6 @@ const { createHighlighter } = require('shiki');
 
 async function processCodeBlocks() {
   const postsDir = process.argv[2];
-  
   if (!fs.existsSync(postsDir)) {
     console.error(`[SCRIPT.CODE] 目录不存在: ${postsDir}`);
     return;
@@ -12,7 +11,7 @@ async function processCodeBlocks() {
 
   const highlighter = await createHighlighter({
     themes: ['github-light', 'github-dark'],
-    langs: ['javascript', 'python', 'html', 'css', 'bash', 'json', 'cpp', 'c', 'rust', 'yaml', 'typescript', 'shell']
+    langs: ['javascript', 'python', 'html', 'css', 'bash', 'json', 'cpp', 'c', 'rust', 'yaml', 'typescript', 'shell', 'text'] 
   });
 
   const postFiles = fs.readdirSync(postsDir).filter(f => f.endsWith('.json'));
@@ -68,4 +67,7 @@ async function processCodeBlocks() {
   highlighter.dispose();
 }
 
+
 processCodeBlocks();
+
+

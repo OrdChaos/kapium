@@ -111,7 +111,7 @@ nano /etc/pacman.d/mirrorlist
 
 最后我配出来是这样：
 
-```miirrorlist
+```text
 # HTTPS
 
 # University of Science and Technology of China
@@ -291,7 +291,7 @@ hwclock --systohc
 
 创建`/etc/locale.conf`文件，并编辑设定`LANG`变量：
 
-```conf
+```text
 LANG=en_SG.UTF-8
 ```
 
@@ -299,7 +299,7 @@ LANG=en_SG.UTF-8
 
 创建`/etc/vconsole.conf`确定键盘布局：
 
-```conf
+```text
 KEYMAP=us
 ```
 
@@ -309,7 +309,7 @@ KEYMAP=us
 
 编辑`/etc/hostname`：
 
-```hostname
+```text
 <主机名>
 ```
 
@@ -341,13 +341,13 @@ blkid -s UUID -o value /dev/nvme0n1p2
 
 创建并编辑`/etc/kernel/cmdline`：
 
-```cmdline
+```text
 rd.luks.name=<你的LUKS分区UUID>=cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@ rw quiet
 ```
 
 编辑`/etc/mkinitcpio.d/linux.preset`，改成这样：
 
-```present
+```text
 ALL_config="/etc/mkinitcpio.conf"
 ALL_kver="/boot/vmlinuz-linux"
 #ALL_kerneldest="/boot/vmlinuz-linux"
@@ -515,7 +515,7 @@ systemctl enable --now sshd
 
 删除`multilib`配置前的注释符号，并在最底部添加：
 
-```conf
+```text
 [archlinuxcn]
 Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
 ```
@@ -566,13 +566,13 @@ paru -S nvidia-550xx-dkms nvidia-550xx-utils lib32-nvidia-550xx-utils linux-head
 
 编辑`/etc/mkinitcpio.conf`，找到`MODULES=(...)`行，把Intel和Nvidia的模块按顺序填进去：
 
-```conf
+```text
 MODULES=(i915 nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 ```
 
 找到`BINARIES=(...)`行，添加`setfont`
 
-```conf
+```text
 BINARIES=(setfont)
 ```
 
