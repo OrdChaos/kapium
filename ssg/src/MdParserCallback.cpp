@@ -18,7 +18,8 @@ namespace md_parser_callback {
             MD_FLAG_PERMISSIVEURLAUTOLINKS |
             MD_FLAG_PERMISSIVEEMAILAUTOLINKS |
             MD_FLAG_PERMISSIVEWWWAUTOLINKS |
-            MD_FLAG_LATEXMATHSPANS;
+            MD_FLAG_LATEXMATHSPANS |
+            MD_FLAG_FOOTNOTES;
 
         MD_TOC_ITEM_T *toc_list = NULL;
         size_t toc_count = 0;

@@ -259,6 +259,9 @@ struct MD_CTX_tag {
     int html_block_type;    /* For checking closing raw HTML condition. */
     int last_line_has_list_loosening_effect;
     int last_list_item_starts_with_two_blank_lines;
+
+    /* Footnote support. */
+    unsigned footnote_index;    /* 1-based counter for footnote references in document order */
 };
 
 enum MD_LINETYPE_tag {
@@ -2192,7 +2195,25 @@ md_is_link_reference_definition(MD_CTX* ctx, const MD_LINE* lines, MD_SIZE n_lin
     }
 
     /* Link destination. */
-    if(!md_is_link_destination(ctx, off, lines[line_index].end,
+    if((ctx->parser.flags & MD_FLAG_FOOTNOTES) &&
+       label_contents_end - label_contents_beg >= 1 &&
+       CH(label_contents_beg) == _T('^'))
+    {
+        /* Footnote definition: accept rest of line(s) as destination.
+         * Unlike normal link destinations, footnote content can contain
+         * spaces and does not need to be a URL. */
+        dest_contents_beg = off;
+        dest_contents_end = lines[line_index].end;
+        off = dest_contents_end;
+        /* For footnotes, the "title" part is also absorbed into destination */
+        title_is_multiline = FALSE;
+        title_contents_beg = off;
+        title_contents_end = off;
+        title_contents_line_index = 0;
+        /* Skip the title check below */
+        goto footnote_skip_title;
+    }
+    else if(!md_is_link_destination(ctx, off, lines[line_index].end,
                 &off, &dest_contents_beg, &dest_contents_end))
         return FALSE;
 
@@ -2217,6 +2238,9 @@ md_is_link_reference_definition(MD_CTX* ctx, const MD_LINE* lines, MD_SIZE n_lin
     /* Nothing more can follow on the last line. */
     if(off < lines[line_index].end)
         return FALSE;
+
+footnote_skip_title:
+    ;
 
     /* So, it _is_ a reference definition. Remember it. */
     if(ctx->n_ref_defs >= ctx->alloc_ref_defs) {
@@ -3609,6 +3633,47 @@ md_resolve_links(MD_CTX* ctx, const MD_LINE* lines, MD_SIZE n_lines)
         }
 
         if(is_link) {
+            /* Check if this is a footnote reference [^label].
+             * A footnote ref is a shortcut/collapsed reference link whose
+             * label starts with '^'. */
+            if((ctx->parser.flags & MD_FLAG_FOOTNOTES) &&
+               opener->ch == _T('[') &&
+               opener->end < closer->beg &&
+               CH(opener->end) == _T('^'))
+            {
+                /* Resolve as footnote reference. */
+                opener->flags |= MD_MARK_OPENER | MD_MARK_RESOLVED;
+                closer->flags |= MD_MARK_CLOSER | MD_MARK_RESOLVED;
+                opener->ch = _T('^');  /* Mark as footnote ref for md_process_inlines */
+
+                /* Store info in the dummy marks.
+                 * dest_mark (opener+1): beg/end = footnote label range (skip '^')
+                 * title_mark (opener+2): beg/end = footnote dest range
+                 * We reuse the same approach as normal links but with different
+                 * meaning: for footnotes, "dest" is the label, and we store
+                 * the actual destination in title_mark's beg/end. */
+                MD_ASSERT(ctx->marks[opener_index+1].ch == 'D');
+                /* Label: from after '^' to before ']' */
+                OFF label_beg = opener->end + 1;  /* skip '^' */
+                /* Note: opener->end hasn't been changed yet, still points to after '[' */
+                ctx->marks[opener_index+1].beg = label_beg;
+                ctx->marks[opener_index+1].end = closer->beg;
+
+                MD_ASSERT(ctx->marks[opener_index+2].ch == 'D');
+                /* Destination (footnote content): stored as beg/end */
+                ctx->marks[opener_index+2].beg = attr.dest_beg;
+                ctx->marks[opener_index+2].end = attr.dest_end;
+
+                /* Set opener->end to closer->end so that md_process_inlines
+                 * skips the entire [^label] when it advances off past the
+                 * opener mark. */
+                opener->end = closer->end;
+
+                last_link_beg = opener->beg;
+                last_link_end = closer->end;
+
+                md_analyze_link_contents(ctx, lines, n_lines, opener_index+1, closer_index);
+            } else {
             /* Resolve the brackets as a link. */
             opener->flags |= MD_MARK_OPENER | MD_MARK_RESOLVED;
             closer->flags |= MD_MARK_CLOSER | MD_MARK_RESOLVED;
@@ -3663,6 +3728,7 @@ md_resolve_links(MD_CTX* ctx, const MD_LINE* lines, MD_SIZE n_lines)
                     last_nested->flags &= ~MD_MARK_RESOLVED;
                 }
             }
+            } /* else (non-footnote link) */
         }
 
         opener_index = next_index;
@@ -4208,6 +4274,33 @@ abort:
     return ret;
 }
 
+static int
+md_enter_leave_span_footnote_ref(MD_CTX* ctx, int enter,
+                                 const CHAR* label, SZ label_size,
+                                 const CHAR* dest, SZ dest_size,
+                                 unsigned footnote_index)
+{
+    MD_ATTRIBUTE_BUILD label_build = { 0 };
+    MD_ATTRIBUTE_BUILD dest_build = { 0 };
+    MD_SPAN_FOOTNOTE_REF_DETAIL det;
+    int ret = 0;
+
+    memset(&det, 0, sizeof(MD_SPAN_FOOTNOTE_REF_DETAIL));
+    MD_CHECK(md_build_attribute(ctx, label, label_size, 0, &det.label, &label_build));
+    MD_CHECK(md_build_attribute(ctx, dest, dest_size, 0, &det.dest, &dest_build));
+    det.index = footnote_index;
+
+    if(enter)
+        MD_ENTER_SPAN(MD_SPAN_FOOTNOTE_REF, &det);
+    else
+        MD_LEAVE_SPAN(MD_SPAN_FOOTNOTE_REF, &det);
+
+abort:
+    md_free_attribute(ctx, &label_build);
+    md_free_attribute(ctx, &dest_build);
+    return ret;
+}
+
 
 /* Render the output, accordingly to the analyzed ctx->marks. */
 static int
@@ -4321,14 +4414,39 @@ md_process_inlines(MD_CTX* ctx, const MD_LINE* lines, MD_SIZE n_lines)
                     }
                     break;
 
-                case '[':       /* Link, wiki link, image. */
+                case '[':       /* Link, wiki link, image, footnote ref. */
                 case '!':
+                case '^':       /* Footnote reference. */
                 case ']':
                 {
                     const MD_MARK* opener = (mark->ch != ']' ? mark : &ctx->marks[mark->prev]);
                     const MD_MARK* closer = &ctx->marks[opener->next];
                     const MD_MARK* dest_mark;
                     const MD_MARK* title_mark;
+
+                    /* Footnote reference. */
+                    if(opener->ch == _T('^')) {
+                        dest_mark = opener+1;   /* label range */
+                        title_mark = opener+2;  /* dest (content) range */
+                        MD_ASSERT(dest_mark->ch == 'D');
+                        MD_ASSERT(title_mark->ch == 'D');
+
+                        if(mark->ch != ']') {
+                            /* Opener: emit the footnote ref */
+                            ctx->footnote_index++;
+                            MD_CHECK(md_enter_leave_span_footnote_ref(ctx, TRUE,
+                                        STR(dest_mark->beg), dest_mark->end - dest_mark->beg,
+                                        STR(title_mark->beg), title_mark->end - title_mark->beg,
+                                        ctx->footnote_index));
+                        }
+                        /* Closer: nothing to output */
+
+                        if(mark->ch == ']') {
+                            while(mark->end > line->end)
+                                line++;
+                        }
+                        break;
+                    }
 
                     if ((opener->ch == '[' && closer->ch == ']') &&
                         opener->end - opener->beg >= 2 &&

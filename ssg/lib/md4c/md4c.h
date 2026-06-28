@@ -145,7 +145,12 @@ typedef enum MD_SPANTYPE {
 
     /* <u>...</u>
      * Note: Recognized only when MD_FLAG_UNDERLINE is enabled. */
-    MD_SPAN_U
+    MD_SPAN_U,
+
+    /* Footnote reference [^label]
+     * Note: Recognized only when MD_FLAG_FOOTNOTES is enabled.
+     * Detail: Structure MD_SPAN_FOOTNOTE_REF_DETAIL. */
+    MD_SPAN_FOOTNOTE_REF
 } MD_SPANTYPE;
 
 /* Text is the actual textual contents of span. */
@@ -298,6 +303,13 @@ typedef struct MD_SPAN_WIKILINK {
     MD_ATTRIBUTE target;
 } MD_SPAN_WIKILINK_DETAIL;
 
+/* Detailed info for MD_SPAN_FOOTNOTE_REF. */
+typedef struct MD_SPAN_FOOTNOTE_REF_tag {
+    MD_ATTRIBUTE label;         /* The footnote label (without the ^ prefix) */
+    MD_ATTRIBUTE dest;          /* The footnote definition content */
+    unsigned index;             /* 1-based index of the footnote in document order */
+} MD_SPAN_FOOTNOTE_REF_DETAIL;
+
 /* Flags specifying extensions/deviations from CommonMark specification.
  *
  * By default (when MD_PARSER::flags == 0), we follow CommonMark specification.
@@ -318,6 +330,7 @@ typedef struct MD_SPAN_WIKILINK {
 #define MD_FLAG_WIKILINKS                   0x2000  /* Enable wiki links extension. */
 #define MD_FLAG_UNDERLINE                   0x4000  /* Enable underline extension (and disables '_' for normal emphasis). */
 #define MD_FLAG_HARD_SOFT_BREAKS            0x8000  /* Force all soft breaks to act as hard breaks. */
+#define MD_FLAG_FOOTNOTES                   0x10000  /* Enable footnotes extension. */
 
 #define MD_FLAG_PERMISSIVEAUTOLINKS         (MD_FLAG_PERMISSIVEEMAILAUTOLINKS | MD_FLAG_PERMISSIVEURLAUTOLINKS | MD_FLAG_PERMISSIVEWWWAUTOLINKS)
 #define MD_FLAG_NOHTML                      (MD_FLAG_NOHTMLBLOCKS | MD_FLAG_NOHTMLSPANS)

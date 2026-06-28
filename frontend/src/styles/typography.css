@@ -13,3 +13,70 @@ html {
 #post-content h2, #post-content h3 {
   scroll-margin-top: 90px;
 }
+
+/* Footnote references (inline superscript) */
+.footnote-ref a {
+  text-decoration: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: help;
+  position: relative;
+}
+
+.footnote-ref a::after {
+  content: attr(data-footnote);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 400;
+  white-space: normal;
+  width: max-content;
+  max-width: 300px;
+  line-height: 1.4;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.footnote-ref a:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Footnote section at end of document */
+section.footnotes {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+section.footnotes p {
+  margin: 0.4em 0;
+}
+
+section.footnotes sup {
+  color: #888;
+  margin-right: 0.3em;
+}
+
+.footnote-backref {
+  color: #999;
+  font-size: 0.85em;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footnote-backref:hover {
+  color: #333;
+}

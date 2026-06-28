@@ -220,7 +220,7 @@ export default function Navbar({ onSearchClick, postIds }: NavbarProps) {
           </div>
         </div>
 
-        <div className={`md:hidden overflow-hidden ease-out ${
+        <div className={`md:hidden overflow-hidden ease-out relative z-[1040] ${
           isOpen 
             ? 'max-h-[600px] opacity-100 duration-500' 
             : 'max-h-0 opacity-0 pointer-events-none duration-300'

@@ -86,6 +86,11 @@ struct MD_HTML_tag {
     int skip_next_p;
 
     int skip_p_in_gallery;
+
+    // Footnote support
+    MD_TOC_ITEM_T *fn_list;    /* Reusing MD_TOC_ITEM_T for footnote label+id storage */
+    size_t fn_count;
+    size_t fn_capacity;
 };
 
 #define NEED_HTML_ESC_FLAG   0x1
@@ -450,6 +455,60 @@ render_open_wikilink_span(MD_HTML* r, const MD_SPAN_WIKILINK_DETAIL* det)
     RENDER_VERBATIM(r, "\">");
 }
 
+static void
+render_open_footnote_ref_span(MD_HTML* r, const MD_SPAN_FOOTNOTE_REF_DETAIL* det)
+{
+    /* Generate a slug from the label for use in id/href */
+    MD_CHAR slug[MD_HTML_MAX_SLUG_LEN];
+    make_slug(det->label.text, det->label.size, slug, sizeof(slug));
+
+    /* Record footnote for later section generation */
+    if(r->fn_count >= r->fn_capacity) {
+        size_t new_cap = (r->fn_capacity == 0) ? 8 : r->fn_capacity * 2;
+        r->fn_list = realloc(r->fn_list, new_cap * sizeof(MD_TOC_ITEM_T));
+        r->fn_capacity = new_cap;
+    }
+    {
+        MD_TOC_ITEM_T *item = &r->fn_list[r->fn_count];
+        item->level = det->index;
+        item->id = malloc(strlen(slug) + 1);
+        strcpy(item->id, slug);
+        /* Store the footnote content (dest) for the footnote section */
+        item->text = malloc(det->dest.size + 1);
+        memcpy(item->text, det->dest.text, det->dest.size);
+        item->text[det->dest.size] = '\0';
+        r->fn_count++;
+    }
+
+    /* Output: <sup class="footnote-ref"><a href="#fn-..." id="fnref-..." data-footnote="...">N</a></sup>
+     * data-footnote holds the content for CSS tooltip on hover. */
+    RENDER_VERBATIM(r, "<sup class=\"footnote-ref\"><a href=\"#fn-");
+    RENDER_VERBATIM(r, slug);
+    RENDER_VERBATIM(r, "\" id=\"fnref-");
+    RENDER_VERBATIM(r, slug);
+    RENDER_VERBATIM(r, "\" data-footnote=\"");
+    /* Escape the footnote content for use in an HTML attribute */
+    render_html_escaped(r, det->dest.text, det->dest.size);
+    RENDER_VERBATIM(r, "\">");
+
+    /* Output the index number */
+    {
+        char num_buf[16];
+        snprintf(num_buf, sizeof(num_buf), "%u", det->index);
+        RENDER_VERBATIM(r, num_buf);
+    }
+
+    RENDER_VERBATIM(r, "</a></sup>");
+}
+
+static void
+render_close_footnote_ref_span(MD_HTML* r, const MD_SPAN_FOOTNOTE_REF_DETAIL* det)
+{
+    /* Nothing to close: the entire element is output in open. */
+    (void)r;
+    (void)det;
+}
+
 
 /**************************************
  ***  HTML renderer implementation  ***
@@ -635,6 +694,7 @@ enter_span_callback(MD_SPANTYPE type, void* detail, void* userdata)
         case MD_SPAN_LATEXMATH:         RENDER_VERBATIM(r, "<x-equation>"); break;
         case MD_SPAN_LATEXMATH_DISPLAY: RENDER_VERBATIM(r, "<x-equation type=\"display\">"); break;
         case MD_SPAN_WIKILINK:          render_open_wikilink_span(r, (MD_SPAN_WIKILINK_DETAIL*) detail); break;
+        case MD_SPAN_FOOTNOTE_REF:      render_open_footnote_ref_span(r, (MD_SPAN_FOOTNOTE_REF_DETAIL*) detail); break;
     }
 
     return 0;
@@ -665,6 +725,7 @@ leave_span_callback(MD_SPANTYPE type, void* detail, void* userdata)
         case MD_SPAN_LATEXMATH:         /*fall through*/
         case MD_SPAN_LATEXMATH_DISPLAY: RENDER_VERBATIM(r, "</x-equation>"); break;
         case MD_SPAN_WIKILINK:          RENDER_VERBATIM(r, "</x-wikilink>"); break;
+        case MD_SPAN_FOOTNOTE_REF:      render_close_footnote_ref_span(r, (MD_SPAN_FOOTNOTE_REF_DETAIL*) detail); break;
     }
 
     return 0;
@@ -794,6 +855,9 @@ md_html(const MD_CHAR* input, MD_SIZE input_size,
     render.toc_list = NULL;
     render.toc_count = 0;
     render.toc_capacity = 0;
+    render.fn_list = NULL;
+    render.fn_count = 0;
+    render.fn_capacity = 0;
 
     int i;
 
@@ -831,6 +895,30 @@ md_html(const MD_CHAR* input, MD_SIZE input_size,
 
     int ret = md_parse(input, input_size, &parser, (void*) &render);
 
+    /* Output footnote section if any footnotes were referenced. */
+    if(ret == 0 && render.fn_count > 0) {
+        RENDER_VERBATIM(&render, "<section class=\"footnotes\">\n");
+        for(size_t j = 0; j < render.fn_count; j++) {
+            /* Format: <p id="fn-..."><sup>N</sup> content <a href="#fnref-..." class="footnote-backref">&#8617;</a></p> */
+            char prefix[128];
+            snprintf(prefix, sizeof(prefix),
+                     "<p id=\"fn-%s\"><sup>%u</sup> ",
+                     render.fn_list[j].id,
+                     (unsigned)render.fn_list[j].level);
+            render_verbatim(&render, prefix, (MD_SIZE) strlen(prefix));
+
+            render_html_escaped(&render, render.fn_list[j].text,
+                                (MD_SIZE) strlen(render.fn_list[j].text));
+
+            char suffix[128];
+            snprintf(suffix, sizeof(suffix),
+                     " <a href=\"#fnref-%s\" class=\"footnote-backref\">&#8617;</a></p>\n",
+                     render.fn_list[j].id);
+            render_verbatim(&render, suffix, (MD_SIZE) strlen(suffix));
+        }
+        RENDER_VERBATIM(&render, "</section>\n");
+    }
+
     if (ret == 0 && out_toc != NULL) {
         *out_toc = render.toc_list;
         if (out_toc_size) *out_toc_size = render.toc_count;
@@ -844,6 +932,13 @@ md_html(const MD_CHAR* input, MD_SIZE input_size,
         if (out_toc) *out_toc = NULL;
         if (out_toc_size) *out_toc_size = 0;
     }
+
+    /* Free footnote list. */
+    for(size_t j = 0; j < render.fn_count; j++) {
+        free(render.fn_list[j].id);
+        free(render.fn_list[j].text);
+    }
+    free(render.fn_list);
 
     return ret;
 }
