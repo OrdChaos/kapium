@@ -1,0 +1,1 @@
+这篇博文记录了博主为一台2017年HP Envy 13-ad1xx老笔记本（i7-8550U/8GB DDR3/NVIDIA MX150）安装Arch Linux的完整过程，重点涵盖网络共享方案、LUKS加密+Btrfs子卷分区、systemd-boot+UKI引导配置及NVIDIA驱动兼容性规避等实操细节。
