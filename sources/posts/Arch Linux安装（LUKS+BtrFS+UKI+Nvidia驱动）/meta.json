@@ -1,0 +1,15 @@
+{
+    "title": "Arch Linux安装（LUKS+BtrFS+UKI+Nvidia驱动）",
+    "excerpt": "给老电脑安装ArchLinux. 装过这么多回了居然没有记录过流程，这次写一下。",
+    "tags": [
+        "计算机",
+        "系统",
+        "linux",
+        "nvidia",
+        "tpm2",
+        "安全启动"
+    ],
+    "date": "2026-06-28 09:50:47",
+    "updated": "2026-06-28 09:50:47",
+    "category": "教程"
+}
