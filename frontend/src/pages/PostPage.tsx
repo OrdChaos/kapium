@@ -151,11 +151,57 @@ export default function PostSection({ onSearchClick }: PostPageProps) {
       if ((e.target as HTMLElement).tagName === 'IMG') debouncedUpdateOffsets();
     };
     contentEl.addEventListener('load', handleImgLoad, true);
+
+    // Footnote tooltip: hover on .footnote-ref a[data-footnote]
+    let tooltip: HTMLDivElement | null = null;
+
+    const showTooltip = (anchor: HTMLAnchorElement) => {
+      const text = anchor.getAttribute('data-footnote');
+      if (!text) return;
+      tooltip = document.createElement('div');
+      tooltip.className = 'footnote-tooltip';
+      tooltip.textContent = text;
+      document.body.appendChild(tooltip);
+      const rect = anchor.getBoundingClientRect();
+      const tipRect = tooltip.getBoundingClientRect();
+      let left = rect.left + rect.width / 2 - tipRect.width / 2;
+      let top = rect.top - tipRect.height - 8;
+      // Keep within viewport
+      if (left < 8) left = 8;
+      if (left + tipRect.width > window.innerWidth - 8) left = window.innerWidth - 8 - tipRect.width;
+      if (top < 8) top = rect.bottom + 8; // flip below if no room above
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
+    };
+
+    const hideTooltip = () => {
+      if (tooltip) { tooltip.remove(); tooltip = null; }
+    };
+
+    const onFootnoteEnter = (e: Event) => {
+      const target = (e.target as HTMLElement).closest?.('.footnote-ref a[data-footnote]');
+      if (target) showTooltip(target as HTMLAnchorElement);
+    };
+    const onFootnoteLeave = (e: Event) => {
+      const target = (e.target as HTMLElement).closest?.('.footnote-ref a[data-footnote]');
+      if (target) hideTooltip();
+    };
+
+    const onFootnoteClick = (e: Event) => { hideTooltip(); };
+
+    contentEl.addEventListener('mouseover', onFootnoteEnter);
+    contentEl.addEventListener('mouseout', onFootnoteLeave);
+    contentEl.addEventListener('click', onFootnoteClick);
+
     const timer = setTimeout(debouncedUpdateOffsets, 500);
     return () => {
       clearTimeout(timer);
+      hideTooltip();
       if (contentEl) {
         contentEl.removeEventListener('load', handleImgLoad, true);
+        contentEl.removeEventListener('mouseover', onFootnoteEnter);
+        contentEl.removeEventListener('mouseout', onFootnoteLeave);
+        contentEl.removeEventListener('click', onFootnoteClick);
         contentEl.innerHTML = '';
       }
     };

@@ -20,15 +20,11 @@ html {
   color: var(--primary);
   font-weight: 600;
   cursor: help;
-  position: relative;
 }
 
-.footnote-ref a::after {
-  content: attr(data-footnote);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+/* Floating tooltip appended to body by JS */
+.footnote-tooltip {
+  position: fixed;
   background: #333;
   color: #fff;
   padding: 6px 10px;
@@ -39,17 +35,15 @@ html {
   width: max-content;
   max-width: 300px;
   line-height: 1.4;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 9999;
   pointer-events: none;
-  z-index: 10;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  animation: footnote-tooltip-in 0.15s ease-out;
 }
 
-.footnote-ref a:hover::after {
-  opacity: 1;
-  visibility: visible;
+@keyframes footnote-tooltip-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Footnote section at end of document */
