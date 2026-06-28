@@ -13,7 +13,7 @@
 - RAM: 8GB DDR3
 - SSD: KingSton SA2000M8500G
 
-看到`Nvidia`就感觉麻烦了，哎。<span class="heimu" title="你知道的太多了">FUCK YOU, NVIDIA!</span>
+看到Nvidia就感觉麻烦了，哎。<span class="heimu" title="你知道的太多了">FUCK YOU, NVIDIA!</span>
 
 ## 关于网络问题
 
@@ -53,7 +53,7 @@ curl -I www.google.com
 
 接着烧录启动盘，我习惯用`Rufus`，不过也有人用`Ventory`，这个随意。
 
-进入需要安装的电脑的BIOS，关闭安全启动，同时
+进入需要安装的电脑的BIOS，关闭安全启动，同时清除安全启动金钥
 
 上电启动（记得进BIOS关掉安全启动）。
 
