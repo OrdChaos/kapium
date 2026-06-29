@@ -331,7 +331,7 @@ mkinitcpio -P
 bootctl install
 ```
 
-忽略警告，我们会在一会后解决这个问题。
+忽略警告，这个没有影响。
 
 获取加密主分区的UUID：
 
